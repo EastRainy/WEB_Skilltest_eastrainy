@@ -1,0 +1,13 @@
+server:
+  port: 8081
+
+##database setting
+spring:
+  datasource:
+    driver: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/skilltest
+    username: skilltest_connection
+    password: skilltest
+
+mybatis:
+  mapper-locations: mybatis/mapper/**/*.xml
