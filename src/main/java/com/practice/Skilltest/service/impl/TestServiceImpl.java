@@ -9,10 +9,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class TestServiceImpl implements TestService {
 
     private final TestDao dao;
+
+    public TestServiceImpl(TestDao dao){
+        this.dao = dao;
+    }
+
 
     @Override
     public List<TestDto> testing() {
