@@ -3,12 +3,21 @@ server:
 
 ##database setting
 spring:
+  web:
+    resource: classpath:/static, classpath:/frontend
   datasource:
-    driver: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/skilltest
-    username: skilltest_connection
+    driver: org.postgresql.Driver #postgresql 드라이버
+    url: jdbc:postgresql://localhost:5432/skilltest # db 호스트/접속 db 이름
+    username: skilltest_connection 
     password: skilltest
+  thymeleaf:
+    prefix: classpath:templates/ #타임리프 루트폴더 수정
+    check-template-location: true
+    suffix: .html #기본 html 지정
+    mode: HTML5
+    cache: false #개발 시 false 로 정적파일취급으로 바로 반영
 
+##mybatis 설정
 mybatis:
-  mapper-locations: mybatis/mapper/**/*.xml
+  mapper-locations: mybatis/mapper/**/*.xml #매퍼위치
   type-aliases-package: com.practice.Skilltest
