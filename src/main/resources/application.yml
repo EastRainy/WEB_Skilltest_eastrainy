@@ -14,7 +14,7 @@ spring:
     prefix: classpath:templates/ #타임리프 루트폴더 수정
     check-template-location: true
     suffix: .html #기본 html 지정
-    mode: HTML5
+    mode: HTML
     cache: false #개발 시 false 로 정적파일취급으로 바로 반영
 
 ##mybatis 설정

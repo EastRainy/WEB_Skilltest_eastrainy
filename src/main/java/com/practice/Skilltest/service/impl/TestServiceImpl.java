@@ -12,15 +12,12 @@ import java.util.List;
 public class TestServiceImpl implements TestService {
 
     private final TestDao dao;
-
     public TestServiceImpl(TestDao dao){
         this.dao = dao;
     }
 
-
     @Override
     public List<TestDto> testing() {
-
         return dao.selectAll();
     }
 }

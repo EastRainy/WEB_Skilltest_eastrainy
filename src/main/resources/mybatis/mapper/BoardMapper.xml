@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.practice.Skilltest.board.dao.BoardDao">
+    <resultMap id="Board" type="com.practice.Skilltest.board.dto.BoardDto">
+        <result column="b_id" property="board_id"/>
+        <result column="writer" property="writer"/>
+        <result column="title" property="title"/>
+        <result column="m_date" property="modified_time"/>
+        <result column="content" property="content"/>
+        <result column="viewcount" property="viewcount"/>
+    </resultMap>
+
+    <select id="selectAll" resultMap="Board">
+        SELECT * FROM boardtable
+    </select>
+</mapper>
