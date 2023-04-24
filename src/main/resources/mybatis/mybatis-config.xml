@@ -4,7 +4,6 @@
 
 <configuration>
     <mappers>
-        <mapper resource="testMapper.xml"/>
-        <mapper resource="BoardMapper.xml"/>
+        <mapper resource="mybatis/mapper/BoardMapper.xml"/>
     </mappers>
 </configuration>
