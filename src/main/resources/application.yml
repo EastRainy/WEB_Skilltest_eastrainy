@@ -1,11 +1,11 @@
 server:
   port: 8081
 
-##database setting
+##Spring setting
 spring:
   web:
     resource: classpath:/static, classpath:/frontend
-  datasource:
+  datasource: #database setting
     driver: org.postgresql.Driver #postgresql 드라이버
     url: jdbc:postgresql://localhost:5432/skilltest # db 호스트/접속 db 이름
     username: skilltest_connection 
@@ -14,8 +14,8 @@ spring:
     prefix: classpath:templates/ #타임리프 루트폴더 수정
     check-template-location: true
     suffix: .html #기본 html 지정
-    mode: HTML5
-    cache: false #개발 시 false 로 정적파일취급으로 바로 반영
+    mode: HTML
+    cache: false #개발 시 false 로 정적파일취급으로 수정 바로 반영
 
 ##mybatis 설정
 mybatis:

@@ -1,12 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Board Main page</title>
 </head>
 <body>
 
-<h1>It's Main board page!</h1>
+    <h1>It's Main board page!</h1>
+
+    <table>
+        <tr>
+            <td>번호</td>
+            <td>제목</td>
+            <td>작성자</td>
+        </tr>
+        <tr th:each="result : ${resultList}">
+            <td th:text="${result.getBoard_id()}"></td>
+            <td th:text="${result.getTitle()}"></td>
+            <td th:text="${result.getWriter()}"></td>
+        </tr>
+
+    </table>
 
 </body>
 </html>
