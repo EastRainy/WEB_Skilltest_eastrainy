@@ -8,6 +8,8 @@ import java.util.List;
 @Service
 public interface BoardService {
 
-    List<BoardDto> selectAll();
+    List<BoardDto> getSelectAll();
+
+    BoardDto viewOne(long id);
 
 }

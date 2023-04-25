@@ -15,4 +15,10 @@
     <select id="selectAll" resultMap="Board">
         SELECT * FROM boardtable
     </select>
+
+    <select id="viewOne" resultMap="Board">
+        SELECT * FROM boardtable
+        WHERE b_id = #{id}
+    </select>
+    
 </mapper>

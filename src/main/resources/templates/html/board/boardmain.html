@@ -16,8 +16,9 @@
         </tr>
         <tr th:each="result : ${resultList}">
             <td th:text="${result.getBoard_id()}"></td>
-            <td th:text="${result.getTitle()}"></td>
+            <td><a th:href="@{/board/{id}(id=${result.getBoard_id()})}" th:text="${result.getTitle()}"></a></td>
             <td th:text="${result.getWriter()}"></td>
+            <td th:text="${result.getViewcount()}"></td>
         </tr>
 
     </table>

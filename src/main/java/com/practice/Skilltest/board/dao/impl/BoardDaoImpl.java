@@ -21,4 +21,9 @@ public class BoardDaoImpl implements BoardDao {
     public List<BoardDto> selectAll() {
         return sqlSession.selectList("selectAll");
     }
+
+    @Override
+    public BoardDto viewOne(long id) {
+        return sqlSession.selectOne("viewOne", id);
+    }
 }

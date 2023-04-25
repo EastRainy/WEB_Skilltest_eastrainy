@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${result.getTitle()}"/>
+</head>
+<body>
+    <h2 th:text="${result.getTitle()}"/>
+    <div>
+        <div style="float:left;" th:text="${result.getWriter()}"></div>
+        <div style="float:right;" th:text="${result.getViewcount()}"></div>
+    </div>
+    <hr>
+
+    <div>
+        <p th:text="${result.getContent()}"></p>
+    </div>
+</body>
+</html>
