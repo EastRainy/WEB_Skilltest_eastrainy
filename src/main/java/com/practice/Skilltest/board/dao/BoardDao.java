@@ -10,5 +10,8 @@ import java.util.List;
 public interface BoardDao {
     List<BoardDto> selectAll();
     BoardDto viewOne(long id);
+    boolean newBoard(String writer, String title, String content);
+    boolean updateBoard(long id, String writer, String title, String content);
+    boolean deleteBoard(long id);
 
 }

@@ -20,5 +20,31 @@
         SELECT * FROM boardtable
         WHERE b_id = #{id}
     </select>
+
+    <insert id="newBoard" parameterType="Map">
+        INSERT INTO boardtable(
+        writer, title, content
+        )
+        VALUES(
+        #{writer}, #{title}, #{content}
+        )
+    </insert>
+
+    <update id="upadteBoard" parameterType="Map">
+        UPDATE boardtable
+        SET
+        writer = #{writer},
+        title = #{title},
+        content = #{content},
+        m_data = now()
+        WHERE
+        b_id = #{id}
+    </update>
+
+    <delete id="deleteBoard">
+        DELETE FROM boardtable
+        WHERE b_id = #{id}
+    </delete>
+
     
 </mapper>

@@ -30,4 +30,8 @@ public class BoardServiceImpl implements BoardService {
 
         return boardDao.viewOne(id);
     }
+
+
+
+
 }
