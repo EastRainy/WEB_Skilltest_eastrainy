@@ -5,13 +5,15 @@ import org.apache.ibatis.annotations.Mapper;
 
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface BoardDao {
     List<BoardDto> selectAll();
     BoardDto viewOne(long id);
-    boolean newBoard(String writer, String title, String content);
-    boolean updateBoard(long id, String writer, String title, String content);
+    long newBoard(Map<String, Object> map);
+    boolean updateBoard(Map<String, Object> map);
     boolean deleteBoard(long id);
+
 
 }

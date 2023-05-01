@@ -20,8 +20,11 @@
             <td th:text="${result.getWriter()}"></td>
             <td th:text="${result.getViewcount()}"></td>
         </tr>
-
     </table>
+    <br>
+    <hr>
+    <br>
+    <button th:onclick="|location.href='@{/board/new}'|">새 글</button>
 
 </body>
 </html>

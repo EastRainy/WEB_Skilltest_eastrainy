@@ -28,6 +28,9 @@
         VALUES(
         #{writer}, #{title}, #{content}
         )
+        <selectKey resultType="long" order="AFTER">
+            SELECT LAST_INSERT_ID();
+        </selectKey>
     </insert>
 
     <update id="upadteBoard" parameterType="Map">

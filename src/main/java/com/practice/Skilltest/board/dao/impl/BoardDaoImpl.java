@@ -31,22 +31,13 @@ public class BoardDaoImpl implements BoardDao {
     }
 
     @Override
-    public boolean newBoard(String writer, String title, String content) {
-        Map<String, Object> map= new HashMap<String, Object>();
-        map.put("writer", writer);
-        map.put("title", title);
-        map.put("content", content);
-        return 1 == sqlSession.insert("newBoard", map);
+    public long newBoard(Map<String, Object> map) {
+        return sqlSession.insert("newBoard", map);
     }
 
     @Override
-    public boolean updateBoard(long id, String writer, String title, String content) {
-        Map<String, Object> map= new HashMap<String, Object>();
-        map.put("id", id);
-        map.put("writer", writer);
-        map.put("title", title);
-        map.put("content", content);
-        return 1 == sqlSession.update("updateBoard",map);
+    public boolean updateBoard(Map<String, Object> map) {
+        return 1==sqlSession.update("updateBoard",map);
     }
 
     @Override
