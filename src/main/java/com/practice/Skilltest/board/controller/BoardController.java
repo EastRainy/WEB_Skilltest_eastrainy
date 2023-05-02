@@ -4,11 +4,15 @@ import com.practice.Skilltest.board.dto.BoardDto;
 import com.practice.Skilltest.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Method;
+import java.net.URI;
 
 @Controller
 @RequiredArgsConstructor
@@ -33,30 +37,44 @@ public class BoardController {
     public String newBoardGet(){
         return "html/board/boardnew";
     }
-    @RequestMapping(method = RequestMethod.POST, path = "/board/new")
+    @PostMapping(path = "/board/new")
     @ResponseBody
-    public String newBoardPost(){
+    public ResponseEntity<?> newBoardPost(BoardDto req){
 
-        return "redirect:/board";
+        HttpHeaders h = new HttpHeaders();
+        long dest = boardService.newBoard(req);
+
+        h.setLocation(URI.create("/board/"+dest));
+        return new ResponseEntity<>(h, HttpStatus.MOVED_PERMANENTLY);
     }
     //기존수정
-    @RequestMapping(method = RequestMethod.GET, path = "/board/{id}/modifying")
+    @GetMapping(path = "/board/{id}/modifying")
     public String modifyingBoardGet(@PathVariable("id") long id, Model model){
-
         BoardDto result = boardService.viewOne(id);
-
-        model.addAttribute("title");
-        model.addAttribute("writer");
-        model.addAttribute("content");
+        model.addAttribute("id", id);
+        model.addAttribute("title", result.getTitle());
+        model.addAttribute("writer", result.getWriter());
+        model.addAttribute("content", result.getContent());
         return "html/board/boardmodifying";
     }
-    @RequestMapping(method = RequestMethod.POST, path ="/board/{id}/modifying")
+    @PostMapping(path ="/board/{id}/modifying")
     @ResponseBody
-    public String modifyingBoardPost(@PathVariable("id") long id, Model model){
+    public ResponseEntity<?> modifyingBoardPost(@PathVariable("id") long id, BoardDto req, Model model){
 
+        req.setBoard_id(id);
+        boardService.modifyBoard(req);
 
-
-        return "redirect:/board/";
+        HttpHeaders h = new HttpHeaders();
+        h.setLocation(URI.create("/board/"+id));
+        return new ResponseEntity<>(h, HttpStatus.MOVED_PERMANENTLY);
     }
+
+    //게시글 삭제
+    @GetMapping(path="/board/{id}/delete")
+    public String deleteBoard(@PathVariable("id") long id){
+        boardService.deleteBoard(id);
+        return "redirect:/board";
+    }
+
 
 }

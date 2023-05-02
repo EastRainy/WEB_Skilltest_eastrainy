@@ -31,8 +31,8 @@ public class BoardDaoImpl implements BoardDao {
     }
 
     @Override
-    public long newBoard(Map<String, Object> map) {
-        return sqlSession.insert("newBoard", map);
+    public long newBoard(BoardDto req) {
+        return sqlSession.insert("newBoard", req);
     }
 
     @Override

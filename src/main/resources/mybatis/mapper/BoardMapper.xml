@@ -21,22 +21,22 @@
         WHERE b_id = #{id}
     </select>
 
-    <insert id="newBoard" parameterType="Map">
+    <insert id="newBoard" parameterType="com.practice.Skilltest.board.dto.BoardDto">
+
         INSERT INTO boardtable(
         writer, title, content
         )
         VALUES(
         #{writer}, #{title}, #{content}
         )
-        <selectKey resultType="long" order="AFTER">
-            SELECT LAST_INSERT_ID();
+        <selectKey keyProperty="board_id" resultType="long" order="AFTER">
+        SELECT currval(pg_get_serial_sequence('boardtable','b_id'))
         </selectKey>
     </insert>
 
     <update id="upadteBoard" parameterType="Map">
         UPDATE boardtable
         SET
-        writer = #{writer},
         title = #{title},
         content = #{content},
         m_data = now()

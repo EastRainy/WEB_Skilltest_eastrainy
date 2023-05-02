@@ -6,12 +6,12 @@
 </head>
 <body>
 <div>
-    <form action="http://localhost:8081/board/new" name="newBoard" method="post">
+    <form action="|http://localhost:8081/board/${id}/modifying|" name="modifyingBoard" method="post">
         <fieldset>
             <legend>게시물 수정</legend>
-            제목 : <input type="text" name="title" style="width:300" th:placeholder="${title}"/><br><br>
+            제목 : <input type="text" id="title" name="title" style="width:300" th:placeholder="${title}"/><br><br>
             작성자 : <a th:text="${writer}"></a><br><br>
-            내용 : <textarea name="content" rows="30" style="width:300" th:placeholder="${content}"></textarea><br><br>
+            내용 : <textarea name="content" id="content" rows="30" style="width:300" th:placeholder="${content}"></textarea><br><br>
             <input type="submit" value="작성"/>
         </fieldset>
     </form>

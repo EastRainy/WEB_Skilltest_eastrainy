@@ -35,22 +35,31 @@ public class BoardServiceImpl implements BoardService {
 
         return boardDao.viewOne(id);
     }
-    /*
-    @Override
-    public long newBoard() {
 
+    public long newBoard(BoardDto req) {
 
-        return ;
+        boardDao.newBoard(req);
+
+        System.out.println("id: " + (long) req.getBoard_id());
+
+        return req.getBoard_id();
     }
 
     @Override
     public boolean modifyBoard(BoardDto req) {
 
+        Map<String, Object> map = new HashMap<String, Object>();
 
+        map.put("id", req.getBoard_id());
+        map.put("title",req.getTitle());
+        map.put("content", req.getContent());
 
-        return ;
+        return boardDao.updateBoard(map);
     }
-    */
 
+    @Override
+    public void deleteBoard(long id) {
+        boardDao.deleteBoard(id);
+    }
 }
 

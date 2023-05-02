@@ -9,9 +9,12 @@
         <form action="http://localhost:8081/board/new" name="newBoard" method="post">
             <fieldset>
                 <legend>새 게시물 생성</legend>
-                제목 : <input type="text" name="title" style="width:300"/><br><br>
-                작성자 : <input type="text" name="writer" style="width:150"/><br><br>
-                내용 : <textarea name="content" rows="30" style="width:300"></textarea><br><br>
+                <label for="title">제목 : </label>
+                <input type="text" id="title" class="form-label" name="title" style="width:300"/><br><br>
+                <label for="writer">글쓴이 : </label>
+                <input type="text" id="writer" name="writer" style="width:150"/><br><br>
+                <label for="content">내용 : </label>
+                <textarea name="content" id="content" rows="30" style="width:300"></textarea><br><br>
                 <input type="submit" value="작성"/>
             </fieldset>
         </form>

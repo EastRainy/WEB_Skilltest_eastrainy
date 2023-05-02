@@ -14,8 +14,10 @@ public interface BoardService {
 
     BoardDto viewOne(long id);
 
-    long newBoard(Object writer, Object title, Object content);
+    long newBoard(BoardDto req);
 
     boolean modifyBoard(BoardDto req);
+
+    void deleteBoard(long id);
 
 }
