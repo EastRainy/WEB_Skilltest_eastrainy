@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${result.getTitle()}"/>
+</head>
+<body>
+    <h2 th:text="${result.getTitle()}"/>
+    <div>
+        <div style="float:left;" th:text="${result.getWriter()}"></div><br>
+        <div style="float:right;" th:text="${result.getViewcount()}"></div><br>
+    </div>
+    <hr>
+    <br>
+    <div>
+        <p th:text="${result.getContent()}"></p>
+    </div>
+    <hr>
+    <button th:onclick="|location.href='@{/board}'|">목록</button>
+    <button th:onclick="|location.href='@{/board/{id}/modifying(id=${id})}'|">수정</button>
+    <button th:onclick="|location.href='@{/board/{id}/delete(id=${id})}'|">삭제</button>
+</body>
+</html>

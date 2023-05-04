@@ -14,5 +14,49 @@
 
     <select id="selectAll" resultMap="Board">
         SELECT * FROM boardtable
+        ORDER BY b_id
     </select>
+
+    <select id="viewOne" resultMap="Board">
+        SELECT * FROM boardtable
+        WHERE b_id = #{id}
+    </select>
+
+    <insert id="newBoard" parameterType="com.practice.Skilltest.board.dto.BoardDto">
+
+        INSERT INTO boardtable(
+        writer, title, content
+        )
+        VALUES(
+        #{writer}, #{title}, #{content}
+        )
+        <selectKey keyProperty="board_id" resultType="long" order="AFTER">
+        SELECT currval(pg_get_serial_sequence('boardtable','b_id'))
+        </selectKey>
+    </insert>
+
+    <update id="updateBoard" parameterType="Map">
+        UPDATE boardtable
+        SET
+        title = #{title},
+        content = #{content},
+        m_date = now()
+        WHERE
+        b_id = #{id}
+    </update>
+
+    <update id="updateViewcount" parameterType="long">
+        UPDATE boardtable
+        SET
+            viewcount = viewcount +1
+        WHERE
+            b_id = #{id}
+    </update>
+
+    <delete id="deleteBoard">
+        DELETE FROM boardtable
+        WHERE b_id = #{id}
+    </delete>
+
+    
 </mapper>

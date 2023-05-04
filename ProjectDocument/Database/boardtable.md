@@ -35,6 +35,39 @@ CREATE TABLE boardtable (
 	viewcount integer DEFAULT 0
 )
 ```
+---
+
+게시판 CRUD SQL
+
+Primary key b_id 이용
+
+- INSERT
+```postgresql
+INSERT INTO boardtable(
+    writer, title, content
+)
+VALUES(
+    #{writer}, #{title}, #{content}
+)
+```
+- UPDATE
+```postgresql
+UPDATE boardtable
+SET
+    writer = #{writer},
+    title = #{title},
+    content = #{content},
+    m_data = now()
+WHERE 
+    b_id = #{id}
+```
+- DELETE
+```postresql
+DELETE FROM boardtable
+WHERE b_id = #{id} 
+```
+
+---
 
 
 개발시 테스트를 위한 데이터 기본 입력 데이터 SQL
@@ -99,3 +132,6 @@ UPDATE boardtable SET
 WHERE b_id = 4
 
 ```
+
+
+

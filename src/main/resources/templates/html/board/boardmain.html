@@ -13,14 +13,19 @@
             <td>번호</td>
             <td>제목</td>
             <td>작성자</td>
+            <td>조회수</td>
         </tr>
         <tr th:each="result : ${resultList}">
             <td th:text="${result.getBoard_id()}"></td>
-            <td th:text="${result.getTitle()}"></td>
+            <td><a th:href="@{/board/{id}(id=${result.getBoard_id()})}" th:text="${result.getTitle()}"></a></td>
             <td th:text="${result.getWriter()}"></td>
+            <td th:text="${result.getViewcount()}"></td>
         </tr>
-
     </table>
+    <br>
+    <hr>
+    <br>
+    <button th:onclick="|location.href='@{/board/new}'|">새 글</button>
 
 </body>
 </html>

@@ -9,18 +9,18 @@ import java.sql.Timestamp;
 //@Alias("BoardDto")//매퍼 alias 지정
 public class BoardDto {
 
-    private int board_id;
+    private long board_id;
     private String writer;
     private String title;
     private Timestamp modified_time;
     private String content;
     private int viewcount;
 
-    public int getBoard_id() {
+    public long getBoard_id() {
         return board_id;
     }
 
-    public void setBoard_id(int board_id) {
+    public void setBoard_id(long board_id) {
         this.board_id = board_id;
     }
 

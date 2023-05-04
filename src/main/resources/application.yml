@@ -3,6 +3,8 @@ server:
 
 ##Spring setting
 spring:
+  jpa:
+    openInView: false
   web:
     resource: classpath:/static, classpath:/frontend
   datasource: #database setting
@@ -10,6 +12,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/skilltest # db 호스트/접속 db 이름
     username: skilltest_connection 
     password: skilltest
+
   thymeleaf:
     prefix: classpath:templates/ #타임리프 루트폴더 수정
     check-template-location: true
