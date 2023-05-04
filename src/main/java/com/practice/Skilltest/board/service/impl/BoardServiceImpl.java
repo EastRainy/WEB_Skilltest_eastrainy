@@ -32,7 +32,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public BoardDto viewOne(long id) {
-
+        upView(id);
         return boardDao.viewOne(id);
     }
 
@@ -41,7 +41,6 @@ public class BoardServiceImpl implements BoardService {
         boardDao.newBoard(req);
 
         System.out.println("id: " + (long) req.getBoard_id());
-
         return req.getBoard_id();
     }
 
@@ -55,6 +54,11 @@ public class BoardServiceImpl implements BoardService {
         map.put("content", req.getContent());
 
         return boardDao.updateBoard(map);
+    }
+
+    @Override
+    public void upView(long id) {
+        boardDao.updateViewcount(id);
     }
 
     @Override

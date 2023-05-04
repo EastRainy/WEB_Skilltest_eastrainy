@@ -41,6 +41,11 @@ public class BoardDaoImpl implements BoardDao {
     }
 
     @Override
+    public void updateViewcount(long id) {
+        sqlSession.update("updateViewcount", id);
+    }
+
+    @Override
     public boolean deleteBoard(long id) {
         return 1==sqlSession.delete("deleteBoard", id);
     }

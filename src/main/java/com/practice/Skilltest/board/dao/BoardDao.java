@@ -13,6 +13,7 @@ public interface BoardDao {
     BoardDto viewOne(long id);
     long newBoard(BoardDto req);
     boolean updateBoard(Map<String, Object> map);
+    void updateViewcount(long id);
     boolean deleteBoard(long id);
 
 

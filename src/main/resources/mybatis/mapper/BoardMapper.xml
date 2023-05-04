@@ -14,6 +14,7 @@
 
     <select id="selectAll" resultMap="Board">
         SELECT * FROM boardtable
+        ORDER BY b_id
     </select>
 
     <select id="viewOne" resultMap="Board">
@@ -34,14 +35,22 @@
         </selectKey>
     </insert>
 
-    <update id="upadteBoard" parameterType="Map">
+    <update id="updateBoard" parameterType="Map">
         UPDATE boardtable
         SET
         title = #{title},
         content = #{content},
-        m_data = now()
+        m_date = now()
         WHERE
         b_id = #{id}
+    </update>
+
+    <update id="updateViewcount" parameterType="long">
+        UPDATE boardtable
+        SET
+            viewcount = viewcount +1
+        WHERE
+            b_id = #{id}
     </update>
 
     <delete id="deleteBoard">

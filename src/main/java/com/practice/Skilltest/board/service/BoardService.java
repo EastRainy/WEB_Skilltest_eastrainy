@@ -18,6 +18,8 @@ public interface BoardService {
 
     boolean modifyBoard(BoardDto req);
 
+    void upView(long id);
+
     void deleteBoard(long id);
 
 }

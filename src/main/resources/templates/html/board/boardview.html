@@ -17,7 +17,7 @@
     </div>
     <hr>
     <button th:onclick="|location.href='@{/board}'|">목록</button>
-    <button th:onclick="|th:href='@{/board/' +${result.getBoard_id()} + '/modifying'}'|">수정</button>
-    <button th:onclick="|location.href='@{/board/' + ${result.getBoard_id()} +'/delete}'}">삭제</button>
+    <button th:onclick="|location.href='@{/board/{id}/modifying(id=${id})}'|">수정</button>
+    <button th:onclick="|location.href='@{/board/{id}/delete(id=${id})}'|">삭제</button>
 </body>
 </html>

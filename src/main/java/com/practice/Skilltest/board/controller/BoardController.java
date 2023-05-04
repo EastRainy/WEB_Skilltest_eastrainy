@@ -55,6 +55,7 @@ public class BoardController {
         model.addAttribute("title", result.getTitle());
         model.addAttribute("writer", result.getWriter());
         model.addAttribute("content", result.getContent());
+        model.addAttribute("req", new BoardDto());
         return "html/board/boardmodifying";
     }
     @PostMapping(path ="/board/{id}/modifying")
@@ -68,7 +69,6 @@ public class BoardController {
         h.setLocation(URI.create("/board/"+id));
         return new ResponseEntity<>(h, HttpStatus.MOVED_PERMANENTLY);
     }
-
     //게시글 삭제
     @GetMapping(path="/board/{id}/delete")
     public String deleteBoard(@PathVariable("id") long id){
