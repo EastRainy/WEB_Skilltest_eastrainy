@@ -14,7 +14,7 @@
 
     <select id="selectAll" resultMap="Board">
         SELECT * FROM boardtable
-        ORDER BY b_id
+        ORDER BY b_id DESC
     </select>
 
     <select id="viewOne" resultMap="Board">

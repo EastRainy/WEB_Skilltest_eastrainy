@@ -4,10 +4,7 @@ import com.practice.Skilltest.board.dao.BoardDao;
 import com.practice.Skilltest.board.dto.BoardDto;
 import com.practice.Skilltest.board.service.BoardService;
 import org.springframework.stereotype.Repository;
-import org.springframework.ui.Model;
 
-
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,10 +21,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public List<BoardDto> getSelectAll() {
 
-        List<BoardDto> resultList = boardDao.selectAll();
-        Collections.reverse(resultList);
-
-        return resultList;
+        return boardDao.selectAll();
     }
 
     @Override
@@ -40,14 +34,13 @@ public class BoardServiceImpl implements BoardService {
 
         boardDao.newBoard(req);
 
-        System.out.println("id: " + (long) req.getBoard_id());
         return req.getBoard_id();
     }
 
     @Override
     public boolean modifyBoard(BoardDto req) {
 
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
 
         map.put("id", req.getBoard_id());
         map.put("title",req.getTitle());
