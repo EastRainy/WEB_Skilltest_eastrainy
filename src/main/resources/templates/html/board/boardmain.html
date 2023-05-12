@@ -7,7 +7,8 @@
 <body>
 
     <h1>It's Main board page!</h1>
-
+    <hr>
+    <div>
     <table>
         <tr>
             <td>번호</td>
@@ -22,10 +23,15 @@
             <td th:text="${result.getViewcount()}"></td>
         </tr>
     </table>
-    <br>
     <hr>
-    <br>
     <button th:onclick="|location.href='@{/board/new}'|">새 글</button>
+    </div>
+    <br>
+    <!-- 페이징 처리 예정부 -->
+    <div>
+    <button>prev</button>
+    <button>next</button>
+    </div>
 
 </body>
 </html>

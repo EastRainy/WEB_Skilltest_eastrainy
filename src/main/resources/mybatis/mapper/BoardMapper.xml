@@ -12,6 +12,8 @@
         <result column="viewcount" property="viewcount"/>
     </resultMap>
 
+    <!-- 게시글  -->
+
     <select id="selectAll" resultMap="Board">
         SELECT * FROM boardtable
         ORDER BY b_id DESC
@@ -57,6 +59,14 @@
         DELETE FROM boardtable
         WHERE b_id = #{id}
     </delete>
+
+    <!-- 페이징 처리 -->
+
+    <select id="selectCount" resultType="long">
+        SELECT COUNT(*) FROM boardtable
+    </select>
+
+
 
     
 </mapper>
