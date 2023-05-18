@@ -2,6 +2,7 @@ package com.practice.Skilltest.board.controller;
 
 import com.practice.Skilltest.board.dto.BoardDto;
 import com.practice.Skilltest.board.service.BoardService;
+import com.practice.Skilltest.board.service.PageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -20,18 +21,38 @@ public class BoardController {
 
     @Autowired
     private final BoardService boardService;
+    @Autowired
+    private final PageService pageService;
 
     @RequestMapping(method = RequestMethod.GET, path = "/board")
     public String board(Model model){
         model.addAttribute("resultList", boardService.getSelectAll());
+        return "redirect:/board/1";
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/board/{page}")
+    public String viewPage(@PathVariable("page") long page, Model model){
+
+        if(!pageService.checkValid(page)){return "html/board/wrongaccess";}
+
+        model.addAttribute("resultList",pageService.selectedPageList(page));
+        long[] pageRange = pageService.pageRange(page);
+        model.addAttribute("startRange",pageRange[0]);
+        model.addAttribute("endRange",pageRange[1]);
+        model.addAttribute("crrPage", page);
+        model.addAttribute("haveNext", pageService.haveNext(page));
+
         return "html/board/boardmain";
     }
-    @RequestMapping(method = RequestMethod.GET, path = "/board/{id}")
+
+    @RequestMapping(method = RequestMethod.GET, path = "/board/view/{id}")
     public String viewBoard(@PathVariable("id") long id, Model model){
         model.addAttribute("result", boardService.viewOne(id));
         model.addAttribute("id",id);
         return "html/board/boardview";
     }
+
+
     //단순신규생성
     @RequestMapping(method = RequestMethod.GET, path = "/board/new")
     public String newBoardGet(){
@@ -40,11 +61,10 @@ public class BoardController {
     @PostMapping(path = "/board/new")
     @ResponseBody
     public ResponseEntity<?> newBoardPost(BoardDto req){
-
         HttpHeaders h = new HttpHeaders();
         long dest = boardService.newBoard(req);
 
-        h.setLocation(URI.create("/board/"+dest));
+        h.setLocation(URI.create("/board/view/"+dest));
         return new ResponseEntity<>(h, HttpStatus.MOVED_PERMANENTLY);
     }
     //기존수정
@@ -52,10 +72,7 @@ public class BoardController {
     public String modifyingBoardGet(@PathVariable("id") long id, Model model){
         BoardDto result = boardService.viewOne(id);
         model.addAttribute("id", id);
-        model.addAttribute("title", result.getTitle());
-        model.addAttribute("writer", result.getWriter());
-        model.addAttribute("content", result.getContent());
-        model.addAttribute("req", new BoardDto());
+        model.addAttribute("req", result);
         return "html/board/boardmodifying";
     }
     @PostMapping(path ="/board/{id}/modifying")
@@ -66,7 +83,7 @@ public class BoardController {
         boardService.modifyBoard(req);
 
         HttpHeaders h = new HttpHeaders();
-        h.setLocation(URI.create("/board/"+id));
+        h.setLocation(URI.create("/board/view/"+id));
         return new ResponseEntity<>(h, HttpStatus.MOVED_PERMANENTLY);
     }
     //게시글 삭제
@@ -75,6 +92,4 @@ public class BoardController {
         boardService.deleteBoard(id);
         return "redirect:/board";
     }
-
-
 }

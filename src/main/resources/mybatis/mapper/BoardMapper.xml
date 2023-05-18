@@ -62,10 +62,15 @@
 
     <!-- 페이징 처리 -->
 
-    <select id="selectCount" resultType="long">
+    <select id="selectCount" resultType="int">
         SELECT COUNT(*) FROM boardtable
     </select>
 
+    <select id="selectPageRange" resultMap="Board">
+        SELECT b_id, title, writer, viewcount FROM boardtable
+        ORDER BY b_id DESC
+        LIMIT 10 OFFSET #{offset}
+    </select>
 
 
     

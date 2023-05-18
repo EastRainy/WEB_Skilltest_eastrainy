@@ -10,7 +10,7 @@ import java.util.Map;
 @Mapper
 public interface BoardDao {
 
-    //board
+    // --- board ---
     List<BoardDto> selectAll();
     BoardDto viewOne(long id);
     long newBoard(BoardDto req);
@@ -18,9 +18,11 @@ public interface BoardDao {
     void updateViewcount(long id);
     boolean deleteBoard(long id);
 
-    //page
 
-    long selectCount();
+    // --- page ---
+    int selectCount();
+    List<BoardDto> selectPageRange(long offset);
+
 
 
 }

@@ -18,20 +18,25 @@
         </tr>
         <tr th:each="result : ${resultList}">
             <td th:text="${result.getBoard_id()}"></td>
-            <td><a th:href="@{/board/{id}(id=${result.getBoard_id()})}" th:text="${result.getTitle()}"></a></td>
+            <td><a th:href="@{/board/view/{id}(id=${result.getBoard_id()})}" th:text="${result.getTitle()}"></a></td>
             <td th:text="${result.getWriter()}"></td>
             <td th:text="${result.getViewcount()}"></td>
         </tr>
     </table>
-    <hr>
-    <button th:onclick="|location.href='@{/board/new}'|">새 글</button>
+    </div>
+    <hr><!-- 페이징 처리 예정부 -->
+    <div>
+        <button th:if="${startRange}>10">prev</button>
+        <ul style="list-style:none; padding-inline-start: 4px;">
+            <li style="float: left; display: block; padding-left: 3px; padding-right:3px;"
+                    th:each="num : ${#numbers.sequence(startRange,endRange)}">
+                <strong th:if="${crrPage}==${num}" th:text="${num}"></strong>
+                <a th:unless="${crrPage}==${num}" th:text="${num}" th:href="@{/board/{page}(page=${num})}"></a>
+            </li>
+        </ul>
+        <button style="padding-right:5px;" th:if="${haveNext}=='true'">next</button>
+        <button style="padding-right:5px;" th:onclick="|location.href='@{/board/new}'|">새 글</button>
     </div>
     <br>
-    <!-- 페이징 처리 예정부 -->
-    <div>
-    <button>prev</button>
-    <button>next</button>
-    </div>
-
 </body>
 </html>

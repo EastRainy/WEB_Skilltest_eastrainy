@@ -17,19 +17,22 @@ public class BoardServiceImpl implements BoardService {
     public BoardServiceImpl(BoardDao boardDao) {
         this.boardDao = boardDao;
     }
-
+    // -- 임시 -- 게시글 리스트 전체 조회
     @Override
     public List<BoardDto> getSelectAll() {
-
         return boardDao.selectAll();
     }
+    
+    
 
+    //게시글 내용 조회
     @Override
     public BoardDto viewOne(long id) {
         upView(id);
         return boardDao.viewOne(id);
     }
 
+    //새 게시글 생성
     public long newBoard(BoardDto req) {
 
         boardDao.newBoard(req);
@@ -37,6 +40,7 @@ public class BoardServiceImpl implements BoardService {
         return req.getBoard_id();
     }
 
+    //게시글 수정
     @Override
     public boolean modifyBoard(BoardDto req) {
 
@@ -49,11 +53,13 @@ public class BoardServiceImpl implements BoardService {
         return boardDao.updateBoard(map);
     }
 
+    //조회수 증가
     @Override
     public void upView(long id) {
         boardDao.updateViewcount(id);
     }
 
+    //게시글 삭제
     @Override
     public void deleteBoard(long id) {
         boardDao.deleteBoard(id);

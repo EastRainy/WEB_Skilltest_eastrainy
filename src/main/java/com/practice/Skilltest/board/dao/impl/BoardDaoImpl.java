@@ -24,7 +24,6 @@ public class BoardDaoImpl implements BoardDao {
     public List<BoardDto> selectAll() {
         return sqlSession.selectList("selectAll");
     }
-
     @Override
     public BoardDto viewOne(long id) {
         return sqlSession.selectOne("viewOne", id);
@@ -48,6 +47,15 @@ public class BoardDaoImpl implements BoardDao {
     @Override
     public boolean deleteBoard(long id) {
         return 1==sqlSession.delete("deleteBoard", id);
+    }
+
+    @Override
+    public int selectCount() {
+        return sqlSession.selectOne("selectCount");
+    }
+    @Override
+    public List<BoardDto> selectPageRange(long offset) {
+        return sqlSession.selectList("selectPageRange", offset);
     }
 
 
