@@ -6,7 +6,6 @@ import com.practice.Skilltest.board.service.BoardService;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -17,13 +16,6 @@ public class BoardServiceImpl implements BoardService {
     public BoardServiceImpl(BoardDao boardDao) {
         this.boardDao = boardDao;
     }
-    // -- 임시 -- 게시글 리스트 전체 조회
-    @Override
-    public List<BoardDto> getSelectAll() {
-        return boardDao.selectAll();
-    }
-    
-    
 
     //게시글 내용 조회
     @Override

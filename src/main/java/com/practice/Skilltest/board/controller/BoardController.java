@@ -26,14 +26,13 @@ public class BoardController {
 
     @RequestMapping(method = RequestMethod.GET, path = "/board")
     public String board(Model model){
-        model.addAttribute("resultList", boardService.getSelectAll());
         return "redirect:/board/1";
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/board/{page}")
     public String viewPage(@PathVariable("page") long page, Model model){
 
-        if(!pageService.checkValid(page)){return "html/board/wrongaccess";}
+        if(!pageService.checkValid(page)){return "html/error/wrongaccess";}
 
         model.addAttribute("resultList",pageService.selectedPageList(page));
         long[] pageRange = pageService.pageRange(page);

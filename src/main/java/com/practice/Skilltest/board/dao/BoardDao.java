@@ -11,7 +11,6 @@ import java.util.Map;
 public interface BoardDao {
 
     // --- board ---
-    List<BoardDto> selectAll();
     BoardDto viewOne(long id);
     long newBoard(BoardDto req);
     boolean updateBoard(Map<String, Object> map);
