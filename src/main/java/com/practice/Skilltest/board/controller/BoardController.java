@@ -12,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Method;
 import java.net.URI;
 
 @Controller
@@ -25,7 +24,7 @@ public class BoardController {
     private final PageService pageService;
 
     @RequestMapping(method = RequestMethod.GET, path = "/board")
-    public String board(Model model){
+    public String board(){
         return "redirect:/board/1";
     }
 

@@ -32,7 +32,7 @@ public class PageServiceImpl implements PageService {
     public long[] pageRange(long crrPage){
         calTotalPage();
         long[] pagerange = new long[2];
-        pagerange[0] = (((long)crrPage/10) * 10) + 1;
+        pagerange[0] = (((crrPage-1)/10) * 10) + 1;
         pagerange[1] = Math.min(pagerange[0] + 9, totalPage);
 
         return pagerange;

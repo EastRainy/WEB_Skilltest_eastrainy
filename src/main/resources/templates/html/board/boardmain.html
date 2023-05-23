@@ -11,31 +11,31 @@
     <div>
     <table>
         <tr>
-            <td>번호</td>
-            <td>제목</td>
+            <td width="100">번호</td>
+            <td width="600">제목</td>
             <td>작성자</td>
             <td>조회수</td>
         </tr>
         <tr th:each="result : ${resultList}">
-            <td th:text="${result.getBoard_id()}"></td>
-            <td><a th:href="@{/board/view/{id}(id=${result.getBoard_id()})}" th:text="${result.getTitle()}"></a></td>
+            <td width="100" th:text="${result.getBoard_id()}"></td>
+            <td width="600"><a th:href="@{/board/view/{id}(id=${result.getBoard_id()})}" th:text="${result.getTitle()}"></a></td>
             <td th:text="${result.getWriter()}"></td>
-            <td th:text="${result.getViewcount()}"></td>
+            <td style="text-align: center;" th:text="${result.getViewcount()}"></td>
         </tr>
     </table>
     </div>
     <hr><!-- 페이징 처리 예정부 -->
     <div>
-        <button th:if="${startRange}>10" th:onclick="|location.href=@{/board/{page}(page=(${startRange}-1))}|">prev</button>
+        <button style="float:left;" th:if="${startRange}>10" th:onclick="|location.href='@{/board/{page}(page=(${startRange}-1))}'|">prev</button>
         <ul style="list-style:none; padding-inline-start: 4px;">
-            <li style="float: left; display: block; padding-left: 3px; padding-right:3px;"
+            <li style="float:left; display: inline-block; padding-left: 3px; padding-right:3px;"
                     th:each="num : ${#numbers.sequence(startRange,endRange)}">
                 <strong th:if="${crrPage}==${num}" th:text="${num}"></strong>
-                <a th:unless="${crrPage}==${num}" th:text="${num}" th:href="@{/board/{page}(page=${num})}"></a>
+                <a th:unless="${crrPage}==${num}" th:text="${num}" th:href="|@{/board/{page}(page=${num})}|"></a>
             </li>
         </ul>
-        <button style="padding-right:5px;" th:if="${haveNext}==true">next</button>
-        <button style="padding-right:5px;" th:onclick="|location.href='@{/board/new}'|">새 글</button>
+        <button style="padding-right:5px;" th:if="${haveNext}==true" th:onclick="|location.href='@{/board/{page}(page=(${endRange}+1))}'|">next</button>
+        <button style="float:right; padding-right:5px;" th:onclick="|location.href='@{/board/new}'|">새 글</button>
     </div>
     <br>
 </body>
