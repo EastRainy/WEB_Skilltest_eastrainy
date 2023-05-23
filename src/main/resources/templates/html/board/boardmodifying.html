@@ -9,9 +9,9 @@
     <form th:action="@{/board/{id}/modifying(id=${id})}" th:object="${req}" name="modifyingBoard" method="post">
         <fieldset>
             <legend>게시물 수정</legend>
-            제목 : <input type="text" th:field="*{title}" style="width:300" th:placeholder="${title}"/><br><br>
-            작성자 : <a th:text="${writer}"></a><br><br>
-            내용 : <textarea th:field="*{content}" rows="30" style="width:300" th:placeholder="${content}"></textarea><br><br>
+            제목 : <input type="text" th:field="*{title}" style="width:300"/><br><br>
+            작성자 : <a th:text="*{writer}"></a><br><br>
+            내용 : <textarea th:field="*{content}" rows="30" style="width:300"></textarea><br><br>
             <input type="submit" value="작성"/>
         </fieldset>
     </form>

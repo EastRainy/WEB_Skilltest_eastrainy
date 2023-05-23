@@ -12,10 +12,7 @@
         <result column="viewcount" property="viewcount"/>
     </resultMap>
 
-    <select id="selectAll" resultMap="Board">
-        SELECT * FROM boardtable
-        ORDER BY b_id
-    </select>
+    <!-- 게시글  -->
 
     <select id="viewOne" resultMap="Board">
         SELECT * FROM boardtable
@@ -57,6 +54,19 @@
         DELETE FROM boardtable
         WHERE b_id = #{id}
     </delete>
+
+    <!-- 페이징 처리 -->
+
+    <select id="selectCount" resultType="int">
+        SELECT COUNT(*) FROM boardtable
+    </select>
+
+    <select id="selectPageRange" resultMap="Board">
+        SELECT b_id, title, writer, viewcount FROM boardtable
+        ORDER BY b_id DESC
+        LIMIT 10 OFFSET #{offset}
+    </select>
+
 
     
 </mapper>

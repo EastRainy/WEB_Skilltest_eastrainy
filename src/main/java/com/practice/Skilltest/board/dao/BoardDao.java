@@ -9,12 +9,19 @@ import java.util.Map;
 
 @Mapper
 public interface BoardDao {
-    List<BoardDto> selectAll();
+
+    // --- board ---
     BoardDto viewOne(long id);
     long newBoard(BoardDto req);
     boolean updateBoard(Map<String, Object> map);
     void updateViewcount(long id);
     boolean deleteBoard(long id);
+
+
+    // --- page ---
+    int selectCount();
+    List<BoardDto> selectPageRange(long offset);
+
 
 
 }

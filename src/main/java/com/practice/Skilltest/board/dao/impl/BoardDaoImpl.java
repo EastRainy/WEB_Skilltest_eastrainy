@@ -6,7 +6,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,11 +17,6 @@ public class BoardDaoImpl implements BoardDao {
     @Autowired
     public BoardDaoImpl(SqlSession sqlSession){
         this.sqlSession = sqlSession;
-    }
-
-    @Override
-    public List<BoardDto> selectAll() {
-        return sqlSession.selectList("selectAll");
     }
 
     @Override
@@ -48,6 +42,15 @@ public class BoardDaoImpl implements BoardDao {
     @Override
     public boolean deleteBoard(long id) {
         return 1==sqlSession.delete("deleteBoard", id);
+    }
+
+    @Override
+    public int selectCount() {
+        return sqlSession.selectOne("selectCount");
+    }
+    @Override
+    public List<BoardDto> selectPageRange(long offset) {
+        return sqlSession.selectList("selectPageRange", offset);
     }
 
 

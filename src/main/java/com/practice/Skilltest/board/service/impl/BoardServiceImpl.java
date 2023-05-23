@@ -4,12 +4,8 @@ import com.practice.Skilltest.board.dao.BoardDao;
 import com.practice.Skilltest.board.dto.BoardDto;
 import com.practice.Skilltest.board.service.BoardService;
 import org.springframework.stereotype.Repository;
-import org.springframework.ui.Model;
 
-
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -21,33 +17,26 @@ public class BoardServiceImpl implements BoardService {
         this.boardDao = boardDao;
     }
 
-    @Override
-    public List<BoardDto> getSelectAll() {
-
-        List<BoardDto> resultList = boardDao.selectAll();
-        Collections.reverse(resultList);
-
-        return resultList;
-    }
-
+    //게시글 내용 조회
     @Override
     public BoardDto viewOne(long id) {
         upView(id);
         return boardDao.viewOne(id);
     }
 
+    //새 게시글 생성
     public long newBoard(BoardDto req) {
 
         boardDao.newBoard(req);
 
-        System.out.println("id: " + (long) req.getBoard_id());
         return req.getBoard_id();
     }
 
+    //게시글 수정
     @Override
     public boolean modifyBoard(BoardDto req) {
 
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
 
         map.put("id", req.getBoard_id());
         map.put("title",req.getTitle());
@@ -56,11 +45,13 @@ public class BoardServiceImpl implements BoardService {
         return boardDao.updateBoard(map);
     }
 
+    //조회수 증가
     @Override
     public void upView(long id) {
         boardDao.updateViewcount(id);
     }
 
+    //게시글 삭제
     @Override
     public void deleteBoard(long id) {
         boardDao.deleteBoard(id);

@@ -10,8 +10,6 @@ import java.util.Map;
 @Service
 public interface BoardService {
 
-    List<BoardDto> getSelectAll();
-
     BoardDto viewOne(long id);
 
     long newBoard(BoardDto req);

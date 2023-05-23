@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @RequiredArgsConstructor
-public class PageController {
+public class MainController {
 
     @RequestMapping("/")
     public String rootacsess(){
@@ -21,4 +21,6 @@ public class PageController {
     public String main(Model model) {
         return "html/main";
     }
+
+
 }
