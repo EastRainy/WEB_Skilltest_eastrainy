@@ -15,5 +15,5 @@
 
  - Backend Framework : Spring boot 2.7.9
 
- - Frontend Framework : React (todo)
+ - Frontend Framework : React (todo) // bootstrap(temporary)
 ---
