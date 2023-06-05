@@ -15,17 +15,6 @@ import javax.sql.DataSource;
 @SpringBootApplication
 public class SkilltestApplication {
 
-	@Bean
-	public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception{
-
-		SqlSessionFactoryBean sqlSessionFactory = new SqlSessionFactoryBean();
-		sqlSessionFactory.setDataSource(dataSource);
-		sqlSessionFactory.setConfigLocation(new PathMatchingResourcePatternResolver()
-				.getResource("classpath:mybatis/mybatis-config.xml"));
-
-		return sqlSessionFactory.getObject();
-	}
-
 	public static void main(String[] args) {
 		SpringApplication.run(SkilltestApplication.class, args);
 	}

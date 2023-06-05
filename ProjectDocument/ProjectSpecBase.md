@@ -1,5 +1,5 @@
 
-## Project Base
+## Project Spec
 
 ---
 
@@ -17,3 +17,5 @@
 
  - Frontend Framework : React (todo) // bootstrap(temporary)
 ---
+
+    This spec of project can be changed.
