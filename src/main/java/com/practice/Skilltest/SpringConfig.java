@@ -35,8 +35,8 @@ public class SpringConfig {
                 .and()
                 //권한설정
                 .authorizeHttpRequests()
-                .antMatchers("/user/**").authenticated()
                 .anyRequest().permitAll()
+                .antMatchers("/users/**").authenticated()
                 .and().build();
     }
     //비밀번호 암호화 객체 생성 Bean

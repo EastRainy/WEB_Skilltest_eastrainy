@@ -14,10 +14,16 @@ public class UserController {
         return "html/user/login";
     }
 
-    @GetMapping("/welcome")
-    public String welcome(){
-        return "html/user/welcome";
+
+
+
+
+    @GetMapping("/signup")
+    public String signup(){
+        return "html/user/signup";
     }
+
+
 
 
 }
