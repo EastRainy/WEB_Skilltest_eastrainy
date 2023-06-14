@@ -1,29 +1,15 @@
 package com.practice.Skilltest;
 
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.mybatis.spring.SqlSessionFactoryBean;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import javax.sql.DataSource;
-
 @Configuration
-public class SpringConfig {
-
-    @Bean
-    public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception{
-
-        SqlSessionFactoryBean sqlSessionFactory = new SqlSessionFactoryBean();
-        sqlSessionFactory.setDataSource(dataSource);
-        sqlSessionFactory.setConfigLocation(new PathMatchingResourcePatternResolver()
-                .getResource("classpath:mybatis/mybatis-config.xml"));
-
-        return sqlSessionFactory.getObject();
-    }
+@RequiredArgsConstructor
+public class SecurityConfig {
 
     //SpringSecurity 설정 Bean
     @Bean
@@ -36,9 +22,11 @@ public class SpringConfig {
                 //권한설정
                 .authorizeHttpRequests()
                 .anyRequest().permitAll()
-                .antMatchers("/users/**").authenticated()
+                .antMatchers("/user/**").authenticated()
                 .and().build();
     }
+
+
     //비밀번호 암호화 객체 생성 Bean
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder(){

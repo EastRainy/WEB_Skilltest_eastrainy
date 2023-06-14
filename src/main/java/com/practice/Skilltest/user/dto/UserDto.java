@@ -1,13 +1,19 @@
 package com.practice.Skilltest.user.dto;
 
 
-import lombok.RequiredArgsConstructor;
-
-
 public class UserDto {
 
     private String id;
     private String password;
+
+    public UserDto() {
+        this.id = null;
+        this.password = null;
+    }
+    public UserDto(String id, String password) {
+        this.id = id;
+        this.password = password;
+    }
 
     public String getId() {
         return id;
