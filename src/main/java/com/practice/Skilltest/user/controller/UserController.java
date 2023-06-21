@@ -1,11 +1,13 @@
 package com.practice.Skilltest.user.controller;
 
 
+import com.practice.Skilltest.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 
 
 import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -14,8 +16,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class UserController {
 
 
+
     @GetMapping("/login")
-    public String login_get(){
+    public String login_get(Model model){
+        model.addAttribute("user", new UserDto());
         return "html/user/login";
     }
 
@@ -33,7 +37,8 @@ public class UserController {
 
 
     @GetMapping("/signup")
-    public String signup_get(){
+    public String signup_get(Model model){
+        model.addAttribute("user", new UserDto());
         return "html/user/signup";
     }
 

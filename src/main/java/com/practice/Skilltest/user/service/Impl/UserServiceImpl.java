@@ -27,7 +27,6 @@ public class UserServiceImpl implements UserDetailsService {
         return null;
     }
 
-
     public int signupUser(User user){
 
         String username = user.getName();
@@ -43,5 +42,12 @@ public class UserServiceImpl implements UserDetailsService {
 
         return 1;
     }
+
+    public boolean checkByUsername(String username){
+        return userLoginDao.refer_id(username)==null;
+    }
+
+
+
 
 }
