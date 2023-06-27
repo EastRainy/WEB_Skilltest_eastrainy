@@ -5,11 +5,13 @@
     <title>Login</title>
 </head>
 <body>
-<div>
+<div align="center">
+    <h2>로그인</h2>
   <form th:action="@{/user/login.html}" th:object="${user}" method="post">
     <fieldset>
-        아이디 : <input type="text"/><br>
-        비밀번호 : <input type="password"><br>
+        아이디 : <input type="text" th:field="*{id}"/><br>
+        <br>
+        비밀번호 : <input type="password" th:field="*{password}"><br>
         <input th:onclick="|location.href='@{/signup}'|" type="button" value="회원가입"/>
         <input type="submit" value="로그인"/>
     </fieldset>
