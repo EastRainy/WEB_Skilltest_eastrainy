@@ -2,6 +2,7 @@ package com.practice.Skilltest.user.service.Impl;
 
 import com.practice.Skilltest.user.dao.UserLoginDao;
 import com.practice.Skilltest.user.dto.UserDto;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserDetailsService {
 
     @Autowired
-    UserLoginDao userLoginDao;
+    private UserLoginDao userLoginDao;
 
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -34,7 +35,7 @@ public class UserServiceImpl implements UserDetailsService {
         }
         //테스트용으로 testadmin 이 아이디일경우 어드민 롤 부여
 
-        return org.springframework.security.core.userdetails.User.builder()
+        return User.builder()
                 .username(userLoginDao.refer_id(username))
                 .password(userLoginDao.refer_pw(username))
                 .roles(role)

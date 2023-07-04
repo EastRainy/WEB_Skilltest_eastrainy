@@ -23,6 +23,7 @@ public class SecurityConfig {
                 .and()
                 //권한설정
                 .authorizeHttpRequests()
+                .antMatchers("/board/**").hasAnyRole("USER", "ADMIN")
                 .anyRequest().permitAll()
                 .and().build();
     }

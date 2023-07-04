@@ -3,19 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
+    <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}">
 </head>
 <body>
-<div align="center">
+<div class="container">
     <h2>로그인</h2>
-  <form th:action="@{/user/login.html}" th:object="${user}" method="post">
-    <fieldset>
-        아이디 : <input type="text" th:field="*{id}"/><br>
-        <br>
-        비밀번호 : <input type="password" th:field="*{password}"><br>
-        <input th:onclick="|location.href='@{/signup}'|" type="button" value="회원가입"/>
-        <input type="submit" value="로그인"/>
-    </fieldset>
-  </form>
+    <form th:action="@{/login}" th:object="${user}" method="post">
+        <div class="form-group">
+            <label for="id">ID:</label>
+            <input type="text" class="form-control" id="id" name="id" placeholder="아이디" required/>
+        </div>
+        <div class="form-group">
+            <label for="password">비밀번호:</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호" required/>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <a th:href="@{/signup}" class="btn btn-secondary btn-block">회원 가입</a>
+            </div>
+            <div class="form-group col-md-6">
+                <button type="submit" class="btn btn-primary btn-block">로그인</button>
+            </div>
+        </div>
+    </form>
 </div>
+
+<script th:src="@{/bootstrap/js/jquery.min.js}"></script>
+<script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+
 </body>
 </html>

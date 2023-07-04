@@ -6,6 +6,14 @@
 </head>
 <body>
 
+    <nav>
+        <div>
+            <a>Navbar test</a>
+            <button sec:authorize="!isAuthenticated()" name="login-button" href="/login">로그인</button>
+            <button sec:authorize="isAuthenticated()" name="logout-button" href="/login">로그아웃</button>
+        </div>
+    </nav>
+
     <h1>It's Main board page!</h1>
     <hr>
     <div>
