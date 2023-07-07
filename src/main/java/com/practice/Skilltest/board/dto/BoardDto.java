@@ -1,7 +1,5 @@
 package com.practice.Skilltest.board.dto;
 
-import lombok.RequiredArgsConstructor;
-import org.apache.ibatis.type.Alias;
 
 import java.sql.Timestamp;
 

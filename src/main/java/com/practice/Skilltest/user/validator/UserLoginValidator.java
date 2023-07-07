@@ -2,7 +2,6 @@ package com.practice.Skilltest.user.validator;
 import com.practice.Skilltest.user.dto.UserDto;
 import com.practice.Skilltest.user.service.Impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 import org.springframework.validation.Errors;
