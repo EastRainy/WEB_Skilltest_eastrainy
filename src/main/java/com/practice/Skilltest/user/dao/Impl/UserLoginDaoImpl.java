@@ -1,7 +1,7 @@
 package com.practice.Skilltest.user.dao.Impl;
 
 import com.practice.Skilltest.user.dao.UserLoginDao;
-import com.practice.Skilltest.user.dto.UserDto;
+import com.practice.Skilltest.user.dto.UserEntity;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -13,7 +13,7 @@ public class UserLoginDaoImpl implements UserLoginDao {
     private final SqlSession sqlSession;
 
     @Autowired
-    public UserLoginDaoImpl(SqlSession sqlSesslin){this.sqlSession = sqlSesslin;};
+    public UserLoginDaoImpl(SqlSession sqlSesslin){this.sqlSession = sqlSesslin;}
 
     @Override
     public String refer_id(String id) {
@@ -26,7 +26,7 @@ public class UserLoginDaoImpl implements UserLoginDao {
     }
 
     @Override
-    public boolean signup_user(UserDto userDto) {
-        return (1==sqlSession.insert("signup", userDto));
+    public boolean signup_user(UserEntity userEntity) {
+        return (1==sqlSession.insert("user", userEntity));
     }
 }

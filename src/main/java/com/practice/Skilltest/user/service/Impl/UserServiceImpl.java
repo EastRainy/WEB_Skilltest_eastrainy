@@ -1,7 +1,10 @@
 package com.practice.Skilltest.user.service.Impl;
 
 import com.practice.Skilltest.user.dao.UserLoginDao;
-import com.practice.Skilltest.user.dto.UserDto;
+import com.practice.Skilltest.user.dto.UserEntity;
+import com.practice.Skilltest.user.role.UserRoles;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,6 +13,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+import java.util.Set;
+
 
 @Service
 public class UserServiceImpl implements UserDetailsService {
@@ -17,49 +23,34 @@ public class UserServiceImpl implements UserDetailsService {
     @Autowired
     private UserLoginDao userLoginDao;
 
-    @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
-
     //유저 이름을 받아 db에서 정보를 가져와서 UserDetails 설정
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
+        System.out.println(" :? " + username);
         if(checkByUsername(username)) {throw new UsernameNotFoundException("아이디가 없습니다.");}
         //아이디가 없으면 예외
+        System.out.println("2");
+        Set<GrantedAuthority> grantedAuthoritySet = new HashSet<>();
 
-        String role;
-        if(username.equals("testadmin")){
-            role = "ADMIN";
+        if(username.equals("admin")){
+            grantedAuthoritySet.add(new SimpleGrantedAuthority(UserRoles.ADMIN.getValue()));
         }else {
-            role = "USER";
+            grantedAuthoritySet.add(new SimpleGrantedAuthority(UserRoles.MEMBER.getValue()));
         }
-        //테스트용으로 testadmin 이 아이디일경우 어드민 롤 부여
 
+        //테스트용으로 testadmin 이 아이디일경우 어드민 롤 부여
+        System.out.println("3");
         return User.builder()
                 .username(userLoginDao.refer_id(username))
                 .password(userLoginDao.refer_pw(username))
-                .roles(role)
+                .authorities(grantedAuthoritySet)
                 .build();
     }
     // * 이후 스프링 시큐리티 로직에서 비밀번호 비교하는 서비스 존재 //
 
-
-
     //회원가입
-    public int signupUser(UserDto userDto){
-
-        String username = userDto.getId();
-        String encPassword = bCryptPasswordEncoder.encode(userDto.getPassword());
-
-        if(userLoginDao.refer_id(username)!=null){
-            return 0;
-        }
-
-        UserDto user_encoded = new UserDto(username, encPassword);
-
-        userLoginDao.signup_user(user_encoded);
-
-        return 1;
+    public void signupUser(UserEntity userEntity){
+        userLoginDao.signup_user(userEntity);
     }
 
     public boolean checkByUsername(String username){

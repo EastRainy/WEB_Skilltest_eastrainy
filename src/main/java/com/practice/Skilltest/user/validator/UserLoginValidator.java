@@ -1,18 +1,17 @@
 package com.practice.Skilltest.user.validator;
-import com.practice.Skilltest.user.dto.UserDto;
 import com.practice.Skilltest.user.service.Impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-
+    /*
 @Component
 @RequiredArgsConstructor
 public class UserLoginValidator implements Validator {
 
     //로그인용
-    
+
     private UserServiceImpl userService;
 
     //목표 클래스를 지원하는지 확인 기능
@@ -38,3 +37,4 @@ public class UserLoginValidator implements Validator {
 
     }
 }
+*/

@@ -5,11 +5,6 @@
 <!-- 유저 로그인 XML -->
 <mapper namespace="com.practice.Skilltest.user.dao.UserLoginDao">
 
-    <resultMap id="userDto" type="com.practice.Skilltest.user.dto.UserDto">
-        <result column="user_name" property="id"/>
-        <result column="user_password" property="password"/>
-    </resultMap>
-
     <!-- 아이디 조회 -->
     <select id="refer_id" parameterType="String" resultType="java.lang.String">
         SELECT user_name FROM usertable
@@ -22,15 +17,13 @@
     </select>
 
     <!-- 회원가입 -->
-    <insert id="signup_user" parameterType="com.practice.Skilltest.user.dto.UserDto">
+    <insert id="signup_user" parameterType="com.practice.Skilltest.user.dto.UserEntity">
         INSERT INTO usertable(
         user_name, user_password
         )
         VALUES(
-        #{id}, #{password}
+        #{username}, #{password}
         )
     </insert>
-
-
 
 </mapper>
