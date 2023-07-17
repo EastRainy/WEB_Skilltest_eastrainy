@@ -26,10 +26,10 @@ public class UserServiceImpl implements UserDetailsService {
     //유저 이름을 받아 db에서 정보를 가져와서 UserDetails 설정
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        System.out.println(" :? " + username);
+
         if(checkByUsername(username)) {throw new UsernameNotFoundException("아이디가 없습니다.");}
         //아이디가 없으면 예외
-        System.out.println("2");
+
         Set<GrantedAuthority> grantedAuthoritySet = new HashSet<>();
 
         if(username.equals("admin")){
@@ -37,9 +37,9 @@ public class UserServiceImpl implements UserDetailsService {
         }else {
             grantedAuthoritySet.add(new SimpleGrantedAuthority(UserRoles.MEMBER.getValue()));
         }
-
         //테스트용으로 testadmin 이 아이디일경우 어드민 롤 부여
-        System.out.println("3");
+
+
         return User.builder()
                 .username(userLoginDao.refer_id(username))
                 .password(userLoginDao.refer_pw(username))

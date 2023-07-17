@@ -1,33 +1,21 @@
 package com.practice.Skilltest.user.dto;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+import org.springframework.stereotype.Component;
 
 
-
-@Getter
-@Setter
-@ToString
+@Data//게터세터,equal,hashcode 자동생성
+@NoArgsConstructor//UserEntity() 자동생성
+@AllArgsConstructor//UserEntity(username,password)자동생성
+@Component
 public class UserEntity {
 
     private String username;
     private String password;
 
-    public UserEntity(){
-        this.username = null;
-        this.password = null;
-    }
-
-    public UserEntity(String username, String password){
-        this.username = username;
-        this.password = password;
-    }
-
     public void setUsername(String username) {
         this.username = username;
     }
-
     public void setPassword(String password) {
         this.password = password;
     }

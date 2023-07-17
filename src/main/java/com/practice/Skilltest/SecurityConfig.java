@@ -18,7 +18,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         return http.csrf().disable()//CSRF 공격 방어 중지
                 .formLogin().loginPage("/login")//로그인페이지 설정
-                .usernameParameter("id")
+                .usernameParameter("username")
                 .passwordParameter("password")
                 .loginProcessingUrl("/login")
                 .defaultSuccessUrl("/main")//로그인 성공 이후 페이지
