@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -53,7 +52,15 @@ public class UserServiceImpl implements UserDetailsService {
         userLoginDao.signup_user(userEntity);
     }
 
-    public boolean checkByUsername(String username){
+    //로그인 성공시 해당 username의 마지막 로그인 시간 갱신
+
+    public void UpdatingLastLoginTime(String username){
+        userLoginDao.lastlogin_update(username);
+    }
+    
+    
+    //
+    private boolean checkByUsername(String username){
         return userLoginDao.refer_id(username)==null;
     }
 }

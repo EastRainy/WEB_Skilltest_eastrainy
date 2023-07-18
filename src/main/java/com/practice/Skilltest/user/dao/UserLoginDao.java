@@ -7,10 +7,12 @@ import org.apache.ibatis.annotations.Mapper;
 public interface UserLoginDao {
 
 
-    String refer_id(String id);
+    String refer_id(String username);
 
-    String refer_pw(String id);
+    String refer_pw(String username);
 
     boolean signup_user(UserEntity userEntity);
+
+    void lastlogin_update(String username);
 
 }

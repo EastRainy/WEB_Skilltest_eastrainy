@@ -8,12 +8,12 @@
     <!-- 아이디 조회 -->
     <select id="refer_id" parameterType="String" resultType="java.lang.String">
         SELECT user_name FROM usertable
-        WHERE user_name=#{id}
+        WHERE user_name=#{username}
     </select>
     <!-- 존재하는 아이디 기반 비밀번호 조회 -->
     <select id="refer_pw" parameterType="String" resultType="java.lang.String">
         SELECT user_password FROM usertable
-        WHERE user_name=#{pw}
+        WHERE user_name=#{username}
     </select>
 
     <!-- 회원가입 -->
@@ -25,5 +25,12 @@
         #{username}, #{password}
         )
     </insert>
+
+    <update id="lastlogin_update" parameterType="String">
+        UPDATE usertable
+        SET
+        user_lastlogin = now()
+        WHERE user_name = #{username}
+    </update>
 
 </mapper>
