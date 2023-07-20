@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserDetailsService {
         }else {
             grantedAuthoritySet.add(new SimpleGrantedAuthority(UserRoles.MEMBER.getValue()));
         }
-        //테스트용으로 testadmin 이 아이디일경우 어드민 롤 부여
+        //테스트용으로 admin 이 아이디일경우 어드민 롤 부여
 
 
         return User.builder()

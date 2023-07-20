@@ -5,33 +5,19 @@
     <title>Board Main page</title>
 </head>
 <body>
-
-    <nav>
-        <div>
-            <a>Navbar test</a>
-            <div sec:authorize="isAnonymous()">
-                <button name="login-button" th:onclick="|location.href='@{/login}'|">로그인</button>
-
-            </div>
-            <div sec:authorize="isAuthenticated()">
-                <button name="logout-button" th:onclick="|location.href='@{/logout}'|">로그아웃</button>
-            </div>
-        </div>
-    </nav>
-
     <h1>It's Main board page!</h1>
     <hr>
     <div>
     <table>
         <tr>
-            <td width="100">번호</td>
-            <td width="600">제목</td>
+            <td>번호</td>
+            <td>제목</td>
             <td>작성자</td>
             <td>조회수</td>
         </tr>
         <tr th:each="result : ${resultList}">
-            <td width="100" th:text="${result.getBoard_id()}"></td>
-            <td width="600"><a th:href="@{/board/view/{id}(id=${result.getBoard_id()})}" th:text="${result.getTitle()}"></a></td>
+            <td th:text="${result.getBoard_id()}"></td>
+            <td><a th:href="@{/board/view/{id}(id=${result.getBoard_id()})}" th:text="${result.getTitle()}"></a></td>
             <td th:text="${result.getWriter()}"></td>
             <td style="text-align: center;" th:text="${result.getViewcount()}"></td>
         </tr>
@@ -39,16 +25,15 @@
     </div>
     <hr><!-- 페이징 처리 예정부 -->
     <div>
-        <button style="float:left;" th:if="${startRange}>10" th:onclick="|location.href='@{/board/{page}(page=(${startRange}-1))}'|">prev</button>
-        <ul style="list-style:none; padding-inline-start: 4px;">
-            <li style="float:left; display: inline-block; padding-left: 3px; padding-right:3px;"
-                    th:each="num : ${#numbers.sequence(startRange,endRange)}">
+        <button th:if="${startRange}>10" th:onclick="|location.href='@{/board/{page}(page=(${startRange}-1))}'|">prev</button>
+        <ul>
+            <li th:each="num : ${#numbers.sequence(startRange,endRange)}">
                 <strong th:if="${crrPage}==${num}" th:text="${num}"></strong>
                 <a th:unless="${crrPage}==${num}" th:text="${num}" th:href="|@{/board/{page}(page=${num})}|"></a>
             </li>
         </ul>
-        <button style="padding-right:5px;" th:if="${haveNext}==true" th:onclick="|location.href='@{/board/{page}(page=(${endRange}+1))}'|">next</button>
-        <button style="float:right; padding-right:5px;" th:onclick="|location.href='@{/board/new}'|">새 글</button>
+        <button th:if="${haveNext}==true" th:onclick="|location.href='@{/board/{page}(page=(${endRange}+1))}'|">next</button>
+        <button th:onclick="|location.href='@{/board/new}'|">새 글</button>
     </div>
     <br>
 </body>

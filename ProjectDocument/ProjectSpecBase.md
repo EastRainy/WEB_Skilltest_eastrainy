@@ -7,7 +7,7 @@
 
  - IDE : IntelliJ IDEA, VS code
 
- - Configure Management : Git with Github
+ - Configure Management : Git with GitHub
 
  - JDK : Oracle JDK 17
 

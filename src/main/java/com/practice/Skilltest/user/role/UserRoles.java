@@ -10,6 +10,6 @@ public enum UserRoles {
     MEMBER("ROLE_MEMBER"),
     ADMIN("ROLE_ADMIN");
 
-    private String value;
+    private final String value;
 
 }
