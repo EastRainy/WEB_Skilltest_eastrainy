@@ -6,7 +6,7 @@ spring:
   jpa:
     openInView: false
   web:
-    resource: classpath:/static, classpath:/frontend
+    resource: classpath:/static #classpath:/frontend
   datasource: #database setting
     driver: org.postgresql.Driver #postgresql 드라이버
     url: jdbc:postgresql://localhost:5432/skilltest # db 호스트/접속 db 이름

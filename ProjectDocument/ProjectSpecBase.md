@@ -1,5 +1,5 @@
 
-## Project Base
+## Project Spec
 
 ---
 
@@ -7,7 +7,7 @@
 
  - IDE : IntelliJ IDEA, VS code
 
- - Configure Management : Git with Github
+ - Configure Management : Git with GitHub
 
  - JDK : Oracle JDK 17
 
@@ -15,5 +15,7 @@
 
  - Backend Framework : Spring boot 2.7.9
 
- - Frontend Framework : React (todo)
+ - Frontend Framework : React (todo) // bootstrap(temporary)
 ---
+
+    This spec of project can be changed.

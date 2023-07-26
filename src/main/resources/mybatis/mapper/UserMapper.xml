@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 유저 로그인 XML -->
+<mapper namespace="com.practice.Skilltest.user.dao.UserLoginDao">
+
+    <!-- 아이디 조회 -->
+    <select id="refer_id" parameterType="String" resultType="java.lang.String">
+        SELECT user_name FROM usertable
+        WHERE user_name=#{username}
+    </select>
+    <!-- 존재하는 아이디 기반 비밀번호 조회 -->
+    <select id="refer_pw" parameterType="String" resultType="java.lang.String">
+        SELECT user_password FROM usertable
+        WHERE user_name=#{username}
+    </select>
+
+    <!-- 회원가입 -->
+    <insert id="signup_user" parameterType="com.practice.Skilltest.user.dto.UserEntity">
+        INSERT INTO usertable(
+        user_name, user_password
+        )
+        VALUES(
+        #{username}, #{password}
+        )
+    </insert>
+
+    <update id="lastlogin_update" parameterType="String">
+        UPDATE usertable
+        SET
+        user_lastlogin = now()
+        WHERE user_name = #{username}
+    </update>
+
+</mapper>

@@ -2,6 +2,8 @@ package com.practice.Skilltest.controller;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -18,7 +20,9 @@ public class MainController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/main")
-    public String main(Model model) {
+    public String mainPage(Model model, @AuthenticationPrincipal User user) {
+
+        model.addAttribute("CurrUsername", user.getUsername());
         return "html/main";
     }
 

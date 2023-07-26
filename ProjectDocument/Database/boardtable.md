@@ -1,6 +1,7 @@
 
 게시판 테이블 
 ---
+---
  - DB : postgresql
  - 테이블 명 : boardtable
 

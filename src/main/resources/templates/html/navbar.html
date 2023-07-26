@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <nav>
+        <div>
+            <a>Navbar test</a>
+            <div style="align-items:left">
+            <div sec:authorize="isAnonymous()">
+                <button name="login-button" th:onclick="|location.href='@{/login}'|">로그인</button>
+            </div>
+            <div sec:authorize="isAuthenticated()">
+                <button name="logout-button" th:onclick="|location.href='@{/logout}'|">로그아웃</button>
+            </div>
+            </div>
+        </div>
+    </nav>
+</body>
+</html>

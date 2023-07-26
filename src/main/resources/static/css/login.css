@@ -1,0 +1,28 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f8f9fa;
+}
+
+.login-container {
+    background-color: #ffffff;
+    padding: 20px;
+    border-style: solid;
+    border-width: thin;
+    border-radius: 10px;
+    max-width: 600px;
+}
+input.form-control {
+  background-color: #ffffff;
+  border: 1px solid #d1d1d1;
+  border-radius: 3px;
+  padding: 8px;
+  width: 100%;
+}
+
+button.btn-block,
+a.btn-block {
+  margin-top: 20px;
+}
