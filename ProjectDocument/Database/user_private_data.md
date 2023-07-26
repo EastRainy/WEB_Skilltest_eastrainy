@@ -2,7 +2,7 @@
 ---
 ---
 - DB : postgresql
-- 테이블 명 : privdata
+- 테이블 명 : user_private_data
 
 
 | 필드 명            | 데이터타입     | 기본값   | 특이사항                     |

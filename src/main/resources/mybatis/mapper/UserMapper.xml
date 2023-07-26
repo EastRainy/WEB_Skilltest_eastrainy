@@ -7,18 +7,18 @@
 
     <!-- 아이디 조회 -->
     <select id="refer_id" parameterType="String" resultType="java.lang.String">
-        SELECT user_name FROM usertable
+        SELECT user_name FROM user_table
         WHERE user_name=#{username}
     </select>
     <!-- 존재하는 아이디 기반 비밀번호 조회 -->
     <select id="refer_pw" parameterType="String" resultType="java.lang.String">
-        SELECT user_password FROM usertable
+        SELECT user_password FROM user_table
         WHERE user_name=#{username}
     </select>
 
     <!-- 회원가입 -->
     <insert id="signup_user" parameterType="com.practice.Skilltest.user.dto.UserEntity">
-        INSERT INTO usertable(
+        INSERT INTO user_table(
         user_name, user_password
         )
         VALUES(
@@ -27,7 +27,7 @@
     </insert>
 
     <update id="lastlogin_update" parameterType="String">
-        UPDATE usertable
+        UPDATE user_table
         SET
         user_lastlogin = now()
         WHERE user_name = #{username}

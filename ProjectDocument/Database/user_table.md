@@ -4,7 +4,7 @@
 ---
 ---
 - DB : postgresql
-- 테이블 명 : usertable
+- 테이블 명 : user_table
 
 
 | 필드 명            | 데이터타입     | 기본값   | 특이사항                                     |
