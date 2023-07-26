@@ -5,17 +5,16 @@
 
 ### This project using
 
- - IDE : IntelliJ IDEA, VS code
+    - IDE : IntelliJ IDEA, VS code
 
- - Configure Management : Git with GitHub
+    - Configure Management : Git with GitHub
 
- - JDK : Oracle JDK 17
+    - JDK : Oracle JDK 17
 
- - DATABASE : PostgreSQL 
+    - DATABASE : PostgreSQL 
 
- - Backend Framework : Spring boot 2.7.9
+    - Backend : Spring boot 2.7.9
 
- - Frontend Framework : React (todo) // bootstrap(temporary)
+    - Frontend : bootstrap(temporary) // React(todo)
 ---
-
-    This spec of project can be changed.
+ - This spec of project can be changed.

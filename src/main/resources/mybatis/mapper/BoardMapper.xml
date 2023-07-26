@@ -15,25 +15,25 @@
     <!-- 게시글  -->
 
     <select id="viewOne" resultMap="Board">
-        SELECT * FROM boardtable
+        SELECT * FROM board_table
         WHERE b_id = #{id}
     </select>
 
     <insert id="newBoard" parameterType="com.practice.Skilltest.board.dto.BoardDto">
 
-        INSERT INTO boardtable(
+        INSERT INTO board_table(
         writer, title, content
         )
         VALUES(
         #{writer}, #{title}, #{content}
         )
         <selectKey keyProperty="board_id" resultType="long" order="AFTER">
-        SELECT currval(pg_get_serial_sequence('boardtable','b_id'))
+        SELECT currval(pg_get_serial_sequence('board_table','b_id'))
         </selectKey>
     </insert>
 
     <update id="updateBoard" parameterType="Map">
-        UPDATE boardtable
+        UPDATE board_table
         SET
         title = #{title},
         content = #{content},
@@ -43,7 +43,7 @@
     </update>
 
     <update id="updateViewcount" parameterType="long">
-        UPDATE boardtable
+        UPDATE board_table
         SET
             viewcount = viewcount +1
         WHERE
@@ -51,18 +51,18 @@
     </update>
 
     <delete id="deleteBoard">
-        DELETE FROM boardtable
+        DELETE FROM board_table
         WHERE b_id = #{id}
     </delete>
 
     <!-- 페이징 처리 -->
 
     <select id="selectCount" resultType="int">
-        SELECT COUNT(*) FROM boardtable
+        SELECT COUNT(*) FROM board_table
     </select>
 
     <select id="selectPageRange" resultMap="Board">
-        SELECT b_id, title, writer, viewcount FROM boardtable
+        SELECT b_id, title, writer, viewcount FROM board_table
         ORDER BY b_id DESC
         LIMIT 10 OFFSET #{offset}
     </select>
