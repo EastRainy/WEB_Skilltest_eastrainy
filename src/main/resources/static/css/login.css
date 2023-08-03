@@ -1,9 +1,22 @@
+html,
 body {
+  height: 100%;
+}
+
+body{
     display: flex;
-    justify-content: center;
     align-items: center;
-    height: 100vh;
-    background-color: #f8f9fa;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: #f5f5f5;
+    text-align: center;
+}
+
+.form-main{
+    width: 100%;
+    max-width: 400px;
+    padding: 15px;
+    margin: auto;
 }
 
 .login-container {
@@ -12,7 +25,6 @@ body {
     border-style: solid;
     border-width: thin;
     border-radius: 10px;
-    max-width: 600px;
 }
 input.form-control {
   background-color: #ffffff;

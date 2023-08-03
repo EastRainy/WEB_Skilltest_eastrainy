@@ -45,6 +45,7 @@ public class SecurityConfig {
                 //권한설정
                 .authorizeHttpRequests()
                     .antMatchers("/login","/signup").permitAll()
+                    .antMatchers("/css/**", "/js/**", "/img/**").permitAll()
                     .antMatchers("/admin").hasAnyRole("ADMIN")
                     .anyRequest().authenticated()
                 .and().build();
