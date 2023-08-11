@@ -44,18 +44,29 @@ public class SecurityConfig {
                 .and()
                 //권한설정
                 .authorizeHttpRequests()
-                    .antMatchers("/login","/signup").permitAll()
+                    .antMatchers("/login","/signup","/welcome").permitAll()
+                    .antMatchers("/css/**", "/js/**", "/img/**").permitAll()//static 경로 자료 접근 권한 이슈 해결
                     .antMatchers("/admin").hasAnyRole("ADMIN")
                     .anyRequest().authenticated()
                 .and().build();
     }
 
-    //bean으로 만들어 AuthsuccessHandler에 UserServiceImpl 의존성 주입
+    //bean으로 만들때 스프링 컨테이너에서 AuthsuccessHandler 에 UserServiceImpl 의존성 주입
     @Bean
     public AuthenticationSuccessHandler authenticationSuccessHandler() {
         UserServiceImpl userService = applicationContext.getBean(UserServiceImpl.class);
         return new AuthSuccessHandler(userService);
     }
+
+    /* fail bean 주입 필요시 사용
+    @Bean
+    public AuthenticationFailureHandler authenticationFailureHandler(){
+        AuthFailExceptionMessage exceptionMessage = applicationContext.getBean(AuthFailExceptionMessage.class);
+        return new AuthFailHandler(exceptionMessage);
+    }
+    */
+
+
     //비밀번호 암호화 객체 생성 Bean
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder(){
