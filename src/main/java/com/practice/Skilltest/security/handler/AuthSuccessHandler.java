@@ -29,6 +29,7 @@ public class AuthSuccessHandler implements AuthenticationSuccessHandler {
 
         System.out.println("Auth Success");
 
+
         response.sendRedirect("/main");
     }
 }

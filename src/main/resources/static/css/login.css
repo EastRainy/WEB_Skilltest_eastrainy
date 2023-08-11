@@ -38,3 +38,7 @@ button.btn-block,
 a.btn-block {
   margin-top: 20px;
 }
+
+a.announce-message{
+    color: #ff3939;
+}
