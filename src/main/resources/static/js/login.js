@@ -2,15 +2,16 @@
 //URL param UTF-8 decode
 //param으로 메세지가 들어왔을때 디코드-message에 넣어줌
 document.addEventListener('DOMContentLoaded', function() {
-    const urlParam = new URLSearchParams(window.location.search);
-    const urlMessage = urlParam.get('message');
 
-    const decodedMessage = decodeURIComponent(urlMessage);
+    const messageElement = document.querySelector('[name="message"]');
+    const Message = messageElement ? messageElement.value : '';
+    console.log(Message);
+
     const messageEli = document.querySelector('.announce-message');
     const brElement = document.getElementById('announce-br');
 
-    if(decodedMessage !== 'null' && decodedMessage !== null){
-        messageEli.textContent = decodedMessage;
+    if(Message !== null && Message !== 'null'){
+        messageEli.textContent = Message;
 
         messageEli.style.display = 'inline';
         brElement.style.display = 'none';
@@ -18,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
         messageEli.style.display = 'none';
         brElement.style.display ='inline';
     }
+
 });
 
 

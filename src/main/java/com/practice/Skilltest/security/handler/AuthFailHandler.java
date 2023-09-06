@@ -21,11 +21,14 @@ public class AuthFailHandler implements AuthenticationFailureHandler {
 
         //실패시 로그에 인증 실패 메세지
 
-        String redirctUrl = "/login?message=";
-        String errMsg = URLEncoder.encode(AuthFailExceptionMessage.getMessage(exception), "UTF-8");
+        String redirectUrl = "/login";
+        String errMsg = AuthFailExceptionMessage.getMessage(exception);
 
 
-        response.sendRedirect(redirctUrl + errMsg);
+        request.setAttribute("message",errMsg);
+
+        request.getRequestDispatcher(redirectUrl).forward(request,response);
+        //에러에 따른 메세지 추출하여 에러메세지 response
 
     }
 }

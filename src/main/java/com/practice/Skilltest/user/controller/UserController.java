@@ -23,7 +23,13 @@ public class UserController {
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping("/login")
-    public String login_get(Model model, @RequestParam(value="String", required=false, defaultValue="") String message){
+    public String login_get(Model model){
+        model.addAttribute("user", new UserEntity());
+        return "html/user/login";
+    }
+
+    @PostMapping("/login")
+    public String login_post(Model model){
         model.addAttribute("user", new UserEntity());
         return "html/user/login";
     }
