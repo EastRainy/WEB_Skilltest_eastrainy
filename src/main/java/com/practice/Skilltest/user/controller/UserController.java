@@ -21,13 +21,13 @@ public class UserController {
     @Autowired
     UserServiceImpl userService;
 
-    //로그인페이지 요청
+    //로그인 페이지 요청
     @GetMapping("/login")
     public String login_get(Model model){
         model.addAttribute("user", new UserEntity());
         return "html/user/login";
     }
-    //로그인시 에러처리할경우
+    //로그인 시 에러 처리 할 경우
     @PostMapping("/login")
     public String login_post(Model model, HttpServletRequest request){
         model.addAttribute("message",request.getAttribute("message"));
@@ -35,7 +35,7 @@ public class UserController {
         return "html/user/login";
     }
     
-    //회원가입페이지 요청
+    //회원가입 페이지 요청
     @GetMapping("/signup")
     public String signup_get(Model model){
         model.addAttribute("user", new UserEntity());

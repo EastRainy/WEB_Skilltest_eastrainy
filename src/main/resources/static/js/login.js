@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
 */
 
 
-//빈칸 체크 로직, 빈칸체크로직은 이미 있어 사용 x
+//빈칸 체크 로직, 빈칸 체크는 required 로 제한하여 사용 x
 /*
 function doLogin(){
     const usernameInput = new String(document.getElementById('username').value);
