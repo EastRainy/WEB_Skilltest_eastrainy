@@ -1,6 +1,8 @@
 
 //URL param UTF-8 decode
 //param으로 메세지가 들어왔을때 디코드-message에 넣어줌
+//현재 POST방식으로 서버에서 메세지 전달하여 사용 X,
+/*
 document.addEventListener('DOMContentLoaded', function() {
     const urlParam = new URLSearchParams(window.location.search);
     const urlMessage = urlParam.get('message');
@@ -21,7 +23,11 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
+*/
+
+
 //빈칸 체크 로직, 빈칸체크로직은 이미 있어 사용 x
+/*
 function doLogin(){
     const usernameInput = new String(document.getElementById('username').value);
     const passwordInput = new String(document.getElementById('password').value);
@@ -52,4 +58,4 @@ function checkPassword(password){
     }
 
 }
-
+*/

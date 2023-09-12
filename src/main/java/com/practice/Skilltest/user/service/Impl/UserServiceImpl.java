@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -21,6 +22,10 @@ public class UserServiceImpl implements UserDetailsService {
 
     @Autowired
     private UserLoginDao userLoginDao;
+
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
     //유저 이름을 받아 db에서 정보를 가져와서 UserDetails 설정
     @Override
@@ -44,11 +49,13 @@ public class UserServiceImpl implements UserDetailsService {
                 .password(userLoginDao.refer_pw(username))
                 .authorities(grantedAuthoritySet)
                 .build();
+        //유저 빌드해서 전달
     }
     // * 이후 스프링 시큐리티 로직에서 비밀번호 비교하는 서비스 존재 //
 
     //회원가입
     public void signupUser(UserEntity userEntity){
+        userEntity.setPassword(bCryptPasswordEncoder.encode(userEntity.getPassword()));
         userLoginDao.signup_user(userEntity);
     }
 
@@ -59,7 +66,7 @@ public class UserServiceImpl implements UserDetailsService {
     }
     
     
-    //
+
     private boolean checkByUsername(String username){
         return userLoginDao.refer_id(username)==null;
     }

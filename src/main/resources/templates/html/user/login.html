@@ -20,8 +20,8 @@
             <label for="password">비밀번호</label>
             <input id="password" type="password" class="form-control" name="password" th:field="*{password}" placeholder="비밀번호" required/>
         </div>
-        <a class="announce-message"></a>
-        <a id="announce-br"></a>
+        <p class="announce-message" th:if="${message}" th:text="${message}"></p>
+        <br th:unless="${message}">
         <br>
         <div class="form-row">
             <div class="form-group col-md-6">
@@ -38,6 +38,6 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="js/login.js"></script>
+
 </body>
 </html>
