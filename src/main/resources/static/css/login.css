@@ -14,7 +14,7 @@ body{
 
 .form-main{
     width: 100%;
-    max-width: 400px;
+    max-width: 500px;
     padding: 15px;
     margin: auto;
 }
@@ -39,6 +39,7 @@ a.btn-block {
   margin-top: 20px;
 }
 
-p.announce-message{
+p.announce-pw, p.announce-id{
     color: #ff3939;
+    font-size : 13px;
 }

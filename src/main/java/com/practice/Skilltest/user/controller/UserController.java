@@ -45,6 +45,7 @@ public class UserController {
 
     @PostMapping("/signup")
     public String signup_post(UserEntity user){
+
         userService.signupUser(user);
         return "redirect:/login";
     }
