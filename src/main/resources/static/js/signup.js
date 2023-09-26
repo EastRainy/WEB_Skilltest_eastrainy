@@ -6,21 +6,41 @@ function doSignup(){
     const usernameInput = new String(document.getElementById('username').value);
     const passwordInput = new String(document.getElementById('password').value);
     const passwordCheckInput = new String(document.getElementById('password_check').value);
-    const errorMessageElement = document.querySelector('.announce');
+    const idMessageElement = document.querySelector('.announce-id');
+    const pwMessageElement = document.querySelector('.announce-pw');
+    const bottomMessageElement = document.querySelector('.announce-bottom');
     const form = document.getElementById('signupForm');
     //document 에서 입력 데이터 받아옴
 
+    idMessageElement = '';
+    pwMessageElement = '';
+    bottomMessageElement = '';
+
+    //검증 실패한 경우 해당하는 에러 메세지로 announce 메세지 변경
+
+    //id검증
     try{
-        errorMessageElement.textContent = '';
         checkId(usernameInput);
-        checkPw(passwordInput);
-        checkPwRepeat(passwordInput, passwordCheckInput)
-        //각 체크 로직으로 입력 데이터 검증
     }catch(e){
-        errorMessageElement.textContent = e.message;
+        idMessageElement.textContent = e.message;
         return;
-        //검증 실패한 경우 해당하는 에러 메세지로 announce 메세지 변경
     }
+    //비밀번호 검증
+    try{
+        checkPw(passwordInput);
+    }catch(e){
+        pwMessageElement.textContent = e.message;
+        return;
+    }
+    //비밀번호 확인 검증
+    try{
+        checkPwRepeat(passwordInput, passwordCheckInput);
+    }
+    catch(e){
+        bottomMessageElement.textContent = e.message;
+        return;
+    }
+
 
     //체크에 성공하면 서버로 데이터 전송
     form.submit();

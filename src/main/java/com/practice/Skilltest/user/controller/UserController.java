@@ -2,6 +2,7 @@ package com.practice.Skilltest.user.controller;
 
 
 import com.practice.Skilltest.user.dto.UserEntity;
+import com.practice.Skilltest.user.dto.UserSignupEntity;
 import com.practice.Skilltest.user.service.Impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,13 +39,13 @@ public class UserController {
     //회원가입 페이지 요청
     @GetMapping("/signup")
     public String signup_get(Model model){
-        model.addAttribute("user", new UserEntity());
+        model.addAttribute("user", new UserSignupEntity());
         return "html/user/signup";
     }
 
 
     @PostMapping("/signup")
-    public String signup_post(UserEntity user){
+    public String signup_post(UserSignupEntity user){
 
         userService.signupUser(user);
         return "redirect:/login";

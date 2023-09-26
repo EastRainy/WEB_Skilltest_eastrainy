@@ -2,6 +2,7 @@ package com.practice.Skilltest.user.service.Impl;
 
 import com.practice.Skilltest.user.dao.UserLoginDao;
 import com.practice.Skilltest.user.dto.UserEntity;
+import com.practice.Skilltest.user.dto.UserSignupEntity;
 import com.practice.Skilltest.user.role.UserRoles;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -54,7 +55,7 @@ public class UserServiceImpl implements UserDetailsService {
     // * 이후 스프링 시큐리티 로직에서 비밀번호 비교하는 서비스 존재 //
 
     //회원가입
-    public void signupUser(UserEntity userEntity){
+    public void signupUser(UserSignupEntity userEntity){
         userEntity.setPassword(bCryptPasswordEncoder.encode(userEntity.getPassword()));
         userLoginDao.signup_user(userEntity);
     }

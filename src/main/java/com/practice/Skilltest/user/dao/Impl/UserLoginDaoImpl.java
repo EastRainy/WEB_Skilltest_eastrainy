@@ -2,6 +2,7 @@ package com.practice.Skilltest.user.dao.Impl;
 
 import com.practice.Skilltest.user.dao.UserLoginDao;
 import com.practice.Skilltest.user.dto.UserEntity;
+import com.practice.Skilltest.user.dto.UserSignupEntity;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -28,7 +29,7 @@ public class UserLoginDaoImpl implements UserLoginDao {
     
     //userEntity 정보로 유저 가입
     @Override
-    public boolean signup_user(UserEntity userEntity) {
+    public boolean signup_user(UserSignupEntity userEntity) {
         return (1==sqlSession.insert("user", userEntity));
     }
     
