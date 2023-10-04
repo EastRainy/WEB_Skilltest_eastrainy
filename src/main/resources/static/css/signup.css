@@ -41,7 +41,7 @@ a.btn-block {
   margin-top: 20px;
 }
 
-p.announce-pw, p.announce-id, p.announce-pwcheck{
+p.announce-pw, p.announce-id, p.announce-bottom{
     color: #ff3939;
     font-size : 13px;
 }
