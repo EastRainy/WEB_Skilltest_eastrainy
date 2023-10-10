@@ -1,0 +1,38 @@
+html,
+body {
+  height: 100%;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    text-align: center;
+    background-color: #f8f9fa;
+}
+.announce-main{
+    width: 100%;
+    max-width: 500px;
+    padding: 15px;
+    margin: auto;
+}
+
+.announce-container {
+    background-color: #ffffff;
+    padding: 20px;
+    border-style: solid;
+    border-width: thin;
+    border-radius: 10px;
+    max-width: 800px;
+}
+
+button.btn-block,
+a.btn-block {
+  margin-top: 20px;
+}
+
+p.announce-text{
+    color: #ff3939;
+    font-size : 30px;
+}

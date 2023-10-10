@@ -8,13 +8,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 
 @Controller
@@ -48,14 +49,34 @@ public class UserController {
         return "html/user/signup";
     }
 
+    //회원가입 신청 검증
+    @PostMapping(value = "/signup", consumes = "application/json")
+    public String signup_post(@Validated @RequestBody UserSignupEntity user,
+                              BindingResult bindingResult, Model model){
 
-    @PostMapping("/signup")
-    public String signup_post(@Validated @RequestBody UserSignupEntity user){
-        
+        //입력 Validation 검증 실패시
+        if(bindingResult.hasErrors()){
+            List<ObjectError> errorList = bindingResult.getAllErrors();
+            String errorMessage = errorList.get(0).getDefaultMessage();
+            model.addAttribute("announce_bottom",errorMessage);
+            model.addAttribute("user", new UserSignupEntity());
+            return "html/user/signup";
+        }
+
+        System.out.println("회원가입 진행");
         userService.signupUser(user);
+
         System.out.println("회원가입 성공");
-        return "redirect:/login";
+        return "redirect:/signupSuccess";
     }
+
+    //회원가입 성공 페이지
+    @GetMapping("/signupSuccess")
+    public String signup_success(){
+        return "html/user/signupSuccess";
+    }
+
+
 
 
 }
