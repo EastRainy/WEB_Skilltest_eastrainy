@@ -1,45 +1,27 @@
 
-//URL param UTF-8 decode
-//param으로 메세지가 들어왔을때 디코드-message에 넣어줌
-//현재 POST방식으로 서버에서 메세지 전달하여 사용 X,
-/*
-document.addEventListener('DOMContentLoaded', function() {
-    const urlParam = new URLSearchParams(window.location.search);
-    const urlMessage = urlParam.get('message');
-
-    const decodedMessage = decodeURIComponent(urlMessage);
-    const messageEli = document.querySelector('.announce-message');
-    const brElement = document.getElementById('announce-br');
-
-    if(decodedMessage !== 'null' && decodedMessage !== null){
-        messageEli.textContent = decodedMessage;
-
-        messageEli.style.display = 'inline';
-        brElement.style.display = 'none';
-    } else{
-        messageEli.style.display = 'none';
-        brElement.style.display ='inline';
-    }
-});
-
-
-*/
-
-
-//빈칸 체크 로직, 빈칸체크로직은 이미 있어 사용 x
-/*
+//빈칸 체크 로직
 function doLogin(){
     const usernameInput = new String(document.getElementById('username').value);
     const passwordInput = new String(document.getElementById('password').value);
-    const messageElement = document.getElementById('message');
+    const messageId = document.querySelector('.announce-id');
+    const messagePw = document.querySelector('.announce-pw');
     const form = document.getElementById('loginForm');
 
     try{
+        messageId.textContent = "";
         checkUsername(usernameInput);
+    }
+    catch (e){
+        messageId.textContent = e.message;
+        return;
+    }
+
+    try{
+        messagePw.textContent = "";
         checkPassword(passwordInput);
     }
-    catch (error){
-        messageElement.textContent = error;
+    catch(e){
+        messagePw.textContent = e.message;
         return;
     }
 
@@ -58,4 +40,3 @@ function checkPassword(password){
     }
 
 }
-*/

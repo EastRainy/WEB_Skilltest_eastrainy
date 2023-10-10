@@ -8,33 +8,41 @@
 </head>
 <body>
 <div class="container signup-container">
+  <main class="form-main">
   <h2>회원가입</h2>
-  <form th:action="@{/signup}" th:object="${user}" method="post">
+  <form id="signupForm" th:action="@{/signup}" th:object="${user}" onsubmit="return false" method="post">
     <div class="form-group">
-      <label for="username">ID:</label>
-      <input type="text" class="form-control" th:field="*{username}" placeholder="아이디" required/>
+      <label for="username">ID</label>
+      <input type="text" class="form-control" id="username" th:field="*{username}" placeholder="아이디" required/>
     </div>
-    <br>
+    <p class="announce-id">ID는 4자 이상 20자 이하여야 합니다.</p>
     <div class="form-group">
-      <label for="password">비밀번호:</label>
-      <input type="password" class="form-control" th:field="*{password}" placeholder="비밀번호" required/>
+      <label for="password">비밀번호</label>
+      <input type="password" class="form-control" id="password" th:field="*{password}" placeholder="비밀번호" required/>
     </div>
+    <p class="announce-pw">비밀번호의 길이는 10 ~ 30자이며 영어 소문자, 대문자, 특수문자가 최소 한개씩 포함되어야 합니다.</p>
     <div class="form-group">
-      <label for="password_check">비밀번호확인:</label>
-      <input type="password" class="form-control" id="password_check" placeholder="비밀번호확인" required/>
+      <label for="password_check">비밀번호 확인</label>
+      <input type="password" class="form-control" id="password_check" th:field="*{password_check}" placeholder="비밀번호 확인" required/>
     </div>
+  </form>
+    <p class="announce-bottom"></p>
     <br>
     <div class="form-row">
       <div class="form-group col-md-6">
-          <button type="submit" class="btn btn-primary btn-block">회원가입</button>
+        <a th:href="@{/login}" class="btn btn-secondary btn-block">로그인으로</a>
+      </div>
+      <div class="form-group col-md-6">
+          <button type="button" class="btn btn-primary btn-block" onclick="doSignup()">가입</button>
       </div>
     </div>
-  </form>
+  </main>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="js/signup.js"></script>
 
 </body>
 </html>
