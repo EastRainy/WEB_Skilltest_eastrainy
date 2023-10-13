@@ -50,8 +50,8 @@ public class UserController {
     }
 
     //회원가입 신청 검증
-    @PostMapping(value = "/signup", consumes = "application/json")
-    public String signup_post(@Validated @RequestBody UserSignupEntity user,
+    @PostMapping(value = "/signup")
+    public String signup_post(@Validated UserSignupEntity user,
                               BindingResult bindingResult, Model model){
 
         //입력 Validation 검증 실패시
@@ -64,7 +64,14 @@ public class UserController {
         }
 
         System.out.println("회원가입 진행");
-        userService.signupUser(user);
+        try {
+            userService.signupUser(user);
+        }
+        catch(Exception e){
+            model.addAttribute("announce_bottom", e.getMessage());
+            model.addAttribute("user", new UserSignupEntity());
+            return "html/user/signup";
+        }
 
         System.out.println("회원가입 성공");
         return "redirect:/signupSuccess";
@@ -75,8 +82,6 @@ public class UserController {
     public String signup_success(){
         return "html/user/signupSuccess";
     }
-
-
 
 
 }

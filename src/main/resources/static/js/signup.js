@@ -43,10 +43,7 @@ function doSignup(){
         return;
     }
 
-    //form.submit();
-
-    //체크에 성공하면 서버로 데이터 전송
-    signupSubmit(formData);
+    form.submit();
 }
 
 function checkId(usernameInput){
@@ -97,7 +94,7 @@ function checkPwRepeat(input1, input2){
     }
     return;
 }
-
+/*
 //Fetch 이용 JSON 형식으로 데이터 전송 테스트
 function signupSubmit(formData){
     fetch('/signup',{
@@ -115,3 +112,4 @@ function signupSubmit(formData){
         console.error('Error:', error);
     });
 }
+*/
