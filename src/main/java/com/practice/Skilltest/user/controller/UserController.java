@@ -54,8 +54,10 @@ public class UserController {
     public String signup_post(@Validated UserSignupEntity user,
                               BindingResult bindingResult, Model model){
 
+        System.out.println("회원가입 접근");
         //입력 Validation 검증 실패시
         if(bindingResult.hasErrors()){
+            System.out.println("회원가입 에러있음");
             List<ObjectError> errorList = bindingResult.getAllErrors();
             String errorMessage = errorList.get(0).getDefaultMessage();
             model.addAttribute("announce_bottom",errorMessage);

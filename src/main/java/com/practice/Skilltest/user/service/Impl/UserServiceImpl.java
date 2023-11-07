@@ -60,7 +60,6 @@ public class UserServiceImpl implements UserDetailsService {
         if(checkByUsername(userEntity.getUsername())) {
 
             userEntity.setPassword(bCryptPasswordEncoder.encode(userEntity.getPassword()));
-
             userLoginDao.signup_user(userEntity);
 
         }
