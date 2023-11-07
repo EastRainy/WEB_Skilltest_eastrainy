@@ -6,6 +6,8 @@ import com.practice.Skilltest.user.dto.UserSignupEntity;
 import com.practice.Skilltest.user.service.Impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -51,18 +53,21 @@ public class UserController {
 
     //회원가입 신청 검증
     @PostMapping(value = "/signup")
-    public String signup_post(@Validated UserSignupEntity user,
-                              BindingResult bindingResult, Model model){
+    public ResponseEntity<String> signup_post(@RequestBody @Validated UserSignupEntity user,
+                                      BindingResult bindingResult, Model model){
+
+        StringBuilder errorMessage = new StringBuilder();
 
         System.out.println("회원가입 접근");
         //입력 Validation 검증 실패시
         if(bindingResult.hasErrors()){
-            System.out.println("회원가입 에러있음");
+
             List<ObjectError> errorList = bindingResult.getAllErrors();
-            String errorMessage = errorList.get(0).getDefaultMessage();
-            model.addAttribute("announce_bottom",errorMessage);
-            model.addAttribute("user", new UserSignupEntity());
-            return "html/user/signup";
+            for(ObjectError e : errorList){
+                errorMessage.append(e.getDefaultMessage());
+                errorMessage.append("\n");
+            }
+            return new ResponseEntity<>(errorMessage.toString(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
         System.out.println("회원가입 진행");
@@ -70,13 +75,13 @@ public class UserController {
             userService.signupUser(user);
         }
         catch(Exception e){
-            model.addAttribute("announce_bottom", e.getMessage());
-            model.addAttribute("user", new UserSignupEntity());
-            return "html/user/signup";
+            errorMessage.append(e.getMessage());
+            return new ResponseEntity<>(errorMessage.toString(), HttpStatus.BAD_REQUEST);
         }
 
         System.out.println("회원가입 성공");
-        return "redirect:/signupSuccess";
+        return new ResponseEntity<>(HttpStatus.CREATED);
+
     }
 
     //회원가입 성공 페이지
@@ -84,6 +89,5 @@ public class UserController {
     public String signup_success(){
         return "html/user/signupSuccess";
     }
-
 
 }

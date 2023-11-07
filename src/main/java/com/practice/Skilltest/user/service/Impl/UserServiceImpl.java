@@ -57,15 +57,18 @@ public class UserServiceImpl implements UserDetailsService {
     //회원가입
     public void signupUser(UserSignupEntity userEntity) throws Exception{
 
-        if(checkByUsername(userEntity.getUsername())) {
+        if(!userEntity.getPassword().equals(userEntity.getPassword_check())){
+            throw new Exception("비밀번호와 비밀번호 확인이 다릅니다.");
+        }
 
+        if(checkByUsername(userEntity.getUsername())) {
             userEntity.setPassword(bCryptPasswordEncoder.encode(userEntity.getPassword()));
             userLoginDao.signup_user(userEntity);
-
         }
         else{
             throw new Exception("중복되는 아이디입니다.");
         }
+
 
     }
 
