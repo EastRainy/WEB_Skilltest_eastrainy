@@ -99,6 +99,7 @@ function checkPwRepeat(input1, input2){
 //Fetch 이용 JSON 형식으로 데이터 전송 테스트
 function signupSubmit(formData){
     const bottomMessageElement = document.querySelector('.announce-bottom');
+
     fetch('/signup',{
         method : 'POST',
         headers : {
@@ -108,17 +109,24 @@ function signupSubmit(formData){
     })
     .then((response)=>{
         if(!response.ok){
-            bottomMessageElement.textElement = "네트워크 에러가 발생했습니다. 잠시 후 시도해주세요.";
+            bottomMessageElement.textContent = "네트워크 에러가 발생했습니다. 잠시 후 시도해주세요.";
+            console.log('1');
         }
         return response.json();
     })
-    .then(data => {
-        if(response.status === 201){
-            window.location.replace = location.protocol+'//'+location.host+"/signupSuccess";
+    .then((data) => {
+        console.log(data);
+        c
+        console.log('2');
+        if(data.status === 201){
+            window.location.replace = location.protocol+'//'+location.host+'/signupSuccess';
         }
-
+        else if (data.status === 400 || data.status === 422){
+            console.log('3');
+            bottomMessageElement.textContent = data.responseMessage;
+        }
     })
-    .catch(error => {
+    .catch((error) => {
         console.error('Error:', error);
     });
 }
