@@ -3,6 +3,7 @@ package com.practice.Skilltest.user.controller;
 
 
 import com.google.gson.JsonObject;
+import com.practice.Skilltest.controller.ServerResponseObject;
 import com.practice.Skilltest.user.dto.UserEntity;
 import com.practice.Skilltest.user.dto.UserSignupEntity;
 import com.practice.Skilltest.user.service.Impl.UserServiceImpl;
@@ -58,24 +59,25 @@ public class UserController {
     //회원가입 신청 응답----------------------
     @PostMapping(value = "/signup")
     @ResponseBody
-    public ResponseEntity<String> signup_post(@RequestBody @Validated UserSignupEntity user,
-                                      BindingResult bindingResult, Model model){
+    @ResponseStatus(HttpStatus.CREATED)
+    public ServerResponseObject signup_post(@RequestBody @Validated UserSignupEntity user,
+                                            BindingResult bindingResult, Model model){
 
-        StringBuilder errorMessage = new StringBuilder();
+        StringBuilder messageBuilder = new StringBuilder();
+
         JsonObject jo = new JsonObject();
-
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
 
         System.out.println("회원가입 접근");
         //입력 Validation 검증 실패시
+        /*
         if(bindingResult.hasErrors()){
             List<ObjectError> errorList = bindingResult.getAllErrors();
             for(ObjectError e : errorList){
-                errorMessage.append(e.getDefaultMessage());
-                errorMessage.append("\n");
+                messageBuilder.append(e.getDefaultMessage());
+                messageBuilder.append("\n");
             }
-            jo.addProperty("responseMessage", errorMessage.toString());
+            jo.addProperty("responseMessage", messageBuilder.toString());
             System.out.println("서버 응답 : "+jo.toString());
             return new ResponseEntity<>(jo.toString(), headers, HttpStatus.UNPROCESSABLE_ENTITY);
         }
@@ -85,14 +87,14 @@ public class UserController {
             userService.signupUser(user);
         }
         catch(Exception e){
-            errorMessage.append(e.getMessage());
-            jo.addProperty("responseMessage", errorMessage.toString());
+            messageBuilder.append(e.getMessage());
+            jo.addProperty("responseMessage", messageBuilder.toString());
             System.out.println("서버 응답 : "+jo.toString());
             return new ResponseEntity<>(jo.toString(),headers, HttpStatus.BAD_REQUEST);
         }
-
+        */
         System.out.println("회원가입 성공");
-        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+        return new ServerResponseObject("회원가입 성공", HttpStatus.CREATED.value());
 
     }
 

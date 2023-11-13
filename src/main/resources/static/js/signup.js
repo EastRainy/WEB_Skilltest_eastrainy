@@ -116,7 +116,7 @@ function signupSubmit(formData){
     })
     .then((data) => {
         console.log(data);
-        c
+        console.log(data.status)
         console.log('2');
         if(data.status === 201){
             window.location.replace = location.protocol+'//'+location.host+'/signupSuccess';
