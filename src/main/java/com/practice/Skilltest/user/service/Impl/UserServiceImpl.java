@@ -55,18 +55,27 @@ public class UserServiceImpl implements UserDetailsService {
     // * 이후 스프링 시큐리티 로직에서 비밀번호 비교하는 서비스 존재 //
 
     //회원가입
-    public void signupUser(UserSignupEntity userEntity){
-        userEntity.setPassword(bCryptPasswordEncoder.encode(userEntity.getPassword()));
-        userLoginDao.signup_user(userEntity);
+    public void signupUser(UserSignupEntity userEntity) throws Exception{
+
+        if(!userEntity.getPassword().equals(userEntity.getPassword_check())){
+            throw new Exception("비밀번호와 비밀번호 확인이 다릅니다.");
+        }
+
+        if(checkByUsername(userEntity.getUsername())) {
+            userEntity.setPassword(bCryptPasswordEncoder.encode(userEntity.getPassword()));
+            userLoginDao.signup_user(userEntity);
+        }
+        else{
+            throw new Exception("중복되는 아이디입니다.");
+        }
+
+
     }
 
     //로그인 성공시 해당 username의 마지막 로그인 시간 갱신
-
     public void UpdatingLastLoginTime(String username){
         userLoginDao.lastlogin_update(username);
     }
-    
-    
 
     private boolean checkByUsername(String username){
         return userLoginDao.refer_id(username)==null;

@@ -10,6 +10,11 @@ function doSignup(){
     const pwMessageElement = document.querySelector('.announce-pw');
     const bottomMessageElement = document.querySelector('.announce-bottom');
     const form = document.getElementById('signupForm');
+    var formData = {
+        username : document.getElementById('username').value,
+        password : document.getElementById('password').value,
+        password_check : document.getElementById('password_check').value
+    };
     //document 에서 입력 데이터 받아옴
 
     idMessageElement.textContent = "";
@@ -39,8 +44,7 @@ function doSignup(){
         return;
     }
 
-    //체크에 성공하면 서버로 데이터 전송
-    form.submit();
+    signupSubmit(formData);
 }
 
 function checkId(usernameInput){
@@ -90,4 +94,36 @@ function checkPwRepeat(input1, input2){
         throw new Error('비밀번호와 비밀번호 확인 값이 서로 다릅니다. 다시 입력해 주세요.')
     }
     return;
+}
+
+//Fetch 이용 JSON 형식으로 데이터 전송 테스트
+function signupSubmit(formData){
+    const bottomMessageElement = document.querySelector('.announce-bottom');
+
+    fetch('/signup',{
+        method : 'POST',
+        headers : {
+            'Content-type' : 'application/json'
+        },
+        body : JSON.stringify(formData)
+    })
+    .then((response)=>{
+        if(!response.ok){
+            bottomMessageElement.textContent = "네트워크 에러가 발생했습니다. 잠시 후 시도해주세요.";
+        }
+        return response.json();
+    })
+    .then((data) => {
+        if(data.status === 201){
+            var replacePage = location.protocol+'//'+location.host+'/signupSuccess';
+            console.log(replacePage);
+            window.location.replace(replacePage);
+        }
+        else if (data.status === 400 || data.status === 422){
+            bottomMessageElement.textContent = data.responseMessage;
+        }
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
 }

@@ -44,7 +44,7 @@ public class SecurityConfig {
                 .and()
                 //권한설정
                 .authorizeHttpRequests()
-                    .antMatchers("/login","/signup","/welcome").permitAll()
+                    .antMatchers("/login","/signup","/signupSuccess","/welcome").permitAll()
                     .antMatchers("/css/**", "/js/**", "/img/**").permitAll()//static 경로 자료 접근 권한 이슈 해결
                     .antMatchers("/admin").hasAnyRole("ADMIN")
                     .anyRequest().authenticated()
