@@ -2,21 +2,32 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title></title>
 </head>
 <body>
-    <nav>
-        <div>
-            <a>Navbar test</a>
-            <div style="align-items:left">
-            <div sec:authorize="isAnonymous()">
-                <button name="login-button" th:onclick="|location.href='@{/login}'|">로그인</button>
+
+    <nav class="navbar fixed-top navbar-dark bg-dark bg-body-tertiary">
+       <div class="container-fluid">
+           <span class="navbar-brand mb-0 h1">EastRainy</span>
+           <div class="collapse navbar-collapse" id="topNavbarMenu">
+                <div class="navbar-nav">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    <a class="nav-link" href="#">test</a>
+                </div>
             </div>
-            <div sec:authorize="isAuthenticated()">
-                <button name="logout-button" th:onclick="|location.href='@{/logout}'|">로그아웃</button>
-            </div>
-            </div>
-        </div>
+            <form class="d-flex" sec:authorize="isAnonymous()">
+                <button class="btn btn-sm btn-outline-secondary" type="button" th:onclick="|location.href='@{/login}'|">Login</button>
+            </form>
+            <form class="d-flex" sec:authorize="isAuthenticated()">
+                <button class="btn btn-sm btn-outline-secondary" type="button" th:onclick="|location.href='@{/logout}'|">Logout</button>
+            </form>
+       </div>
     </nav>
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
