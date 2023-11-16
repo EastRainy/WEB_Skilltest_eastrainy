@@ -57,20 +57,21 @@ public class UserController {
     }
 
     //회원가입 신청 응답----------------------
+    //우선 기존 구현된 코드로 테스트
     @PostMapping(value = "/signup")
     @ResponseBody
-    @ResponseStatus(HttpStatus.CREATED)
-    public ServerResponseObject signup_post(@RequestBody @Validated UserSignupEntity user,
+    public ResponseEntity<String> signup_post(@RequestBody @Validated UserSignupEntity user,
                                             BindingResult bindingResult, Model model){
 
         StringBuilder messageBuilder = new StringBuilder();
 
         JsonObject jo = new JsonObject();
         HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
 
         System.out.println("회원가입 접근");
         //입력 Validation 검증 실패시
-        /*
+
         if(bindingResult.hasErrors()){
             List<ObjectError> errorList = bindingResult.getAllErrors();
             for(ObjectError e : errorList){
@@ -78,6 +79,7 @@ public class UserController {
                 messageBuilder.append("\n");
             }
             jo.addProperty("responseMessage", messageBuilder.toString());
+            jo.addProperty("status", HttpStatus.UNPROCESSABLE_ENTITY.value());
             System.out.println("서버 응답 : "+jo.toString());
             return new ResponseEntity<>(jo.toString(), headers, HttpStatus.UNPROCESSABLE_ENTITY);
         }
@@ -89,18 +91,17 @@ public class UserController {
         catch(Exception e){
             messageBuilder.append(e.getMessage());
             jo.addProperty("responseMessage", messageBuilder.toString());
+            jo.addProperty("status", HttpStatus.BAD_REQUEST.value());
             System.out.println("서버 응답 : "+jo.toString());
             return new ResponseEntity<>(jo.toString(),headers, HttpStatus.BAD_REQUEST);
         }
-        */
+
         System.out.println("회원가입 성공");
-        return new ServerResponseObject("회원가입 성공", HttpStatus.CREATED.value());
+        jo.addProperty("responseMessage", "회원가입 성공");
+        jo.addProperty("status", HttpStatus.CREATED.value());
+        return new ResponseEntity<>(jo.toString(), headers, HttpStatus.CREATED);
 
     }
-
-
-
-
 
 
     //회원가입 성공 페이지--------------------

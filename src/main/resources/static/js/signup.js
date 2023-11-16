@@ -110,19 +110,16 @@ function signupSubmit(formData){
     .then((response)=>{
         if(!response.ok){
             bottomMessageElement.textContent = "네트워크 에러가 발생했습니다. 잠시 후 시도해주세요.";
-            console.log('1');
         }
         return response.json();
     })
     .then((data) => {
-        console.log(data);
-        console.log(data.status)
-        console.log('2');
         if(data.status === 201){
-            window.location.replace = location.protocol+'//'+location.host+'/signupSuccess';
+            var replacePage = location.protocol+'//'+location.host+'/signupSuccess';
+            console.log(replacePage);
+            window.location.replace(replacePage);
         }
         else if (data.status === 400 || data.status === 422){
-            console.log('3');
             bottomMessageElement.textContent = data.responseMessage;
         }
     })
