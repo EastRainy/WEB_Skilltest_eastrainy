@@ -9,13 +9,12 @@
 </head>
 
 <body>
-    <div>
-        <nav th:replace="/html/common/navbar.html :: navbar"></nav>
-    </div>
-    <div>
-    <h1>This is main page for testing.</h1>
+    <div th:replace="/html/common/navbar.html :: navbar-div">navbar div</div>
 
-    <h3>로그인한 인원 : <span th:text="${CurrUsername}"></span></h3>
+    <div class="container-fluid">
+        <h1>This is main page for testing.</h1>
+
+        <h3>로그인한 인원 : <span th:text="${CurrUsername}"></span></h3>
     <br>
     <a th:href="@{/board}">Board로 가기</a>
 
