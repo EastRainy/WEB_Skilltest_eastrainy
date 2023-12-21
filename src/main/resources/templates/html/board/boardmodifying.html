@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <title>게시글 수정</title>
 </head>
 <body>
 <div>
+    <div th:replace="/html/common/navbar.html :: navbar-div">navbar div</div>
     <form th:action="@{/board/{id}/modifying(id=${id})}" th:object="${req}" name="modifyingBoard" method="post">
         <fieldset>
             <legend>게시물 수정</legend>

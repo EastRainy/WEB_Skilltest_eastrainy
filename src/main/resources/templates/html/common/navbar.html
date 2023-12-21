@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title></title>
+</head>
+<body>
+    <div th:fragment="navbar-div">
+    <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
+        <a class="navbar-brand mb-0 h1" th:href="@{/main}">EastRainy</a>
+       <div class="container-fluid" id="topNavbarMenu">
+           <ul class="navbar-nav mr-auto">
+               <li class="nav-item">
+                   <a class="nav-link" th:href="@{/welcome}">Welcome</a>
+               </li>
+               <li class="nav-item">
+                   <a class="nav-link" th:href="@{/board}">Board</a>
+               </li>
+           </ul>
+           <form class="d-flex" sec:authorize="isAnonymous()">
+               <button class="btn btn-sm btn-secondary" type="button" th:onclick="|location.href='@{/login}'|">Login</button>
+           </form>
+           <form class="d-flex" sec:authorize="isAuthenticated()">
+               <button class="btn btn-sm btn-secondary" type="button" th:onclick="|location.href='@{/logout}'|">Logout</button>
+           </form>
+       </div>
+    </nav>
+    </div>
+
+</body>
+</html>
