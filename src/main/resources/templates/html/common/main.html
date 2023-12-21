@@ -3,27 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/common/main.css}">
     <title>
         Main page
     </title>
+
 </head>
 
 <body>
     <div th:replace="/html/common/navbar.html :: navbar-div">navbar div</div>
-
     <div class="container-fluid">
         <h1>This is main page for testing.</h1>
 
         <h3>로그인한 인원 : <span th:text="${CurrUsername}"></span></h3>
-    <br>
-    <a th:href="@{/board}">Board로 가기</a>
-
+        <br>
+        <a th:href="@{/board}">Board로 가기</a>
     </div>
 
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
 </html>

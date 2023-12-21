@@ -6,28 +6,27 @@
     <title></title>
 </head>
 <body>
-    <div class="container-fluid" th:fragment="navbar-div">
-    <nav class="navbar fixed-top navbar-dark bg-dark bg-body-tertiary">
-       <div class="container-fluid">
-           <span class="navbar-brand mb-0 h1">EastRainy</span>
-           <div class="collapse navbar-collapse" id="topNavbarMenu">
-                <div class="navbar-nav">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    <a class="nav-link" href="#">test</a>
-                </div>
-            </div>
-            <form class="d-flex" sec:authorize="isAnonymous()">
-                <button class="btn btn-sm btn-secondary" type="button" th:onclick="|location.href='@{/login}'|">Login</button>
-            </form>
-            <form class="d-flex" sec:authorize="isAuthenticated()">
-                <button class="btn btn-sm btn-secondary" type="button" th:onclick="|location.href='@{/logout}'|">Logout</button>
-            </form>
+    <div th:fragment="navbar-div">
+    <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
+        <a class="navbar-brand mb-0 h1" th:href="@{/main}">EastRainy</a>
+       <div class="container-fluid" id="topNavbarMenu">
+           <ul class="navbar-nav mr-auto">
+               <li class="nav-item">
+                   <a class="nav-link" th:href="@{/welcome}">Welcome</a>
+               </li>
+               <li class="nav-item">
+                   <a class="nav-link" th:href="@{/board}">Board</a>
+               </li>
+           </ul>
+           <form class="d-flex" sec:authorize="isAnonymous()">
+               <button class="btn btn-sm btn-secondary" type="button" th:onclick="|location.href='@{/login}'|">Login</button>
+           </form>
+           <form class="d-flex" sec:authorize="isAuthenticated()">
+               <button class="btn btn-sm btn-secondary" type="button" th:onclick="|location.href='@{/logout}'|">Logout</button>
+           </form>
        </div>
     </nav>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

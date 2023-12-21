@@ -1,31 +1,33 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 <head>
     <meta charset="UTF-8">
     <title th:text="${result.getTitle()}">제목</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" th:href="@{/css/board/boardview.css}"/>
 </head>
 <body>
-<div>
-    <div>
-        <h2 th:text="${result.getTitle()}"></h2>
-        <div>
-            <a>게시자 : </a><a th:text="${result.getWriter()}"></a>
-        </div>
-        <div>
-            <a>조회수 : </a><a th:text="${result.getViewcount()}"></a>
-        </div>
-    </div>
+    <div th:replace="/html/common/navbar.html :: navbar-div">navbar div</div>
     <div>
         <div>
-            <p th:text="${result.getContent()}"></p>
+            <h2 th:text="${result.getTitle()}"></h2>
+            <div>
+                <a>게시자 : </a><a th:text="${result.getWriter()}"></a>
+            </div>
+            <div>
+                <a>조회수 : </a><a th:text="${result.getViewcount()}"></a>
+            </div>
+        </div>
+        <div>
+            <div>
+                <p th:text="${result.getContent()}"></p>
+            </div>
+        </div>
+        <div>
+            <button th:onclick="|location.href='@{/board}'|">목록</button>
+            <button th:onclick="|location.href='@{/board/{id}/modifying(id=${id})}'|">수정</button>
+            <button th:onclick="|location.href='@{/board/{id}/delete(id=${id})}'|">삭제</button>
         </div>
     </div>
-    <div>
-        <button th:onclick="|location.href='@{/board}'|">목록</button>
-        <button th:onclick="|location.href='@{/board/{id}/modifying(id=${id})}'|">수정</button>
-        <button th:onclick="|location.href='@{/board/{id}/delete(id=${id})}'|">삭제</button>
-    </div>
-</div>
 </body>
 </html>

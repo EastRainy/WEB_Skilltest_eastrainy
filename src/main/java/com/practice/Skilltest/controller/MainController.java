@@ -32,27 +32,12 @@ public class MainController {
     public String mainPage(Model model, @AuthenticationPrincipal User user) {
 
         model.addAttribute("CurrUsername", user.getUsername());
-        return "html/main";
+        return "html/common/main";
     }
 
     @GetMapping("/welcome")
     public String getWelcome(Model model, @AuthenticationPrincipal User user){
-            return "html/welcome";
-    }
-
-
-    @GetMapping("/navbar")
-    @ResponseBody
-    public ResponseEntity<String> getNavbar(){
-        try{
-            Path path = Paths.get("src/main/resources/templates/html/navbar.html");
-            String navbarContent = new String(Files.readAllBytes(path));
-
-            return ResponseEntity.status(HttpStatus.OK).body(navbarContent);
-        } catch(IOException e){
-
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("File Not Found");
-        }
+            return "html/common/welcome";
     }
 
 }
