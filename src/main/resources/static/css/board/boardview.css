@@ -1,3 +1,8 @@
 
 
 
+p.left{ text-align : right; }
+
+.board-content{
+    min-height: 50vh;
+}
