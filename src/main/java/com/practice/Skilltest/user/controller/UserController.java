@@ -3,7 +3,6 @@ package com.practice.Skilltest.user.controller;
 
 
 import com.google.gson.JsonObject;
-import com.practice.Skilltest.controller.ServerResponseObject;
 import com.practice.Skilltest.user.dto.UserEntity;
 import com.practice.Skilltest.user.dto.UserSignupEntity;
 import com.practice.Skilltest.user.service.Impl.UserServiceImpl;

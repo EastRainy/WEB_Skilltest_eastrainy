@@ -3,6 +3,14 @@
 
 p.left{ text-align : right; }
 
+table{
+    margin:auto;
+}
+
 .board-content{
     min-height: 50vh;
+}
+
+button.left-align{
+    float: right;
 }
