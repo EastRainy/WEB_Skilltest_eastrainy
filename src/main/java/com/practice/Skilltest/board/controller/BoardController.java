@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -58,7 +60,9 @@ public class BoardController {
 
     //단순신규생성
     @RequestMapping(method = RequestMethod.GET, path = "/board/new")
-    public String newBoardGet(){
+    public String newBoardGet(Model model, @AuthenticationPrincipal User user){
+
+        model.addAttribute("CurrUsername", user.getUsername());
         return "html/board/boardnew";
     }
     @PostMapping(path = "/board/new")
