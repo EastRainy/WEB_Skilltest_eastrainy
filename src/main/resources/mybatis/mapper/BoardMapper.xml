@@ -14,6 +14,11 @@
 
     <!-- 게시글  -->
 
+    <select id="checkById" parameterType="long" resultType="int">
+        SELECT COUNT(*) FROM board_table
+        WHERE b_id = #{id}
+    </select>
+
     <select id="viewOne" resultMap="Board">
         SELECT * FROM board_table
         WHERE b_id = #{id}

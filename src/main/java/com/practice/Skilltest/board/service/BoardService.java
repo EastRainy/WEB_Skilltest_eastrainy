@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 @Service
 public interface BoardService {
 
-    BoardDto viewOne(long id);
+    boolean checkById(long id);
+
+    BoardDto viewOne(long id) throws Exception;
 
     long newBoard(BoardDto req);
 

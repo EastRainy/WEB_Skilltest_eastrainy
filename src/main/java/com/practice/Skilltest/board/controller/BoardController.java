@@ -50,9 +50,14 @@ public class BoardController {
     @RequestMapping(method = RequestMethod.GET, path = "/board/view/{id}")
     public String viewBoard(@PathVariable("id") long id, Model model){
 
-        model.addAttribute("result", boardService.viewOne(id));
-        model.addAttribute("id",id);
-        //해당 id의 게시물을 조회
+        try {
+            model.addAttribute("result", boardService.viewOne(id));
+            model.addAttribute("id", id);
+            //해당 id의 게시물을 조회
+        }
+        catch (Exception e){
+            return "html/error/wrongaccess";
+        }
 
         return "html/board/boardview";
     }
@@ -79,10 +84,17 @@ public class BoardController {
     //기존수정 페이지 접근
     @GetMapping(path = "/board/{id}/modifying")
     public String modifyingBoardGet(@PathVariable("id") long id, Model model){
-        BoardDto result = boardService.viewOne(id);
-        
-        model.addAttribute("id", id);
-        model.addAttribute("req", result);
+
+        try {
+            BoardDto result = boardService.viewOne(id);
+
+            model.addAttribute("id", id);
+            model.addAttribute("req", result);
+        }
+        catch (Exception e){
+            return "html/error/wrongaccess";
+        }
+
         //변경을 위해 데이터를 받아와 모델에 넣고 전송
         
         return "html/board/boardmodifying";

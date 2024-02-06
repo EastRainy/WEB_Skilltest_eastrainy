@@ -11,6 +11,8 @@ import java.util.Map;
 public interface BoardDao {
 
     // --- board ---
+
+    int checkById(long id);
     BoardDto viewOne(long id);
     long newBoard(BoardDto req);
     boolean updateBoard(Map<String, Object> map);
