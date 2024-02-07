@@ -56,7 +56,7 @@ public class BoardController {
             //해당 id의 게시물을 조회
         }
         catch (Exception e){
-            return "html/error/wrongaccess";
+            return "html/board/boardview";
         }
 
         return "html/board/boardview";
