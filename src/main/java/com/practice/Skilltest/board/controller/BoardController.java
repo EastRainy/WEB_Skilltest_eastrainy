@@ -4,6 +4,7 @@ import com.practice.Skilltest.board.dto.BoardDto;
 import com.practice.Skilltest.board.service.BoardService;
 import com.practice.Skilltest.board.service.PageService;
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.net.URI;
 
@@ -33,7 +35,7 @@ public class BoardController {
     @RequestMapping(method = RequestMethod.GET, path = "/board/{page}")
     public String viewPage(@PathVariable("page") long page, Model model){
 
-        if(!pageService.checkValid(page)){return "html/error/wrongaccess";}
+        if(!pageService.checkValid(page)){return "error/400";}
         //올바른 페이지가 아니라면 에러처리
 
         model.addAttribute("resultList",pageService.selectedPageList(page));
@@ -56,7 +58,7 @@ public class BoardController {
             //해당 id의 게시물을 조회
         }
         catch (Exception e){
-            return "html/error/wrongaccess";
+            return "error/404";
         }
 
         return "html/board/boardview";
@@ -68,6 +70,7 @@ public class BoardController {
     public String newBoardGet(Model model, @AuthenticationPrincipal User user){
 
         model.addAttribute("CurrUsername", user.getUsername());
+
         return "html/board/boardnew";
     }
     @PostMapping(path = "/board/new")
@@ -91,8 +94,11 @@ public class BoardController {
             model.addAttribute("id", id);
             model.addAttribute("req", result);
         }
-        catch (Exception e){
-            return "html/error/wrongaccess";
+        catch (NotFoundException e){
+            return "error/404";
+        }
+        catch(Exception e){
+            return "error/403";
         }
 
         //변경을 위해 데이터를 받아와 모델에 넣고 전송

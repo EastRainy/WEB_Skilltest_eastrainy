@@ -3,6 +3,7 @@ package com.practice.Skilltest.board.service.impl;
 import com.practice.Skilltest.board.dao.BoardDao;
 import com.practice.Skilltest.board.dto.BoardDto;
 import com.practice.Skilltest.board.service.BoardService;
+import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -28,7 +29,8 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public BoardDto viewOne(long id) throws Exception {
 
-        if(!checkById(id)){throw new Exception("존재하지 않는 게시물 id 접근");}
+        if(!checkById(id)){throw new NotFoundException("존재하지 않는 게시물 id 접근");}
+
         else{
             upView(id);
             return boardDao.viewOne(id);

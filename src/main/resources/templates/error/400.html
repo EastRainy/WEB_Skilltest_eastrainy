@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/error/errorPage.css}">
+    <title>문제가 발생했습니다!</title>
+</head>
+<body>
+
+<div class="container announce-container">
+    <main class="announce-main">
+        <h1>400</h1>
+        <br>
+        <p>에러가 발생하였습니다.</p>
+        <p>잘못된 요청입니다.</p>
+
+        <button type="button" class="btn btn-primary to-main" onclick="replaceToMain()">메인으로 이동</button>
+    </main>
+</div>
+
+<script src="/js/webCommonFunc.js"></script>
+</body>
+</html>
