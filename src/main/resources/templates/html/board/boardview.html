@@ -22,9 +22,9 @@
         </div>
         <hr>
         <div>
-            <button th:onclick="|location.href='@{/board}'|">목록</button>
-            <button th:onclick="|location.href='@{/board/{id}/modifying(id=${id})}'|">수정</button>
-            <button th:onclick="|location.href='@{/board/{id}/delete(id=${id})}'|">삭제</button>
+            <button class="btn btn-secondary bottom-button-l" th:onclick="|location.href='@{/board}'|">목록</button>
+            <button class="btn btn-secondary bottom-button-r" th:onclick="|location.href='@{/board/{id}/modifying(id=${id})}'|">수정</button>
+            <button class="btn btn-danger bottom-button-r" th:onclick="|location.href='@{/board/{id}/delete(id=${id})}'|">삭제</button>
         </div>
     </div>
 </body>
