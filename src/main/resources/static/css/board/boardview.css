@@ -11,6 +11,11 @@ table{
     min-height: 50vh;
 }
 
-button.left-align{
+button.bottom-button-r{
+    margin: 5px;
     float: right;
+}
+button.bottom-button-l{
+    margin: 5px;
+    float: left;
 }

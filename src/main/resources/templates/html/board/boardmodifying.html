@@ -30,8 +30,8 @@
                     <textarea class="form-control" th:field="*{content}" rows="20" style="width:100%"></textarea>
                 </div>
                 <hr>
-                <button type="submit" class="btn btn-primary left-align">작성</button>
-                <button type="button" class="btn btn-primary left-align" th:onclick="|location.href='@{/board/view/{id}(id=${id})}'|">취소</button>
+                <button type="submit" class="btn btn-success bottom-button-r">작성</button>
+                <button type="button" class="btn btn-secondary bottom-button-r" th:onclick="|location.href='@{/board/view/{id}(id=${id})}'|">취소</button>
             </fieldset>
         </form>
     </div>
