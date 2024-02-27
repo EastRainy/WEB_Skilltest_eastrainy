@@ -19,3 +19,9 @@ button.bottom-button-l{
     margin: 5px;
     float: left;
 }
+
+.ck-editor__editable{
+    min-height: 500px;
+    min-width: 100%;
+
+}

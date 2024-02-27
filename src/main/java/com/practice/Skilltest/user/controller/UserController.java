@@ -68,7 +68,6 @@ public class UserController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        System.out.println("회원가입 접근");
         //입력 Validation 검증 실패시
 
         if(bindingResult.hasErrors()){
@@ -83,7 +82,6 @@ public class UserController {
             return new ResponseEntity<>(jo.toString(), headers, HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
-        System.out.println("회원가입 진행");
         try {
             userService.signupUser(user);
         }
@@ -95,7 +93,6 @@ public class UserController {
             return new ResponseEntity<>(jo.toString(),headers, HttpStatus.BAD_REQUEST);
         }
 
-        System.out.println("회원가입 성공");
         jo.addProperty("responseMessage", "회원가입 성공");
         jo.addProperty("status", HttpStatus.CREATED.value());
         return new ResponseEntity<>(jo.toString(), headers, HttpStatus.CREATED);

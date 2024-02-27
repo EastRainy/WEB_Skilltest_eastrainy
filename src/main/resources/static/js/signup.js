@@ -21,6 +21,7 @@ function doSignup(){
     pwMessageElement.textContent = "";
     bottomMessageElement.textContent = "";
     //검증 실패한 경우 해당하는 에러 메세지로 announce 메세지 변경
+
     //id검증
     try{
         checkId(usernameInput);
@@ -50,6 +51,7 @@ function doSignup(){
 function checkId(usernameInput){
     //ID 체크
 
+    //영문자 및 숫자만 정규식 범위 지정
     const idRegex = /^[a-zA-Z\d]+$/;
 
     if(usernameInput.length > 20 || usernameInput.length < 4){
@@ -70,7 +72,7 @@ function checkPw(input){
     const checkUpper = /[A-Z]/.test(input);
     const checkSpecial = /[!@#$%^&*()?_=+<>;:~.,`\[\]\-]/.test(input);
     const checkLength = input.length<10 || input.length>30;
-    //정규식 통하여 각 케이스 경우 정의
+    //정규식 통하여 각각 확인해야 하는 케이스의 경우 정의
 
     //통과하지 못한 경우 에러 생성
     if(checkValid){
@@ -96,7 +98,7 @@ function checkPwRepeat(input1, input2){
     return;
 }
 
-//Fetch 이용 JSON 형식으로 데이터 전송 테스트
+//Fetch 이용 JSON 형식으로 데이터 전송
 function signupSubmit(formData){
     const bottomMessageElement = document.querySelector('.announce-bottom');
 
@@ -105,7 +107,8 @@ function signupSubmit(formData){
         headers : {
             'Content-type' : 'application/json'
         },
-        body : JSON.stringify(formData)
+        body : JSON.stringify(formData),
+        redirect : follow
     })
     .then((response)=>{
         if(!response.ok){
@@ -116,7 +119,6 @@ function signupSubmit(formData){
     .then((data) => {
         if(data.status === 201){
             var replacePage = location.protocol+'//'+location.host+'/signupSuccess';
-            console.log(replacePage);
             window.location.replace(replacePage);
         }
         else if (data.status === 400 || data.status === 422){

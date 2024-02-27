@@ -68,8 +68,6 @@ public class UserServiceImpl implements UserDetailsService {
         else{
             throw new Exception("중복되는 아이디입니다.");
         }
-
-
     }
 
     //로그인 성공시 해당 username의 마지막 로그인 시간 갱신
