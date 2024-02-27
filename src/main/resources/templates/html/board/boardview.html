@@ -18,7 +18,10 @@
         </div>
         <hr>
         <div class="board-content">
-            <p th:text="${result.getContent()}"></p>
+            <div class="content-display">
+                <script src="/js/board/boardview.js"> </script>
+                <script th:inline="javascript">contentConvert([[${result.getContent()}]])</script>
+            </div>
         </div>
         <hr>
         <div>
@@ -27,5 +30,6 @@
             <button class="btn btn-danger bottom-button-r" th:onclick="|location.href='@{/board/{id}/delete(id=${id})}'|">삭제</button>
         </div>
     </div>
+
 </body>
 </html>
