@@ -23,9 +23,12 @@
 해당 기능의 위치는 프로젝트 디렉터리의 
  
  - ./board/*
- - ./resources/templates.html/board
 
 을 이용하며, 추가적으로 필요한 statics 파일을 이용한다.
+
+- ./resources/templates/html/board/*
+- ./resources/css/board/*
+- ./resources/js/board/*
 
 ---
 
