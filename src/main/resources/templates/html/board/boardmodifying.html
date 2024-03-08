@@ -13,7 +13,7 @@
 
     <div class="container-xl mt-5">
         <!-- 작성 form -->
-        <form th:action="@{/board/{id}/modifying(id=${id})}" th:object="${req}" id="modifyingForm" name="modifyingBoard" method="post">
+        <form th:action="@{/board/modifying/{id}(id=${id})}" th:object="${req}" id="modifyingForm" name="modifyingBoard" method="post">
             <fieldset>
                 <legend>게시물 수정</legend>
                 <hr>
@@ -36,9 +36,11 @@
                 <button type="button" class="btn btn-secondary bottom-button-r" th:onclick="|location.href='@{/board/view/{id}(id=${id})}'|">취소</button>
             </fieldset>
         </form>
+
+
         <!-- modal -->
         <div class="modal fade" id="remindModal" tabindex="-1" role="dialog" aria-labelledby="remindModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="remindModalLabel">게시글 수정</h5>

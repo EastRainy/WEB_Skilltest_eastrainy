@@ -1,7 +1,10 @@
 package com.practice.Skilltest.board.service;
 
 import com.practice.Skilltest.board.dto.BoardDto;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
+
+import java.util.Collection;
 
 
 @Service
@@ -19,5 +22,6 @@ public interface BoardService {
 
     void deleteBoard(long id);
 
+    boolean checkValidModify(long id, String username, Collection<? extends GrantedAuthority> userAuthority);
 
 }

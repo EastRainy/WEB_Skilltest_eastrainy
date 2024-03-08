@@ -4,8 +4,10 @@ import com.practice.Skilltest.board.dao.BoardDao;
 import com.practice.Skilltest.board.dto.BoardDto;
 import com.practice.Skilltest.board.service.BoardService;
 import org.apache.ibatis.javassist.NotFoundException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,7 +39,7 @@ public class BoardServiceImpl implements BoardService {
         }
     }
 
-    //새 게시글 생성
+    //새 게시글
     public long newBoard(BoardDto req) {
 
         boardDao.newBoard(req);
@@ -45,7 +47,7 @@ public class BoardServiceImpl implements BoardService {
         return req.getBoard_id();
     }
 
-    //게시글 수정
+    //게시글 수정 작
     @Override
     public boolean modifyBoard(BoardDto req) {
 
@@ -69,5 +71,19 @@ public class BoardServiceImpl implements BoardService {
     public void deleteBoard(long id) {
         boardDao.deleteBoard(id);
     }
+
+
+
+    //요청자가
+    @Override
+    public boolean checkValidModify(long id, String username, Collection<? extends GrantedAuthority> userAuthority) {
+
+
+
+
+        return false;
+    }
+
+
 }
 

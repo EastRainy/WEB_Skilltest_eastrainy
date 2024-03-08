@@ -75,6 +75,7 @@ public class UserServiceImpl implements UserDetailsService {
         userLoginDao.lastlogin_update(username);
     }
 
+    //username에 해당하는 아이디가 있는 지 조회하여 없는경우 true 리턴
     private boolean checkByUsername(String username){
         return userLoginDao.refer_id(username)==null;
     }

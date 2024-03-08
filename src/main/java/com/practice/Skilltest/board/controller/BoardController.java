@@ -14,8 +14,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 
+import javax.servlet.http.HttpSession;
 import java.net.URI;
 
 @Controller
@@ -27,6 +27,7 @@ public class BoardController {
     @Autowired
     private final PageService pageService;
 
+    //메인 보드 접근시 첫번째 페이지로 리다이렉
     @RequestMapping(method = RequestMethod.GET, path = "/board")
     public String board(){
         return "redirect:/board/1";
@@ -49,12 +50,16 @@ public class BoardController {
         return "html/board/boardmain";
     }
 
+    //게시물 조회 GET
     @RequestMapping(method = RequestMethod.GET, path = "/board/view/{id}")
-    public String viewBoard(@PathVariable("id") long id, Model model){
+    public String viewBoard(@PathVariable("id") long id, Model model, @AuthenticationPrincipal User user){
+
 
         try {
             model.addAttribute("result", boardService.viewOne(id));
             model.addAttribute("id", id);
+
+
             //해당 id의 게시물을 조회
         }
         catch (Exception e){
@@ -65,14 +70,15 @@ public class BoardController {
     }
 
 
-    //단순신규생성
-    @RequestMapping(method = RequestMethod.GET, path = "/board/new")
+    //단순 신규 게시물 생성 GET
+    @GetMapping(path = "/board/new")
     public String newBoardGet(Model model, @AuthenticationPrincipal User user){
 
         model.addAttribute("CurrUsername", user.getUsername());
 
         return "html/board/boardnew";
     }
+    //단순 신규 게시물 생성 POST
     @PostMapping(path = "/board/new")
     @ResponseBody
     public ResponseEntity<?> newBoardPost(BoardDto req){
@@ -84,8 +90,10 @@ public class BoardController {
         h.setLocation(URI.create("/board/view/"+dest));
         return new ResponseEntity<>(h, HttpStatus.MOVED_PERMANENTLY);
     }
-    //기존수정 페이지 접근
-    @GetMapping(path = "/board/{id}/modifying")
+
+
+    //기존수정 페이지 GET
+    @GetMapping(path = "/board/modifying/{id}")
     public String modifyingBoardGet(@PathVariable("id") long id, Model model){
 
         try {
@@ -102,13 +110,12 @@ public class BoardController {
         }
 
         //변경을 위해 데이터를 받아와 모델에 넣고 전송
-        
         return "html/board/boardmodifying";
     }
-    //기존 수정 페이지 데이터 적용
-    @PostMapping(path ="/board/{id}/modifying")
+    //기존 수정 페이지 POST
+    @PostMapping(path ="/board/modifying/{id}")
     @ResponseBody
-    public ResponseEntity<?> modifyingBoardPost(@PathVariable("id") long id, BoardDto req, Model model){
+    public ResponseEntity<?> modifyingBoardPost(@PathVariable("id") long id, BoardDto req){
 
         req.setBoard_id(id);
         boardService.modifyBoard(req);
@@ -123,7 +130,7 @@ public class BoardController {
 
 
     //게시글 삭제
-    @GetMapping(path="/board/{id}/delete")
+    @GetMapping(path="/board/delete/{id}")
     public String deleteBoard(@PathVariable("id") long id){
         boardService.deleteBoard(id);
         return "redirect:/board";
