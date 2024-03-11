@@ -53,10 +53,14 @@ public class BoardController {
     //게시물 조회 GET
     @RequestMapping(method = RequestMethod.GET, path = "/board/view/{id}")
     public String viewBoard(@PathVariable("id") long id, Model model, @AuthenticationPrincipal User user){
+
         try {
             model.addAttribute("result", boardService.viewOne(id));
             model.addAttribute("id", id);
             //해당 id의 게시물을 조회 시도
+            if(boardService.checkValidModify(id, user.getUsername(), user.getAuthorities())){
+                model.addAttribute("modifiable",true);
+            }//해당 게시물의 작성자 혹은 수정권한이 있는 경우 수정여부 속성 추가
         }
         catch (Exception e){
             return "error/404";
