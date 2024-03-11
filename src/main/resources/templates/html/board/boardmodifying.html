@@ -12,7 +12,8 @@
     <div th:replace="/html/common/navbar.html :: navbar-div">navbar div</div>
 
     <div class="container-xl mt-5">
-        <form th:action="@{/board/{id}/modifying(id=${id})}" th:object="${req}" name="modifyingBoard" method="post">
+        <!-- 작성 form -->
+        <form th:action="@{/board/modifying/{id}(id=${id})}" th:object="${req}" id="modifyingForm" name="modifyingBoard" method="post">
             <fieldset>
                 <legend>게시물 수정</legend>
                 <hr>
@@ -31,28 +32,38 @@
                     <textarea class="form-control" th:field="*{content}" id="editor" ></textarea>
                 </div>
                 <hr>
-                <button type="submit" class="btn btn-success bottom-button-r">작성</button>
+                <button type="button" class="btn btn-success bottom-button-r" data-toggle="modal" data-target="#remindModal">수정</button>
                 <button type="button" class="btn btn-secondary bottom-button-r" th:onclick="|location.href='@{/board/view/{id}(id=${id})}'|">취소</button>
             </fieldset>
         </form>
+
+
+        <!-- modal -->
+        <div class="modal fade" id="remindModal" tabindex="-1" role="dialog" aria-labelledby="remindModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="remindModalLabel">게시글 수정</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>정말 게시글을 수정하시겠습니까?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" onclick="sendBoardForm()">수정</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <script>
-        ClassicEditor
-        .create( document.querySelector( '#editor' ), {
-            toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote' ],
-            heading: {
-                options: [
-                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-                    { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-                    { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
-                ]
-            }
-        } )
-        .catch( error => {
-                console.error( error );
-        } );
-    </script>
-
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="/js/board/boardmodifying.js"></script>
+    <script src="/js/board/ckeditor5-config-simple.js"></script>
 </body>
 </html>

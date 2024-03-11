@@ -30,6 +30,7 @@ public class MainController {
 
     @RequestMapping(method = RequestMethod.GET, path = "/main")
     public String mainPage(Model model, @AuthenticationPrincipal User user) {
+        
 
         model.addAttribute("CurrUsername", user.getUsername());
         return "html/common/main";

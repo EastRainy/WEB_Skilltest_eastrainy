@@ -108,7 +108,6 @@ function signupSubmit(formData){
             'Content-type' : 'application/json'
         },
         body : JSON.stringify(formData),
-        redirect : follow
     })
     .then((response)=>{
         if(!response.ok){

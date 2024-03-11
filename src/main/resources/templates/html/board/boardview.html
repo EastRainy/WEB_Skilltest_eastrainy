@@ -5,8 +5,10 @@
     <title th:text="${result.getTitle()}">제목</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" th:href="@{/css/board/boardview.css}"/>
+
 </head>
 <body>
+    <script src="/js/board/boardview.js"></script>
     <div th:replace="/html/common/navbar.html :: navbar-div">navbar div</div>
     <div class="container-xl mt-5">
         <div>
@@ -19,17 +21,46 @@
         <hr>
         <div class="board-content">
             <div class="content-display">
-                <script src="/js/board/boardview.js"> </script>
                 <script th:inline="javascript">contentConvert([[${result.getContent()}]])</script>
             </div>
         </div>
         <hr>
         <div>
             <button class="btn btn-secondary bottom-button-l" th:onclick="|location.href='@{/board}'|">목록</button>
-            <button class="btn btn-secondary bottom-button-r" th:onclick="|location.href='@{/board/{id}/modifying(id=${id})}'|">수정</button>
-            <button class="btn btn-danger bottom-button-r" th:onclick="|location.href='@{/board/{id}/delete(id=${id})}'|">삭제</button>
+            <button th:if="${modifiable}" class="btn btn-secondary bottom-button-r" th:onclick="|location.href='@{/board/modifying/{id}(id=${id})}'|">수정</button>
+            <button th:if="${modifiable}" class="btn btn-danger bottom-button-r" data-toggle="modal" data-target="#remindModal">삭제</button>
         </div>
     </div>
+
+
+
+    <!-- modal -->
+    <div class="modal fade" id="remindModal" tabindex="-1" role="dialog" aria-labelledby="remindModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="remindModalLabel">게시글 삭제</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>정말 삭제하시겠습니까?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" th:onclick="|location.href='@{/board/delete/{id}(id=${id})}'|">삭제</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 </body>
 </html>
