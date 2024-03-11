@@ -19,7 +19,6 @@ import java.util.Map;
 public class BoardServiceImpl implements BoardService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
     private final BoardDao boardDao;
 
     public BoardServiceImpl(BoardDao boardDao) {
@@ -53,9 +52,9 @@ public class BoardServiceImpl implements BoardService {
         return req.getBoard_id();
     }
 
-    //게시글 수정 작
+    //게시글 수정 작업
     @Override
-    public boolean modifyBoard(BoardDto req) {
+    public boolean modifyBoard(BoardDto req, String username, Collection<? extends GrantedAuthority> userAuthority) {
 
         Map<String, Object> map = new HashMap<>();
 
@@ -74,11 +73,13 @@ public class BoardServiceImpl implements BoardService {
 
     //게시글 삭제
     @Override
-    public void deleteBoard(long id, String username, Collection<? extends GrantedAuthority> userAuthority) {
+    public boolean deleteBoard(long id, String username, Collection<? extends GrantedAuthority> userAuthority) {
 
-        if(!checkValidModify(id,username,userAuthority)) { return; }
+        //요청자 유효 확인
+        if(!checkValidModify(id,username,userAuthority)) {return false;}
 
         boardDao.deleteBoard(id);
+        return true;
     }
 
 
@@ -98,7 +99,7 @@ public class BoardServiceImpl implements BoardService {
             return true;
         }
 
-        logger.info("삭제자가 게시자와 다르고 어드민이 아닌 요청");
+        logger.info("삭제자가 게시자와 다르고 어드민이 아닌 요청 무시");
         return false;
     }
 
