@@ -28,6 +28,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
 
+
     @Autowired
     UserServiceImpl userService;
 
@@ -42,7 +43,6 @@ public class UserController {
     public String login_post(Model model, HttpServletRequest request){
 
         model.addAttribute("message",request.getAttribute("message"));
-
         model.addAttribute("user", new UserEntity());
 
         return "html/user/login";

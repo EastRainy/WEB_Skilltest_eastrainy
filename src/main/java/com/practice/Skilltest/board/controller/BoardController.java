@@ -131,8 +131,10 @@ public class BoardController {
 
     //게시글 삭제
     @GetMapping(path="/board/delete/{id}")
-    public String deleteBoard(@PathVariable("id") long id){
-        boardService.deleteBoard(id);
+    public String deleteBoard(@PathVariable("id") long id, @AuthenticationPrincipal User user){
+        boardService.deleteBoard(id, user.getUsername(), user.getAuthorities());
         return "redirect:/board";
     }
+
+
 }

@@ -22,6 +22,8 @@ public class BoardDaoImpl implements BoardDao {
     @Override
     public int checkById(long id) {return sqlSession.selectOne("checkById", id); }
 
+    public String getWriter(long id) {return sqlSession.selectOne("gerWriter", id);}
+
     @Override
     public BoardDto viewOne(long id) {
         return sqlSession.selectOne("viewOne", id);

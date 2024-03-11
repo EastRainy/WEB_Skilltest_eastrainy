@@ -20,7 +20,7 @@ public interface BoardService {
 
     void upView(long id);
 
-    void deleteBoard(long id);
+    void deleteBoard(long id, String username, Collection<? extends GrantedAuthority> userAuthority);
 
     boolean checkValidModify(long id, String username, Collection<? extends GrantedAuthority> userAuthority);
 

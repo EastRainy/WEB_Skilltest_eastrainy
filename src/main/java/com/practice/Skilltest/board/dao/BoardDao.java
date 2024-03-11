@@ -14,6 +14,7 @@ public interface BoardDao {
 
     int checkById(long id);
     BoardDto viewOne(long id);
+    String getWriter(long id);
     long newBoard(BoardDto req);
     boolean updateBoard(Map<String, Object> map);
     void updateViewcount(long id);
