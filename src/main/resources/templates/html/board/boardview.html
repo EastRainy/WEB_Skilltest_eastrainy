@@ -26,7 +26,8 @@
         </div>
         <hr>
         <div>
-            <button class="btn btn-secondary bottom-button-l" th:onclick="|location.href='@{/board}'|">목록</button>
+            <input type="hidden" name="id" th:value="${id}" id="id"/>
+            <button class="btn btn-secondary bottom-button-l" th:onclick="redirectToBoard()">목록</button>
             <button th:if="${modifiable}" class="btn btn-secondary bottom-button-r" th:onclick="|location.href='@{/board/modifying/{id}(id=${id})}'|">수정</button>
             <button th:if="${modifiable}" class="btn btn-danger bottom-button-r" data-toggle="modal" data-target="#remindModal">삭제</button>
         </div>

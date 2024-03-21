@@ -14,6 +14,6 @@ public interface PageService {
     boolean haveNext(long crrPage);
     List<BoardDto> selectedPageList(long crrPage);
 
-
+    long crrBoardPagePosition(long id);
 
 }

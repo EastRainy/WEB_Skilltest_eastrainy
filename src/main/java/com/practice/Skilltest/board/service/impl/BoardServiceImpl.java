@@ -91,15 +91,11 @@ public class BoardServiceImpl implements BoardService {
         //요청이 해당 게시글의 게시자와 동일한 유저가 요청하였는지 확인
         if(boardDao.getWriter(id).equals(username)){ return true; }
 
-        logger.info("삭제자가 게시자와 다른 요청");
+
         //만약 아니라면 해당 요청이 어드민 요청인지 확인
         if(userAuthority.contains(new SimpleGrantedAuthority(UserRoles.ADMIN.getValue()))) {
-            
-            logger.info("어드민 게시글 삭제요청");
             return true;
         }
-
-        logger.info("삭제자가 게시자와 다르고 어드민이 아닌 요청 무시");
         return false;
     }
 

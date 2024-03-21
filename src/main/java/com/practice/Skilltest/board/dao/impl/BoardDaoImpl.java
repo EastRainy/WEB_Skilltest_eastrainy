@@ -50,13 +50,17 @@ public class BoardDaoImpl implements BoardDao {
     }
 
     @Override
-    public int selectCount() {
+    public long selectCount() {
         return sqlSession.selectOne("selectCount");
     }
+
+    public long selectNewer(long id){ return sqlSession.selectOne("selectNewer"); }
     @Override
     public List<BoardDto> selectPageRange(long offset) {
         return sqlSession.selectList("selectPageRange", offset);
     }
+
+
 
 
 }
