@@ -72,8 +72,14 @@
     </delete>
 
     <!-- 페이징 처리를 위한 총 게시물 갯수 조회 -->
-    <select id="selectCount" resultType="int">
+    <select id="selectCount" resultType="long">
         SELECT COUNT(*) FROM board_table
+    </select>
+
+    <!-- 기존 보던 페이지 복귀 기능을 위한 게시글 id 보다 최신인 게시물 갯수 조회 -->
+    <select id="selectNewer" parameterType="long" resultType="long">
+        SELECT COUNT(*) FROM board_table
+        WHERE b_id > #{id}
     </select>
 
     <!-- 10개(페이지)단위로 게시물 목록 조회 -->
@@ -84,5 +90,4 @@
     </select>
 
 
-    
 </mapper>

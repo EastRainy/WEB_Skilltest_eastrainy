@@ -22,7 +22,8 @@ public interface BoardDao {
 
 
     // --- page ---
-    int selectCount();
+    long selectCount();
+    long selectNewer(long id);
     List<BoardDto> selectPageRange(long offset);
 
 

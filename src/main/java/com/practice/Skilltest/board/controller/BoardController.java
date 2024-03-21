@@ -1,6 +1,8 @@
 package com.practice.Skilltest.board.controller;
 
+import com.google.gson.JsonObject;
 import com.practice.Skilltest.board.dto.BoardDto;
+import com.practice.Skilltest.board.dto.BoardIdCarrier;
 import com.practice.Skilltest.board.service.BoardService;
 import com.practice.Skilltest.board.service.PageService;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +10,7 @@ import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
@@ -49,6 +52,21 @@ public class BoardController {
 
         return "html/board/boardmain";
     }
+
+    //메뉴 복귀 시 해당 게시물이 위치한 페이지를 확인 API
+    @ResponseBody
+    @PostMapping("/board/pagerequest/")
+    public ResponseEntity<String> returnPageById(@RequestBody BoardIdCarrier idCarrier){
+
+        JsonObject jo = new JsonObject();
+        HttpHeaders header = new HttpHeaders();
+        header.setContentType(MediaType.APPLICATION_JSON);
+
+        jo.addProperty("destination", pageService.crrBoardPagePosition(idCarrier.getId()));
+
+        return new ResponseEntity<>(jo.toString(), header, HttpStatus.OK);
+    }
+
 
     //게시물 조회 GET
     @RequestMapping(method = RequestMethod.GET, path = "/board/view/{id}")
