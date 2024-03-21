@@ -20,7 +20,7 @@
             <div class="row">
                 <div class="form-group col-8">
                     <label for="title">제목 : </label>
-                    <input type="text" class="form-control" th:field="*{title}" style="width:70%"/>
+                    <input type="text" class="form-control" th:field="*{title}" style="width:70%" required/>
                 </div>
                 <div class="form-group col-4">
                     <label for="writer">글쓴이 : </label>
@@ -29,16 +29,19 @@
             </div>
             <div class="form-group">
                 <label for="editor">내용 : </label><br>
-                <textarea class="form-control" th:field="*{content}" id="editor" ></textarea>
-                <div class="words-counter-box">
-                    <p class="editor-words-counter">counter</p>
-                </div>
+                <textarea class="form-control" th:field="*{content}" id="editor" required></textarea>
             </div>
-            <hr>
-            <button type="button" class="btn btn-success bottom-button-r" id="send-button" data-toggle="modal" data-target="#remindModal">수정</button>
-            <button type="button" class="btn btn-secondary bottom-button-r" th:onclick="|location.href='@{/board/view/{id}(id=${id})}'|">취소</button>
         </fieldset>
     </form>
+    <div class="words-counter-box">
+        <p class="editor-words-counter">counter</p>
+    </div>
+    <hr>
+    <div>
+        <button type="button" class="btn btn-success bottom-button-r" id="send-button" data-toggle="modal" data-target="#remindModal">수정</button>
+        <button type="button" class="btn btn-secondary bottom-button-r" th:onclick="|location.href='@{/board/view/{id}(id=${id})}'|">취소</button>
+    </div>
+
 
 
     <!-- modal -->
@@ -55,7 +58,7 @@
                     <p>정말 게시글을 수정하시겠습니까?</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" onclick="sendBoardForm()">수정</button>
+                    <button type="button" class="btn btn-success" onclick="sendModifyForm()">수정</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
                 </div>
             </div>

@@ -12,6 +12,12 @@ ClassicEditor
 		        const limitExceed = stats.characters > maxCharacter;
 
 		        wordCounter.textContent = `${stats.characters} / 2000`;
+
+		        if(limitExceed){
+                    wordCounter.classList.add("limitexceed");
+		        }else{
+                    wordCounter.classList.remove("limitexceed");
+		        }
 		        sendButton.toggleAttribute('disabled', limitExceed);
 		    }
 		}

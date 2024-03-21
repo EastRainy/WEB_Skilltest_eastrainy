@@ -10,14 +10,14 @@
 <body>
     <div th:replace="/html/common/navbar.html :: navbar-div">navbar div</div>
     <div class="container-xl mt-5">
-        <form th:action="@{/board/new}" name="newBoard" method="post">
+        <form th:action="@{/board/new}" id="newForm" name="newBoard" method="post">
             <fieldset>
                 <legend>새 게시물 생성</legend>
                 <hr>
                 <div class="row">
                     <div class="form-group col-8">
                         <label for="title">제목 : </label>
-                        <input type="text" class="form-control" id="title" name="title" style="width:70%"/>
+                        <input type="text" class="form-control" id="title" name="title" style="width:70%" required/>
                     </div>
                     <div class="form-group col-4">
                         <label for="writer">글쓴이 : </label>
@@ -26,20 +26,24 @@
                 </div>
                 <div class="form-group">
                     <label for="editor">내용 : </label><br>
-                    <textarea class="content" name="content" id="editor"></textarea>
-                    <div class="words-counter-box">
-                        <p class="editor-words-counter"></p>
-                    </div>
+                    <textarea class="content" name="content" id="editor" required></textarea>
                 </div>
-                <hr>
-                <button type="submit" class="btn btn-success bottom-button-r" id="send-button">작성</button>
             </fieldset>
         </form>
+        <div class="words-counter-box">
+            <p class="editor-words-counter"></p>
+        </div>
+        <hr>
+        <div>
+            <button type="submit" class="btn btn-success bottom-button-r" id="send-button" onclick="sendNewForm()">작성</button>
+            <button type="button" class="btn btn-secondary bottom-button-r" th:onclick="|location.href='@{/board/1}'|">취소</button>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>+
+    <script src="/js/board/boardmodifying.js"></script>
     <script src="/ckeditor/ckeditor5-config.js"></script>
 </body>
 </html>

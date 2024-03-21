@@ -24,3 +24,14 @@ button.bottom-button-l{
     min-height: 500px;
     min-width: 100%;
 }
+
+.words-counter-box{
+    text-align: right;
+}
+
+p.editor-words-counter{
+    color: black;
+}
+p.editor-words-counter.limitexceed{
+    color: red;
+}
