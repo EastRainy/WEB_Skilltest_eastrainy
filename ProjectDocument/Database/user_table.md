@@ -38,9 +38,6 @@ CREATE TABLE usertable (
 )
 ```
 
-
-
-
 ---
 
 테이블 테스트 데이터 삽입 SQL
