@@ -73,7 +73,7 @@ public class BoardController {
             model.addAttribute("result", boardService.viewOne(id));
             model.addAttribute("id", id);
             //해당 id의 게시물을 조회 시도
-            if(boardService.checkValidModify(id, user.getUsername(), user.getAuthorities())){
+            if(boardService.checkValidRequester(id, user.getUsername(), user.getAuthorities())){
                 model.addAttribute("modifiable",true);
             }//해당 게시물의 작성자 혹은 수정권한이 있는 경우 수정여부 속성 추가
         }
@@ -99,7 +99,17 @@ public class BoardController {
     @ResponseBody
     public ResponseEntity<?> newBoardPost(BoardDto req){
         HttpHeaders h = new HttpHeaders();
-        long dest = boardService.newBoard(req);
+        long dest;
+
+        try{
+            dest = boardService.newBoard(req);
+        }
+        catch (Exception e){
+            System.out.println(e.toString());
+            h.setLocation(URI.create("/board"));
+            return new ResponseEntity<>(h, HttpStatus.BAD_REQUEST);
+        }
+
         //req를 이용하여 새로운 게시글 생성 서비스 이용, 리턴값은 새로 생성된 게시글의 id
 
         //새로 만들어진 게시글의 id를 이용하여 URI 생성하여 게시글 내용으로 이동
@@ -113,7 +123,7 @@ public class BoardController {
     public String modifyingBoardGet(@PathVariable("id") long id, Model model, @AuthenticationPrincipal User user){
 
         try {
-            if(!boardService.checkValidModify(id, user.getUsername(), user.getAuthorities())){
+            if(!boardService.checkValidRequester(id, user.getUsername(), user.getAuthorities())){
                 throw new Exception("Not Valid to modify");
             }
             BoardDto result = boardService.viewOne(id);
