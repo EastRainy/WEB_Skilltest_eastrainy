@@ -107,7 +107,6 @@ public class BoardController {
             dest = boardService.newBoard(req);
         }
         catch (Exception e){
-            System.out.println(e.toString());
             h.setLocation(URI.create("/board"));
             return new ResponseEntity<>(h, HttpStatus.BAD_REQUEST);
         }

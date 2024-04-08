@@ -7,7 +7,6 @@ import com.practice.Skilltest.user.role.UserRoles;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.repository.query.ParameterOutOfBoundsException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Repository;
@@ -19,7 +18,7 @@ import java.util.Map;
 @Repository
 public class BoardServiceImpl implements BoardService {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    //private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final BoardDao boardDao;
 
     public BoardServiceImpl(BoardDao boardDao) {
@@ -100,10 +99,7 @@ public class BoardServiceImpl implements BoardService {
 
 
         //만약 아니라면 해당 요청이 어드민 요청인지 확인
-        if(userAuthority.contains(new SimpleGrantedAuthority(UserRoles.ADMIN.getValue()))) {
-            return true;
-        }
-        return false;
+        return userAuthority.contains(new SimpleGrantedAuthority(UserRoles.ADMIN.getValue()));
     }
 
     //입력받은 board데이터의 데이터 입력 여부 및 데이터 크기 검증
