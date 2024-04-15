@@ -17,13 +17,19 @@
     </select>
 
     <!-- 회원가입 -->
-    <insert id="signup_user" parameterType="com.practice.Skilltest.user.dto.UserSignupEntity">
-        INSERT INTO user_table(
-        user_name, user_password
-        )
-        VALUES(
-        #{username}, #{password}
-        )
+    <insert id="signup_user" parameterType="map">
+        <selectKey resultType="int" keyProperty="u_id" order="BEFORE">
+            WITH new_user AS(
+                INSERT INTO user_table(user_name, user_password)
+                VALUES (#{username}, #{password})
+                RETURNING u_id
+            )
+            SELECT u_id
+            FROM new_user
+        </selectKey>
+        INSERT INTO user_private_data(u_id, user_personname, user_birthdate, user_phone, user_postnum, user_address,
+        user_address_detail, user_email)
+        VALUES (#{u_id}, #{personname}, #{birthdate}, #{phone}, #{postnum}, #{address}, #{address_detail}, #{email})
     </insert>
 
     <update id="lastlogin_update" parameterType="String">

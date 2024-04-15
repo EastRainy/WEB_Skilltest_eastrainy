@@ -1,7 +1,6 @@
 package com.practice.Skilltest.user.service.Impl;
 
 import com.practice.Skilltest.user.dao.UserLoginDao;
-import com.practice.Skilltest.user.dto.UserEntity;
 import com.practice.Skilltest.user.dto.UserSignupEntity;
 import com.practice.Skilltest.user.role.UserRoles;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,8 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 
 @Service
@@ -57,17 +55,24 @@ public class UserServiceImpl implements UserDetailsService {
     //회원가입
     public void signupUser(UserSignupEntity userEntity) throws Exception{
 
+        Map<String, Object> params;
+
+        //비밀번호 확인
         if(!userEntity.getPassword().equals(userEntity.getPassword_check())){
             throw new Exception("비밀번호와 비밀번호 확인이 다릅니다.");
         }
-
-        if(checkByUsername(userEntity.getUsername())) {
-            userEntity.setPassword(bCryptPasswordEncoder.encode(userEntity.getPassword()));
-            userLoginDao.signup_user(userEntity);
-        }
-        else{
+        else if(!checkByUsername(userEntity.getUsername())){
             throw new Exception("중복되는 아이디입니다.");
         }
+
+        params = userEntity.toMap();
+        params.put("password",bCryptPasswordEncoder.encode(userEntity.getPassword()));
+
+        //테스트용 맵 데이터 입력
+
+
+        userLoginDao.signup_user(params);
+
     }
 
     //로그인 성공시 해당 username의 마지막 로그인 시간 갱신

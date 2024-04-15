@@ -78,7 +78,7 @@ public class UserController {
             }
             jo.addProperty("responseMessage", messageBuilder.toString());
             jo.addProperty("status", HttpStatus.UNPROCESSABLE_ENTITY.value());
-            System.out.println("서버 응답 : "+jo.toString());
+            //System.out.println("서버 응답 : "+jo.toString());
             return new ResponseEntity<>(jo.toString(), headers, HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
@@ -89,7 +89,7 @@ public class UserController {
             messageBuilder.append(e.getMessage());
             jo.addProperty("responseMessage", messageBuilder.toString());
             jo.addProperty("status", HttpStatus.BAD_REQUEST.value());
-            System.out.println("서버 응답 : "+jo.toString());
+            //System.out.println("서버 응답 : "+jo.toString());
             return new ResponseEntity<>(jo.toString(),headers, HttpStatus.BAD_REQUEST);
         }
 
@@ -99,11 +99,16 @@ public class UserController {
 
     }
 
-
     //회원가입 성공 페이지--------------------
     @GetMapping("/signupSuccess")
     public String signup_success(){
         return "html/user/signupSuccess";
+    }
+
+
+    @GetMapping("/mypage")
+    public String mypage_get(){
+        return "/html/user/mypage";
     }
 
 }
