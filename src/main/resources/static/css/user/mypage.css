@@ -3,17 +3,16 @@ body {
   height: 100%;
 }
 
-body {
+.container-body {
     display: flex;
     align-items: center;
     padding-top: 40px;
     padding-bottom: 40px;
-    text-align: center;
     background-color: #f8f9fa;
 }
 .form-main{
     width: 100%;
-    max-width: 700px;
+    max-width: 900px;
     padding: 15px;
     margin: auto;
 }
@@ -41,7 +40,7 @@ a.btn-block {
   margin-top: 20px;
 }
 
-p.announce-pw, p.announce-id, p.announce-bottom{
+p.announce-pw, p.announce-bottom{
     color: #ff3939;
     font-size : 13px;
 }

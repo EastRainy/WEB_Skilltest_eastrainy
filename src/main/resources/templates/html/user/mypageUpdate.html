@@ -13,43 +13,47 @@
     <main class="form-main">
         <h1>My Page</h1>
         <hr>
-        <form id="signupForm" th:object="${userData}" onsubmit="return false" method="post">
+        <form id="updateForm" th:object="${userData}" onsubmit="return false" method="post">
             <div class="form-group">
                 <label for="username">ID</label>
                 <input type="text" class="form-control" id="username" th:field="*{username}" placeholder="아이디" readonly/>
             </div>
             <div class="form-group">
                 <label for="password">비밀번호</label>
-                <input type="password" class="form-control" id="password" th:field="*{password}" placeholder="비밀번호" readonly/>
+                <input type="password" class="form-control" id="password" th:field="*{password}" placeholder="비밀번호" required/>
+            </div>
+            <div class="form-group">
+                <label for="password_check">비밀번호 확인</label>
+                <input type="password" class="form-control" id="password_check" th:field="*{password_check}" placeholder="비밀번호 확인" required/>
             </div>
             <div class="form-group">
                 <label for="email">이메일</label>
-                <input type="text" class="form-control" id="email" th:field="*{email}" readonly/>
+                <input type="text" class="form-control" id="email" th:field="*{email}" placeholder="이메일 입력"/>
             </div>
             <div class="form-group">
                 <label for="personname">이름</label>
-                <input type="text" class="form-control" id="personname" th:field="*{personname}" readonly/>
+                <input type="text" class="form-control" id="personname" th:field="*{personname}" placeholder="홍길동"/>
             </div>
             <div class="form-group">
                 <label for="birthdate">생년월일</label>
-                <input type="text" class="form-control" id="birthdate" th:field="*{birthdate}" readonly/>
+                <input type="text" class="form-control" id="birthdate" th:field="*{birthdate}" placeholder="20001011"/>
             </div>
             <div class="form-group">
                 <label for="phone">전화번호</label>
-                <input type="text" class="form-control" id="phone" th:field="*{phone}" readonly/>
+                <input type="text" class="form-control" id="phone" th:field="*{phone}" placeholder="01000001111"/>
             </div>
             <div class="form-group">
                 <label for="postnum">우편번호</label>
-                <input type="text" class="form-control" id="postnum" th:field="*{postnum}" readonly/>
+                <input type="text" class="form-control" id="postnum" th:field="*{postnum}" placeholder="12345"/>
             </div>
             <div class="form-group">
                 <label for="address">주소</label>
                 <div class="form-row">
                     <div class="col">
-                        <input type="text" class="form-control" id="address" th:field="*{address}" readonly/>
+                        <input type="text" class="form-control" id="address" th:field="*{address}" placeholder="서울특별사 마포구"/>
                     </div>
                     <div class="col">
-                        <input type="text" class="form-control" id="address_detail" th:field="*{address_detail}" readonly/>
+                        <input type="text" class="form-control" id="address_detail" th:field="*{address_detail}" placeholder="테스트길 10 222호"/>
                     </div>
                 </div>
             </div>
@@ -61,7 +65,7 @@
                 <a th:href="@{/main}" class="btn btn-secondary btn-block">메인으로</a>
             </div>
             <div class="form-group col-md-6">
-                <a th:href="@{/mypage/update}" class="btn btn-primary btn-block">수정</a>
+                <button type="button" class="btn btn-primary btn-block" onclick="doSubmit()">수정</button>
             </div>
         </div>
     </main>

@@ -2,41 +2,51 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<!-- 유저 로그인 XML -->
-<mapper namespace="com.practice.Skilltest.user.dao.UserLoginDao">
+<!-- 로그인, 회원가입을 제외한 유저기능을 위한 매퍼  -->
+<mapper namespace="com.practice.Skilltest.user.dao.UserDao">
 
-    <!-- 아이디 조회 -->
-    <select id="refer_id" parameterType="String" resultType="java.lang.String">
-        SELECT user_name FROM user_table
-        WHERE user_name=#{username}
-    </select>
-    <!-- 존재하는 아이디 기반 비밀번호 조회 -->
-    <select id="refer_pw" parameterType="String" resultType="java.lang.String">
-        SELECT user_password FROM user_table
-        WHERE user_name=#{username}
+    <resultMap id="userDetailDto" type="com.practice.Skilltest.user.dto.UserDetailDto">
+        <result column="user_name" property="username"/>
+        <result column="user_personname" property="personname"/>
+        <result column="user_birthdate" property="birthdate"/>
+        <result column="user_phone" property="phone"/>
+        <result column="user_email" property="email"/>
+        <result column="user_postnum" property="postnum"/>
+        <result column="user_address" property="address"/>
+        <result column="user_address_detail" property="address_detail"/>
+    </resultMap>
+
+    <!-- 입력된 유저 이름으로 저장된 유저데이터 조회 -->
+    <select id="getUserData" parameterType="String" resultMap="userDetailDto">
+        SELECT userData.*,
+               ut.user_name as user_name
+        FROM user_private_data AS userData
+                 JOIN public.user_table as ut on ut.u_id = userData.u_id
+        WHERE ut.user_name = #{username};
     </select>
 
-    <!-- 회원가입 -->
-    <insert id="signup_user" parameterType="map">
-        <selectKey resultType="int" keyProperty="u_id" order="BEFORE">
-            WITH new_user AS(
-                INSERT INTO user_table(user_name, user_password)
-                VALUES (#{username}, #{password})
-                RETURNING u_id
+    <!-- 패스워드 변경 -->
+    <update id="updatePassword" parameterType="map">
+        UPDATE user_table SET user_password = #{password}
+        WHERE u_id = #{id};
+    </update>
+
+    <!-- user_private_data update SQL -->
+    <update id="updateUserData" parameterType="map">
+        <selectKey resultType="int" keyProperty="id" order="BEFORE">
+            WITH find_user AS(
+                SELECT u_id FROM user_table
+                WHERE user_name = #{username}
             )
-            SELECT u_id
-            FROM new_user
+            SELECT u_id FROM find_user;
         </selectKey>
-        INSERT INTO user_private_data(u_id, user_personname, user_birthdate, user_phone, user_postnum, user_address,
-        user_address_detail, user_email)
-        VALUES (#{u_id}, #{personname}, #{birthdate}, #{phone}, #{postnum}, #{address}, #{address_detail}, #{email})
-    </insert>
-
-    <update id="lastlogin_update" parameterType="String">
-        UPDATE user_table
+        UPDATE user_private_data
         SET
-        user_lastlogin = now()
-        WHERE user_name = #{username}
+            user_personname = #{personname}, user_birthdate = #{birthdate},
+            user_phone = #{phone}, user_email = #{email},
+            user_postnum = #{postnum}, user_address = #{address},
+            user_address_detail = #{address_detail}
+        WHERE u_id = #{id};
     </update>
 
 </mapper>

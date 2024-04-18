@@ -13,7 +13,7 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @Component
-public class UserSignupEntity {
+public class UserDto {
 
     @NotBlank(message = "아이디를 입력해주세요.")
     @Size(min=4,max=20,message="ID는 4자 이상 20자 이하여야 합니다.")
@@ -29,26 +29,14 @@ public class UserSignupEntity {
     @NotBlank(message = "비밀번호 확인을 입력해주세요.")
     private String password_check;
 
-    private String personname;
-    private String birthdate;
-    private String phone;
-    private String email;
-    private int postnum;
-    private String address;
-    private String address_detail;
-
     public Map<String,Object> toMap(){
         Map<String,Object> map = new HashMap<>();
 
         map.put("username",username);
-        map.put("person_name",personname);
-        map.put("birthdate",birthdate);
-        map.put("phone",phone);
-        map.put("email",email);
-        map.put("postnum",postnum);
-        map.put("address",address);
-        map.put("address_detail",address_detail);
+        map.put("password",password);
+        map.put("password_check",password_check);
         return map;
 
     }
+
 }
