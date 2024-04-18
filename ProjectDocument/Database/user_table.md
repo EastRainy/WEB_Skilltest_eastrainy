@@ -21,7 +21,7 @@
 
 오직 로그인 관련 정보만 저장되는 테이블로 유저의 개인 데이터 항목은 저장 x 예정
 
-개인정보항목은 privdata 테이블 이용할 예정
+개인정보항목은 user_private_data 테이블 이용할 예정
 
 ---
 
@@ -44,8 +44,22 @@ CREATE TABLE usertable (
 ---
 
 테이블 테스트 데이터 삽입 SQL
-
+user_table만
 ```postgresql
-INSERT INTO usertable(user_name, user_password, user_salt)
+INSERT INTO user_table(user_name, user_password, user_salt)
 VALUES ('testuser', 'testpassword', 'testsalt')
 ```
+
+
+user_private_data 포함 생성
+```postgresql
+WITH new_user AS (
+INSERT INTO user_table (user_name, user_password)
+VALUES ('testuser', 'testpassword')
+RETURNING u_id
+)
+INSERT INTO user_private_data (u_id)
+SELECT u_id
+FROM new_user;
+```
+

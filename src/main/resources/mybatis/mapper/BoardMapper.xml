@@ -33,7 +33,6 @@
 
     <!-- 신규 게시물 생성 -->
     <insert id="newBoard" parameterType="com.practice.Skilltest.board.dto.BoardDto">
-
         INSERT INTO board_table(
         writer, title, content
         )

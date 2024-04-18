@@ -1,11 +1,11 @@
 package com.practice.Skilltest.user.dao.Impl;
 
 import com.practice.Skilltest.user.dao.UserLoginDao;
-import com.practice.Skilltest.user.dto.UserEntity;
-import com.practice.Skilltest.user.dto.UserSignupEntity;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.util.Map;
 
 @Repository
 public class UserLoginDaoImpl implements UserLoginDao {
@@ -25,12 +25,11 @@ public class UserLoginDaoImpl implements UserLoginDao {
     public String refer_pw(String username) {
         return sqlSession.selectOne("refer_pw", username);
     }
-    
-    
+
     //userEntity 정보로 유저 가입
     @Override
-    public boolean signup_user(UserSignupEntity userEntity) {
-        return (1==sqlSession.insert("user", userEntity));
+    public boolean signup_user(Map<String, Object> params) {
+        return (1==sqlSession.insert("params", params));
     }
     
     //해당 유저의 마지막 로그인 시간 업데이트

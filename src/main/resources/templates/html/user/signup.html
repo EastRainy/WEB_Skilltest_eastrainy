@@ -10,7 +10,7 @@
 <div class="container signup-container">
   <main class="form-main">
   <h2>회원가입</h2>
-  <form id="signupForm" th:action="@{/signup}" th:object="${user}" onsubmit="return false" method="post">
+  <form id="updateForm" th:action="@{/signup}" th:object="${user}" onsubmit="return false" method="post">
     <div class="form-group">
       <label for="username">ID</label>
       <input type="text" class="form-control" id="username" th:field="*{username}" placeholder="아이디" required/>
@@ -42,7 +42,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="/js/signup.js"></script>
+<script src="/js/user/signup.js"></script>
 
 </body>
 </html>

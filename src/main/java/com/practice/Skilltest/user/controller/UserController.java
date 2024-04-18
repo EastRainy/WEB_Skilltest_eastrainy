@@ -3,15 +3,20 @@ package com.practice.Skilltest.user.controller;
 
 
 import com.google.gson.JsonObject;
+import com.practice.Skilltest.user.dto.UserDetailDto;
 import com.practice.Skilltest.user.dto.UserEntity;
-import com.practice.Skilltest.user.dto.UserSignupEntity;
+import com.practice.Skilltest.user.dto.UserDto;
 import com.practice.Skilltest.user.service.Impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,6 +34,7 @@ import java.util.List;
 public class UserController {
 
 
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
     @Autowired
     UserServiceImpl userService;
 
@@ -51,7 +57,7 @@ public class UserController {
     //회원가입 페이지 요청---------------------
     @GetMapping("/signup")
     public String signup_get(Model model){
-        model.addAttribute("user", new UserSignupEntity());
+        model.addAttribute("user", new UserDto());
         return "html/user/signup";
     }
 
@@ -59,17 +65,17 @@ public class UserController {
     //우선 기존 구현된 코드로 테스트
     @PostMapping(value = "/signup")
     @ResponseBody
-    public ResponseEntity<String> signup_post(@RequestBody @Validated UserSignupEntity user,
+    public ResponseEntity<String> signup_post(@RequestBody @Validated UserDto user,
                                             BindingResult bindingResult, Model model){
 
         StringBuilder messageBuilder = new StringBuilder();
 
+        //응답을 위한 json오브젝트
         JsonObject jo = new JsonObject();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         //입력 Validation 검증 실패시
-
         if(bindingResult.hasErrors()){
             List<ObjectError> errorList = bindingResult.getAllErrors();
             for(ObjectError e : errorList){
@@ -78,32 +84,84 @@ public class UserController {
             }
             jo.addProperty("responseMessage", messageBuilder.toString());
             jo.addProperty("status", HttpStatus.UNPROCESSABLE_ENTITY.value());
-            System.out.println("서버 응답 : "+jo.toString());
+            //System.out.println("서버 응답 : "+jo.toString());
             return new ResponseEntity<>(jo.toString(), headers, HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
         try {
             userService.signupUser(user);
         }
-        catch(Exception e){
+        catch(Exception e){ // 처리 중 에러 발생 시
             messageBuilder.append(e.getMessage());
             jo.addProperty("responseMessage", messageBuilder.toString());
             jo.addProperty("status", HttpStatus.BAD_REQUEST.value());
-            System.out.println("서버 응답 : "+jo.toString());
             return new ResponseEntity<>(jo.toString(),headers, HttpStatus.BAD_REQUEST);
         }
-
+        
+        //에러 없이 회원가입 성공시
         jo.addProperty("responseMessage", "회원가입 성공");
         jo.addProperty("status", HttpStatus.CREATED.value());
         return new ResponseEntity<>(jo.toString(), headers, HttpStatus.CREATED);
 
     }
 
-
     //회원가입 성공 페이지--------------------
     @GetMapping("/signupSuccess")
     public String signup_success(){
         return "html/user/signupSuccess";
+    }
+
+    //MyPage GET 조회 접근
+    @GetMapping("/mypage")
+    public String mypage_get(Model model, @AuthenticationPrincipal User user){
+
+        UserDetailDto userData = userService.getUserDetails(user);
+        model.addAttribute("userData", userData);
+
+        return "/html/user/mypage";
+    }
+    //MyPage 수정 페이지
+    @GetMapping("/mypage/update")
+    public String mypage_update(Model model, @AuthenticationPrincipal User user){
+
+        model.addAttribute("userData", userService.getUserDetails(user));
+        return "html/user/mypageUpdate";
+    }
+
+    //MyPage 수정 요청이 왔을 시
+    @PostMapping("/mypage/update")
+    @ResponseBody
+    public ResponseEntity<String> mypage_post(Model model, @AuthenticationPrincipal User user,
+                                              @RequestBody @Validated UserDetailDto userData){
+
+        /*TODO MyPage를 통해 유저 데이터를 변경하는 경우 처리
+         *  1. 입/출력 및 데이터베이스 변경 로직 확인
+         *  2. Validation 처리
+         *  3. 주소 API 등 타 API 기능 도입 이후 최종 여부 확인 */
+
+        JsonObject jo = new JsonObject();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        try {
+            boolean success = userService.updateUserData(userData, user.getUsername());
+                if (success) {
+                        jo.addProperty("responseMessage", "유저 정보 수정 성공");
+                        jo.addProperty("status", HttpStatus.OK.value());
+                        return new ResponseEntity<>(jo.toString(), headers, HttpStatus.CREATED);
+
+                } else {
+                    jo.addProperty("responseMessage", "유저 정보 수정 실패");
+                    jo.addProperty("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+                    log.info("데이터 변경 실패");
+                    return new ResponseEntity<>(jo.toString(), headers, HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+        } catch (Exception e) {
+            log.info(e.getMessage());
+            jo.addProperty("responseMessage", e.getMessage());
+            jo.addProperty("status", HttpStatus.BAD_REQUEST.value());
+            return new ResponseEntity<>(jo.toString(), headers, HttpStatus.BAD_REQUEST);
+        }
+
     }
 
 }

@@ -14,6 +14,8 @@
 | m_date    | timestamp     | now() | NOT NULL                                 |
 | content   | varchar(2000) |       |                                          |
 | viewcount | integer       | 0     | NOT NULL                                 |
+| is_hide   | boolean       | False | NOT NULL                                 |
+
 
 
 
@@ -26,7 +28,7 @@
 해당 테이블을 만들기 위한 postgre SQL
 
 ```postgresql
-CREATE TABLE boardtable (
+CREATE TABLE board_table (
 	b_id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 	writer varchar(20) NOT NULL,
 	title varchar(50) NOT NULL,
@@ -44,7 +46,7 @@ Primary key b_id 이용
 
 - INSERT
 ```postgresql
-INSERT INTO boardtable(
+INSERT INTO board_table(
     writer, title, content
 )
 VALUES(
@@ -53,12 +55,12 @@ VALUES(
 ```
 - UPDATE
 ```postgresql
-UPDATE boardtable
+UPDATE board_table
 SET
     writer = #{writer},
     title = #{title},
     content = #{content},
-    m_data = now()
+    m_date = now()
 WHERE 
     b_id = #{id}
 ```
@@ -77,7 +79,7 @@ WHERE b_id = #{id}
 
 
 ```postgresql
-INSERT INTO boardtable(
+INSERT INTO board_table(
 		writer,
 		title,
 		content
@@ -90,7 +92,7 @@ INSERT INTO boardtable(
 ```
 
 ```postgresql
-INSERT INTO boardtable(
+INSERT INTO board_table(
 		writer,
 		title,
 		content
@@ -104,7 +106,7 @@ INSERT INTO boardtable(
 )
 ```
 ```postgresql
-INSERT INTO boardtable(
+INSERT INTO board_table(
 		writer,
 		title
 	) 
@@ -114,7 +116,7 @@ INSERT INTO boardtable(
 )
 ```
 ```postgresql
-INSERT INTO boardtable(
+INSERT INTO board_table(
 		writer,
 		title,
 		content
@@ -123,14 +125,14 @@ INSERT INTO boardtable(
 	    'The Modifier',
 	    'Modified_board',
 	    '이 게시물은 수정되지 않았었습니다.'
-)
+);
 
--> 해당 실행 이후 b_id 값을 확인 후
+--=> 해당 실행 이후 b_id 값을 확인 후
 
-UPDATE boardtable SET
+UPDATE board_table SET
     m_date = now(),
     content = '이 게시물은 진짜진짜 수정되었습니다.'
-WHERE b_id = 4
+WHERE b_id = 4;
 
 ```
 

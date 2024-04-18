@@ -3,14 +3,14 @@
 function doSignup(){
     //회원가입 스크립트
 
-    const usernameInput = new String(document.getElementById('username').value);
-    const passwordInput = new String(document.getElementById('password').value);
-    const passwordCheckInput = new String(document.getElementById('password_check').value);
+    const usernameInput = String(document.getElementById('username').value);
+    const passwordInput = String(document.getElementById('password').value);
+    const passwordCheckInput = String(document.getElementById('password_check').value);
     const idMessageElement = document.querySelector('.announce-id');
     const pwMessageElement = document.querySelector('.announce-pw');
     const bottomMessageElement = document.querySelector('.announce-bottom');
     const form = document.getElementById('signupForm');
-    var formData = {
+    let formData = {
         username : document.getElementById('username').value,
         password : document.getElementById('password').value,
         password_check : document.getElementById('password_check').value
@@ -62,7 +62,7 @@ function checkId(usernameInput){
     if(!charCheck){
         throw new Error('ID는 영어 소문자, 대문자 및 숫자의 조합만 가능합니다.')
     }
-    return;
+
 }
 function checkPw(input){
     //비밀번호 체크
@@ -84,7 +84,7 @@ function checkPw(input){
     if(!checkLower||!checkUpper||!checkSpecial){
         throw new Error('비밀번호엔 영문 소문자, 대문자, 특수문자가 각각 한 개 이상 포함되어야 합니다.')
     }
-    return;
+
 
 }
 function checkPwRepeat(input1, input2){
@@ -95,7 +95,7 @@ function checkPwRepeat(input1, input2){
     if(str1 !== str2){
         throw new Error('비밀번호와 비밀번호 확인 값이 서로 다릅니다. 다시 입력해 주세요.')
     }
-    return;
+
 }
 
 //Fetch 이용 JSON 형식으로 데이터 전송

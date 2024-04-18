@@ -1,8 +1,8 @@
 package com.practice.Skilltest.user.dao;
 
-import com.practice.Skilltest.user.dto.UserEntity;
-import com.practice.Skilltest.user.dto.UserSignupEntity;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.Map;
 
 @Mapper
 public interface UserLoginDao {
@@ -12,7 +12,8 @@ public interface UserLoginDao {
 
     String refer_pw(String username);
 
-    boolean signup_user(UserSignupEntity userEntity);
+    //userEntity 정보로 유저 가입
+    boolean signup_user(Map<String, Object> params);
 
     void lastlogin_update(String username);
 

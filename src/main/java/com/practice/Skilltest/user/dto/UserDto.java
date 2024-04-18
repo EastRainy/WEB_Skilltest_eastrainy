@@ -1,19 +1,19 @@
 package com.practice.Skilltest.user.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.HashMap;
+import java.util.Map;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Component
-public class UserSignupEntity {
+public class UserDto {
 
     @NotBlank(message = "아이디를 입력해주세요.")
     @Size(min=4,max=20,message="ID는 4자 이상 20자 이하여야 합니다.")
@@ -28,4 +28,15 @@ public class UserSignupEntity {
 
     @NotBlank(message = "비밀번호 확인을 입력해주세요.")
     private String password_check;
+
+    public Map<String,Object> toMap(){
+        Map<String,Object> map = new HashMap<>();
+
+        map.put("username",username);
+        map.put("password",password);
+        map.put("password_check",password_check);
+        return map;
+
+    }
+
 }
