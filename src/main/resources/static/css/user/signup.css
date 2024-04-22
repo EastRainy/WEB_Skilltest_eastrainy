@@ -3,12 +3,11 @@ body {
   height: 100%;
 }
 
-body {
+.container-body {
     display: flex;
     align-items: center;
     padding-top: 40px;
     padding-bottom: 40px;
-    text-align: center;
     background-color: #f8f9fa;
 }
 .form-main{
@@ -26,6 +25,9 @@ body {
     border-width: thin;
     border-radius: 10px;
     max-width: 900px;
+}
+.titleH2{
+    text-align: center;
 }
 
 input.form-control {

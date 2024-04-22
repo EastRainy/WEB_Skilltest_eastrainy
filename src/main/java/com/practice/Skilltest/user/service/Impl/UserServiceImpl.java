@@ -98,7 +98,6 @@ public class UserServiceImpl implements UserDetailsService {
     //사용자가 입력한 데이터로 업데이트
     public boolean updateUserData(UserDetailDto userData, String username){
         userData.setUsername(username);
-        log.info(userData.toMap().toString());
         return userDao.updateUserData(userData.toMap());
     }
 

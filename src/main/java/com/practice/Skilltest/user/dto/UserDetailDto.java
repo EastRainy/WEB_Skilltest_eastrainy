@@ -26,7 +26,7 @@ public class UserDetailDto {
     private String birthdate;
     private String phone;
     private String email;
-    private int postnum;
+    private String postnum;
     private String address;
     private String address_detail;
 
