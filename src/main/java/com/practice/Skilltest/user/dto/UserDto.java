@@ -29,6 +29,16 @@ public class UserDto {
     @NotBlank(message = "비밀번호 확인을 입력해주세요.")
     private String password_check;
 
+
+    private String personname;
+    private String birthdate;
+    private String phone;
+    private String email;
+    private String postnum;
+    private String address;
+    private String address_detail;
+
+
     public Map<String,Object> toMap(){
         Map<String,Object> map = new HashMap<>();
 

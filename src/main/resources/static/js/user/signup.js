@@ -91,12 +91,13 @@ function checkPwRepeat(input1, input2){
     //비밀번호와 비밀번호 확인 프로세스
     const str1 = input1.valueOf();
     const str2 = input2.valueOf();
-
     if(str1 !== str2){
         throw new Error('비밀번호와 비밀번호 확인 값이 서로 다릅니다. 다시 입력해 주세요.')
     }
-
 }
+
+
+
 
 //Fetch 이용 JSON 형식으로 데이터 전송
 function signupSubmit(formData){
