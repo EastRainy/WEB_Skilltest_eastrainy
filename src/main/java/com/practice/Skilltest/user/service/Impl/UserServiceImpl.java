@@ -65,13 +65,24 @@ public class UserServiceImpl implements UserDetailsService {
 
         Map<String, Object> params;
 
-        //비밀번호 확인
+        //입력된 속성중에 비어있는 공간이 있을 경우 예외처리
+        if(userDto.checkIsEmpty()){throw new Exception("요청 데이터 중 입력되지 않은 값이 있습니다.");}
+
+        //아이디, 비밀번호 확인
         if(!userDto.getPassword().equals(userDto.getPassword_check())){
             throw new Exception("비밀번호와 비밀번호 확인이 다릅니다.");
         }
         else if(!checkByUsername(userDto.getUsername())){
             throw new Exception("중복되는 아이디입니다.");
         }
+
+        //아이디, 비밀번호 외 입력데이터 검증
+
+
+
+
+
+
 
         params = userDto.toMap();
         params.put("password",bCryptPasswordEncoder.encode(userDto.getPassword()));
@@ -85,7 +96,7 @@ public class UserServiceImpl implements UserDetailsService {
         userLoginDao.lastlogin_update(username);
     }
     //username에 해당하는 아이디가 있는 지 조회하여 없는경우 true 리턴
-    private boolean checkByUsername(String username){
+    public boolean checkByUsername(String username){
         return userLoginDao.refer_id(username)==null;
     }
 

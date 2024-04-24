@@ -29,11 +29,17 @@ public class UserDto {
     @NotBlank(message = "비밀번호 확인을 입력해주세요.")
     private String password_check;
 
-
+    @NotBlank(message = "이름을 입력해주세요.")
     private String personname;
     private String birthdate;
+
     private String phone;
+    private String phone2;
+    private String phone3;
+
     private String email;
+    private String email2;
+
     private String postnum;
     private String address;
     private String address_detail;
@@ -49,4 +55,11 @@ public class UserDto {
 
     }
 
+    public boolean checkIsEmpty(){
+
+        return username.isEmpty()||password.isEmpty()||password_check.isEmpty()
+                ||personname.isEmpty()||birthdate.isEmpty()||phone.isEmpty()||phone2.isEmpty()
+                ||phone3.isEmpty()||email.isEmpty()||email2.isEmpty()||postnum.isEmpty()||
+                address.isEmpty()||address_detail.isEmpty();
+    }
 }

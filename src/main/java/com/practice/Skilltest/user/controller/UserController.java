@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -104,6 +105,30 @@ public class UserController {
         return new ResponseEntity<>(jo.toString(), headers, HttpStatus.CREATED);
 
     }
+
+    //회원가입시 아이디 중복여부 체크 응답
+    @PostMapping(value = "/signup/checkusername")
+    @ResponseBody
+    public ResponseEntity<String> checkUsername(@RequestBody Map<String, String> requestBody){
+
+        String username = requestBody.get("username");
+        log.info(username + "에 대한 중복여부 체크");
+
+        HttpHeaders headers = new HttpHeaders();
+        JsonObject jo = new JsonObject();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        if(userService.checkByUsername(username)){
+            jo.addProperty("usable","true");
+        }else{
+            jo.addProperty("usable","false");
+        }
+        jo.addProperty("status",HttpStatus.OK.value());
+
+        return new ResponseEntity<>(jo.toString(), headers, HttpStatus.OK);
+
+    }
+
 
     //회원가입 성공 페이지--------------------
     @GetMapping("/signupSuccess")
