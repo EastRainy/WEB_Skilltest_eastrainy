@@ -43,7 +43,12 @@ a.btn-block {
   margin-top: 20px;
 }
 
-p.announce-pw, p.announce-id, p.announce-bottom{
+div.announce-green{
+    color: #299630;
+    font-size : 13px;
+}
+
+div.announce-red{
     color: #ff3939;
     font-size : 13px;
 }
