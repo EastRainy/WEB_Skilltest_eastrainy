@@ -6,8 +6,6 @@ let usernameValidate = false;
 window.onload = function () {
     document.getElementById('password').addEventListener('change', function (e) {passwordValidationEvent()})
     document.getElementById('password_check').addEventListener('change', function (e) { passwordCheckValidationEvent()})
-
-
 }
 
 
@@ -87,7 +85,7 @@ function signupSubmit(formData){
         })
         .then((data) => {
             if(data.status === 201){
-                var replacePage = location.protocol+'//'+location.host+'/signupSuccess';
+                let replacePage = location.protocol+'//'+location.host+'/signupSuccess';
                 window.location.replace(replacePage);
             }
             else if (data.status === 400 || data.status === 422){
@@ -224,9 +222,6 @@ function checkPw(input){
     const checkLength = input.length<10 || input.length>30;
     //정규식 통하여 각각 확인해야 하는 케이스의 경우 정의
 
-    console.log(input + ', ' + checkValid)
-    console.log(input + ', ' + checkLength)
-    console.log(input + ', ' + !checkLower||!checkUpper||!checkSpecial)
     //통과하지 못한 경우 에러 생성
     if(checkValid){
         throw new Error('비밀번호에 허용되지 않는 문자가 포함되어 있습니다.');
