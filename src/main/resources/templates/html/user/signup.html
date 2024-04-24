@@ -7,26 +7,106 @@
   <link rel="stylesheet" th:href="@{/css/user/signup.css}">
 </head>
 <body>
+<div class="container-body">
 <div class="container signup-container">
   <main class="form-main">
-  <h2>회원가입</h2>
+  <h2 class="titleH2">회원가입</h2>
+    <hr>
   <form id="updateForm" th:action="@{/signup}" th:object="${user}" onsubmit="return false" method="post">
     <div class="form-group">
       <label for="username">ID</label>
-      <input type="text" class="form-control" id="username" th:field="*{username}" placeholder="아이디" required/>
+      <div class="form-row align-items-center">
+        <div class="col">
+          <input type="text" class="form-control" id="username" th:field="*{username}" placeholder="아이디" required/>
+        </div>
+        <div class="col">
+          <button type="button" class="btn btn-primary" onclick="usernameServerCheck()">중복확인</button>
+        </div>
+      </div>
+      <div class="announce-id announce.red"></div>
+      <small id="idHelpBlock" class="form-text text-muted">
+        ID는 영어 소문자, 대문자 및 숫자의 조합의 4자 이상 20자 이하여야 합니다.
+      </small>
     </div>
-    <p class="announce-id">ID는 4자 이상 20자 이하여야 합니다.</p>
     <div class="form-group">
       <label for="password">비밀번호</label>
-      <input type="password" class="form-control" id="password" th:field="*{password}" placeholder="비밀번호" required/>
+      <input type="password" class="form-control w-50" id="password" th:field="*{password}" placeholder="비밀번호" required/>
+      <div class="announce-pw announce.red"></div>
+      <small id="passwordHelpBlock" class="form-text text-muted">
+        비밀번호의 길이는 10 ~ 30자이며 영어 소문자, 대문자, 특수문자가 최소 한개씩 포함되어야 합니다.
+      </small>
     </div>
-    <p class="announce-pw">비밀번호의 길이는 10 ~ 30자이며 영어 소문자, 대문자, 특수문자가 최소 한개씩 포함되어야 합니다.</p>
     <div class="form-group">
       <label for="password_check">비밀번호 확인</label>
-      <input type="password" class="form-control" id="password_check" th:field="*{password_check}" placeholder="비밀번호 확인" required/>
+      <input type="password" class="form-control w-50" id="password_check" th:field="*{password_check}" placeholder="비밀번호 확인" required/>
+      <div class="announce-pwcheck announce.red"></div>
+    </div>
+    <div class="form-group">
+      <label for="personname">이름</label>
+      <input type="text" class="form-control w-50" id="personname" th:field="*{personname}" placeholder="이름" required/>
+    </div>
+    <div class="form-group">
+      <div th:text="이메일"></div>
+      <div class="form-row align-items-center">
+        <div class="col-auto mb-2">
+          <label class="sr-only" for="emailID">이메일</label>
+          <input type="text" class="form-control" id="emailID" th:field="*{email}" placeholder="이메일" required/>
+        </div>
+        <div class="col w-75">
+          <label class="sr-only" for="email2"></label>
+          <div class="input-group mb-2">
+            <div class="input-group-prepend">
+              <div class="input-group-text">@</div>
+            </div>
+          <input type="text" class="form-control" id="email2" th:field="*{email2}" placeholder="example.com" required/>
+            <div class="input-group-prepend">
+              <label class="sr-only" for="userSelectedEmailAddress"></label>
+              <select class="custom-select" id="userSelectedEmailAddress">
+                <option selected value="">직접 입력</option>
+                <option value="naver.com">naver.com</option>
+                <option value="gmail.com">gmail.com</option>
+                <option value="daum.net">daum.net</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div th:text="전화번호"></div>
+      <div class="form-row align-item-center">
+        <div class="col-2">
+          <label class="sr-only" for="phone"></label>
+          <input type="tel" maxlength="3" class="form-control" id="phone" th:field="*{phone}" required/>
+        </div>
+        <div class="col-2">
+          <label class="sr-only" for="phone2"></label>
+          <input type="tel" maxlength="4" class="form-control" id="phone2" th:field="*{phone2}" required/>
+        </div>
+        <div class="col-2">
+          <label class="sr-only" for="phone3"></label>
+          <input type="tel" maxlength="4" class="form-control" id="phone3" th:field="*{phone3}" required/>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div th:text="생년월일"></div>
+      <input type="date" id="datePicker" class="form-control" th:field="*{birthdate}" required/>
+    </div>
+    <div class="form-group ">
+      <label for="postnum">우편번호</label>
+      <input type="text" class="form-control w-50" id="postnum" th:field="*{postnum}" placeholder="우편번호" required/>
+    </div>
+    <div class="form-group">
+      <label for="address">주소</label>
+      <input type="text" class="form-control" id="address" th:field="*{address}" placeholder="주소" required/>
+    </div>
+    <div class="form-group">
+      <label for="address_detail">상세 주소</label>
+      <input type="text" class="form-control" id="address_detail" th:field="*{address_detail}" placeholder="상세 주소" required>
     </div>
   </form>
-    <p class="announce-bottom"></p>
+    <p class="announce-bottom announce.red"></p>
     <br>
     <div class="form-row">
       <div class="form-group col-md-6">
@@ -38,11 +118,13 @@
     </div>
   </main>
 </div>
+</div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="/js/user/signup.js"></script>
+
 
 </body>
 </html>
