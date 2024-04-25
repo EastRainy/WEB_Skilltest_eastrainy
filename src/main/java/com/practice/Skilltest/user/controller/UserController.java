@@ -36,8 +36,12 @@ public class UserController {
 
 
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
-    @Autowired
     UserServiceImpl userService;
+
+    @Autowired
+    public UserController(UserServiceImpl userService) {
+        this.userService = userService;
+    }
 
     //로그인 페이지 요청--------------------------------
     @GetMapping("/login")
@@ -112,7 +116,7 @@ public class UserController {
     public ResponseEntity<String> checkUsername(@RequestBody Map<String, String> requestBody){
 
         String username = requestBody.get("username");
-        log.info(username + "에 대한 중복여부 체크");
+
 
         HttpHeaders headers = new HttpHeaders();
         JsonObject jo = new JsonObject();
@@ -124,6 +128,7 @@ public class UserController {
             jo.addProperty("usable","false");
         }
         jo.addProperty("status",HttpStatus.OK.value());
+
 
         return new ResponseEntity<>(jo.toString(), headers, HttpStatus.OK);
 

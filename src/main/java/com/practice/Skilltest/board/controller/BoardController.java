@@ -25,9 +25,8 @@ import java.net.URI;
 @RequiredArgsConstructor
 public class BoardController {
 
-    @Autowired
+
     private final BoardService boardService;
-    @Autowired
     private final PageService pageService;
 
     //메인 보드 접근시 첫번째 페이지로 리다이렉트

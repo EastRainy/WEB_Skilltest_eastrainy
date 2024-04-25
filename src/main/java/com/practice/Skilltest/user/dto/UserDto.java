@@ -34,11 +34,7 @@ public class UserDto {
     private String birthdate;
 
     private String phone;
-    private String phone2;
-    private String phone3;
-
     private String email;
-    private String email2;
 
     private String postnum;
     private String address;
@@ -49,17 +45,21 @@ public class UserDto {
         Map<String,Object> map = new HashMap<>();
 
         map.put("username",username);
-        map.put("password",password);
-        map.put("password_check",password_check);
+        map.put("personname",personname);
+        map.put("birthdate",birthdate);
+        map.put("phone",phone);
+        map.put("email",email);
+        map.put("postnum",postnum);
+        map.put("address",address);
+        map.put("address_detail",address_detail);
         return map;
 
     }
 
     public boolean checkIsEmpty(){
-
         return username.isEmpty()||password.isEmpty()||password_check.isEmpty()
-                ||personname.isEmpty()||birthdate.isEmpty()||phone.isEmpty()||phone2.isEmpty()
-                ||phone3.isEmpty()||email.isEmpty()||email2.isEmpty()||postnum.isEmpty()||
+                ||personname.isEmpty()||birthdate.isEmpty()||phone.isEmpty()
+                ||email.isEmpty()||postnum.isEmpty()||
                 address.isEmpty()||address_detail.isEmpty();
     }
 }
