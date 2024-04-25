@@ -44,11 +44,13 @@ a.btn-block {
 }
 
 div.announce-green{
+    margin-top: 3px;
     color: #299630;
     font-size : 13px;
 }
 
 div.announce-red{
+    margin-top: 3px;
     color: #ff3939;
     font-size : 13px;
 }

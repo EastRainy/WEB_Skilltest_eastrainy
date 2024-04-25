@@ -7,7 +7,6 @@ import com.practice.Skilltest.board.service.BoardService;
 import com.practice.Skilltest.board.service.PageService;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.javassist.NotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,16 +17,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import java.net.URI;
 
 @Controller
 @RequiredArgsConstructor
 public class BoardController {
 
-    @Autowired
+
     private final BoardService boardService;
-    @Autowired
     private final PageService pageService;
 
     //메인 보드 접근시 첫번째 페이지로 리다이렉트

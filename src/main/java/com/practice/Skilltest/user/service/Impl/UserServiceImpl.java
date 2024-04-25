@@ -22,7 +22,8 @@ import java.util.*;
 @Service
 public class UserServiceImpl implements UserDetailsService {
 
-    private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
+    //private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
+
     private final UserLoginDao userLoginDao;
     private final UserDao userDao;
     final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -32,7 +33,6 @@ public class UserServiceImpl implements UserDetailsService {
         this.userDao = userDao;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
-
 
     //유저 이름을 받아 db에서 정보를 가져와서 UserDetails 설정
     @Override
@@ -77,12 +77,6 @@ public class UserServiceImpl implements UserDetailsService {
         }
 
         //아이디, 비밀번호 외 입력데이터 검증
-
-
-
-
-
-
 
         params = userDto.toMap();
         params.put("password",bCryptPasswordEncoder.encode(userDto.getPassword()));
