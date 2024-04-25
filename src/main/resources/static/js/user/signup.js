@@ -4,7 +4,7 @@ let usernameValidate = false;
 
 //이벤트리스너 초기화
 window.onload = function () {
-    document.getElementById("username").addEventListener("change", function (event) {idChangeEvent()})
+    document.getElementById("username").addEventListener("change", function (e) {idChangeEvent()})
     document.getElementById('password').addEventListener('change', function (e) {passwordValidationEvent()});
     document.getElementById('password_check').addEventListener('change', function (e) { passwordCheckValidationEvent()});
     document.getElementById('userSelectedEmailAddress').addEventListener('change', function (e) {emailSelectEvent()});

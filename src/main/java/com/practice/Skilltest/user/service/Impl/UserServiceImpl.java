@@ -7,7 +7,6 @@ import com.practice.Skilltest.user.dto.UserDto;
 import com.practice.Skilltest.user.role.UserRoles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -23,7 +22,7 @@ import java.util.*;
 @Service
 public class UserServiceImpl implements UserDetailsService {
 
-    private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
+    //private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private final UserLoginDao userLoginDao;
     private final UserDao userDao;
