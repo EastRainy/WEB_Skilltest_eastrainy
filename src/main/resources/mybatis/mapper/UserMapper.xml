@@ -8,7 +8,7 @@
     <resultMap id="userDetailDto" type="com.practice.Skilltest.user.dto.UserDetailDto">
         <result column="user_name" property="username"/>
         <result column="user_personname" property="personname"/>
-        <result column="user_birthdate" property="birthdate"/>
+        <result column="user_birthdate" property="birthdate" javaType="java.time.LocalDate"/>
         <result column="user_phone" property="phone"/>
         <result column="user_email" property="email"/>
         <result column="user_postnum" property="postnum"/>

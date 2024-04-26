@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
 
 
@@ -75,11 +76,14 @@ public class UserServiceImpl implements UserDetailsService {
         else if(!checkByUsername(userDto.getUsername())){
             throw new Exception("중복되는 아이디입니다.");
         }
-
         //아이디, 비밀번호 외 입력데이터 검증
 
         params = userDto.toMap();
+        //암호화된 패스워드
         params.put("password",bCryptPasswordEncoder.encode(userDto.getPassword()));
+        //LocalDate로 변환된 bitrhdate
+        LocalDate ld = LocalDate.parse(userDto.getBirthdate());
+        params.put("birthdate",ld);
 
         userLoginDao.signup_user(params);
 

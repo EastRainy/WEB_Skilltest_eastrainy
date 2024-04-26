@@ -286,7 +286,6 @@ function passwordCheckValidationEvent(){
 }
 
 
-
 //ID 유효성 체크
 function checkId(usernameInput){
 
@@ -342,7 +341,7 @@ function phoneCheck(){
     if(phoneInput==="" || phone2Input==="" || phone3Input===""){
         throw new Error("번호를 입력해주세요.")
     }
-    return phoneInput + phone2Input + phone3Input;
+    return phoneInput +'-'+ phone2Input +'-'+ phone3Input;
 }
 //이메일 체크하여 전달
 function emailCheck(){
@@ -353,17 +352,17 @@ function emailCheck(){
     if(emailID===""||email2===""){
         throw new Error("이메일을 입력해주세요.")
     }
-    return emailID+ "@" + email2
+    return emailID+ "@" + email2;
 }
 
 //생녕월일에 대한 검사
 function checkbirthDate (){
-    const birthdate = document.getElementById('birthdate');
+    const birthdate = document.getElementById('birthdate').value;
 
     if(birthdate===""){
         throw new Error("생년월일을 입력해주세요.");
     }
-    return birthdate.value;
+    return birthdate;
 }
 
 //이메일 select 변경 시 입력 form에서 value 지정

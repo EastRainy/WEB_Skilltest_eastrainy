@@ -46,7 +46,6 @@ public class UserDto {
 
         map.put("username",username);
         map.put("personname",personname);
-        map.put("birthdate",birthdate);
         map.put("phone",phone);
         map.put("email",email);
         map.put("postnum",postnum);
