@@ -16,13 +16,15 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
 @Service
 public class UserServiceImpl implements UserDetailsService {
 
-    //private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private final UserLoginDao userLoginDao;
     private final UserDao userDao;
@@ -75,11 +77,14 @@ public class UserServiceImpl implements UserDetailsService {
         else if(!checkByUsername(userDto.getUsername())){
             throw new Exception("중복되는 아이디입니다.");
         }
-
         //아이디, 비밀번호 외 입력데이터 검증
 
         params = userDto.toMap();
+        //암호화된 패스워드
         params.put("password",bCryptPasswordEncoder.encode(userDto.getPassword()));
+        //LocalDate로 변환된 bitrhdate
+        LocalDate ld = LocalDate.parse(userDto.getBirthdate());
+        params.put("birthdate",ld);
 
         userLoginDao.signup_user(params);
 
@@ -97,12 +102,17 @@ public class UserServiceImpl implements UserDetailsService {
 
     //사용자에게 전달하기 위해 데이터베이스에서 유저의 정보를 가져옴
     public UserDetailDto getUserDetails(User user){
-        return userDao.getUserData(user.getUsername());
+
+        UserDetailDto dto = userDao.getUserData(user.getUsername());
+        dto.setBirthdate_string(dto.getBirthdate().toString());
+
+        return dto;
     }
 
     //사용자가 입력한 데이터로 업데이트
     public boolean updateUserData(UserDetailDto userData, String username){
         userData.setUsername(username);
+        userData.setBirthdate(LocalDate.parse(userData.getBirthdate_string()));
         return userDao.updateUserData(userData.toMap());
     }
 

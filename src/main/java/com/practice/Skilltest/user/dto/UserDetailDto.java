@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,7 +24,8 @@ public class UserDetailDto {
     private String password_check;
 
     private String personname;
-    private String birthdate;
+    private LocalDate birthdate;
+    private String birthdate_string;
     private String phone;
     private String email;
     private String postnum;
