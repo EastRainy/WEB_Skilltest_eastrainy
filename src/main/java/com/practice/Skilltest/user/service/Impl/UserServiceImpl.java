@@ -17,13 +17,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
 @Service
 public class UserServiceImpl implements UserDetailsService {
 
-    //private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private final UserLoginDao userLoginDao;
     private final UserDao userDao;
@@ -101,12 +102,17 @@ public class UserServiceImpl implements UserDetailsService {
 
     //사용자에게 전달하기 위해 데이터베이스에서 유저의 정보를 가져옴
     public UserDetailDto getUserDetails(User user){
-        return userDao.getUserData(user.getUsername());
+
+        UserDetailDto dto = userDao.getUserData(user.getUsername());
+        dto.setBirthdate_string(dto.getBirthdate().toString());
+
+        return dto;
     }
 
     //사용자가 입력한 데이터로 업데이트
     public boolean updateUserData(UserDetailDto userData, String username){
         userData.setUsername(username);
+        userData.setBirthdate(LocalDate.parse(userData.getBirthdate_string()));
         return userDao.updateUserData(userData.toMap());
     }
 
