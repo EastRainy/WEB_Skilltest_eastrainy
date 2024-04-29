@@ -18,6 +18,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -39,7 +42,22 @@ public class BoardController {
         if(!pageService.checkValid(page)){return "error/400";}
         //올바른 페이지가 아니라면 에러처리
 
-        model.addAttribute("resultList",pageService.selectedPageList(page));
+        //timestamp 형 자료 LocalDate 형으로 변경
+        List<BoardDto> dtos = pageService.selectedPageList(page);
+        Timestamp stmp;
+
+        for (BoardDto boardDto : dtos) {
+
+            stmp = boardDto.getCreated_time();
+
+            //if(stmp.toLocalDateTime().== LocalDateTime.now().get)
+
+
+        }
+
+        System.out.println(dtos.get(0).toString());
+
+        model.addAttribute("resultList", dtos);
         long[] pageRange = pageService.pageRange(page);
         model.addAttribute("startRange",pageRange[0]);
         model.addAttribute("endRange",pageRange[1]);
