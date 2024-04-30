@@ -11,17 +11,15 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 @Component
-
 public class BoardDto {
 
     private long board_id;
     private String writer;
     private String title;
     private Timestamp modified_time;
-    private Timestamp created_time;
-    private String created_time_date;
+    private Timestamp create_time;
+    private String create_time_date;
     private String content;
     private int viewcount;
 
-
-
+}
