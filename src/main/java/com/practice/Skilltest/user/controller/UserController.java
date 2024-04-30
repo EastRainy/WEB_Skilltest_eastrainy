@@ -153,7 +153,6 @@ public class UserController {
     //MyPage 수정 페이지
     @GetMapping("/mypage/update")
     public String mypage_update(Model model, @AuthenticationPrincipal User user){
-
         model.addAttribute("userData", userService.getUserDetails(user));
         return "html/user/mypageUpdate";
     }

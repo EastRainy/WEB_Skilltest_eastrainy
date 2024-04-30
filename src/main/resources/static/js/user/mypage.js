@@ -1,17 +1,20 @@
 
-
-
+//페이지 로딩 시 초기화
 function initialize() {
     initPhoneValues();
     initEmailValue();
 }
 
+//유저 데이터 업데이트 요청
 function doSubmit(){
+    
+    //나눠져있는 phone, email 입력 조합
+    phoneCombine();
+    emailCombine();
 
+    //전달할 유저데이터 선언하여 DOM 에서 가져오기
     let userData = {
         username: document.getElementById("username").value,
-        password: document.getElementById("password").value,
-        password_check: document.getElementById("password_check").value,
         personname: document.getElementById("personname").value,
         birthdate_string: document.getElementById("birthdate").value,
         email: document.getElementById("email").value,
@@ -20,10 +23,12 @@ function doSubmit(){
         address: document.getElementById("address").value,
         address_detail: document.getElementById("address_detail").value
     }
+    
+    //fetch 에 전달
     userDataSubmit(userData);
 }
 
-
+//업데이트 요청 fetch 부분
 function userDataSubmit(userData){
 
     fetch('/mypage/update',{
@@ -70,6 +75,7 @@ function initEmailValue(){
     document.getElementById('email1').value = splitEmailValue[0];
     document.getElementById('email2').value = splitEmailValue[1];
 }
+
 //나눠진 email값 합성하여 userData email에 넣는 함수
 function emailCombine(){
 
@@ -82,12 +88,16 @@ function emailCombine(){
     document.getElementById('email').value = emailValue;
 
 }
+
 //나눠진 phone값 합성하여 userData phone에 넣는 함수
 function phoneCombine(){
 
     let phoneValue = '';
     for(let i = 1 ; i<4; i++){
         phoneValue += document.getElementById("phone"+i).value;
+        if(i!==3){
+            phoneValue += '-';
+        }
     }
     document.getElementById("phone").value = phoneValue;
 }

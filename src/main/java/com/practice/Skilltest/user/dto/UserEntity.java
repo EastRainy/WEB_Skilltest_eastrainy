@@ -5,10 +5,11 @@ import org.springframework.stereotype.Component;
 import javax.validation.constraints.NotBlank;
 
 
-@Data//게터세터,equal,hashcode 자동생성
 @NoArgsConstructor//UserEntity() 자동생성
 @AllArgsConstructor//UserEntity(username,password)자동생성
 @Component
+@Setter
+@Getter
 public class UserEntity {
 
 

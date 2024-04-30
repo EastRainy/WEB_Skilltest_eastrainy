@@ -1,8 +1,6 @@
 package com.practice.Skilltest.user.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotBlank;
@@ -12,9 +10,10 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 @Component
 public class UserDetailDto {
 
