@@ -9,10 +9,12 @@ import javax.validation.constraints.Size;
 import java.util.HashMap;
 import java.util.Map;
 
-@Data
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Component
+@Setter
+@Getter
 public class UserDto {
 
     @NotBlank(message = "아이디를 입력해주세요.")
