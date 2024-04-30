@@ -7,6 +7,8 @@ import com.practice.Skilltest.board.service.BoardService;
 import com.practice.Skilltest.board.service.PageService;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.javassist.NotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,7 +21,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -27,6 +30,7 @@ import java.util.List;
 public class BoardController {
 
 
+    private static final Logger log = LoggerFactory.getLogger(BoardController.class);
     private final BoardService boardService;
     private final PageService pageService;
 
@@ -42,20 +46,19 @@ public class BoardController {
         if(!pageService.checkValid(page)){return "error/400";}
         //올바른 페이지가 아니라면 에러처리
 
-        //timestamp 형 자료 LocalDate 형으로 변경
+        //timestamp 형 자료 가공하여 String 형태로 전달
         List<BoardDto> dtos = pageService.selectedPageList(page);
-        Timestamp stmp;
+        Timestamp tsmp;
 
         for (BoardDto boardDto : dtos) {
-
-            stmp = boardDto.getCreated_time();
-
-            //if(stmp.toLocalDateTime().== LocalDateTime.now().get)
-
-
+            tsmp = boardDto.getCreated_time();
+            if(tsmp.toLocalDateTime().toLocalDate().equals(LocalDate.now())){
+                boardDto.setCreated_time_date(tsmp.toLocalDateTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+            }else{
+                boardDto.setCreated_time_date(tsmp.toLocalDateTime().toLocalDate().toString());
+            }
+            boardDto.setCreated_time(null);
         }
-
-        System.out.println(dtos.get(0).toString());
 
         model.addAttribute("resultList", dtos);
         long[] pageRange = pageService.pageRange(page);

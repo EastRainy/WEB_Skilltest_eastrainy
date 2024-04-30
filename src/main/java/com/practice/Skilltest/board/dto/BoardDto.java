@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
 
 
 @Getter
@@ -19,7 +18,7 @@ public class BoardDto {
     private String title;
     private Timestamp modified_time;
     private Timestamp created_time;
-    private LocalDate created_time_date;
+    private String created_time_date;
     private String content;
     private int viewcount;
 
