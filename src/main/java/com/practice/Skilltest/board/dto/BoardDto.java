@@ -23,5 +23,5 @@ public class BoardDto {
     private String content;
     private int viewcount;
 
-
+}
 
