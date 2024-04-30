@@ -5,6 +5,7 @@ import com.practice.Skilltest.board.dto.BoardDto;
 import com.practice.Skilltest.board.service.PageService;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -50,9 +51,13 @@ public class PageServiceImpl implements PageService {
     //현재 페이지에 해당하는 boardDto 리스트
     @Override
     public List<BoardDto> selectedPageList(long crrPage) {
+
+
         return boardDao.selectPageRange((10 *(crrPage-1)));
     }
 
+    
+    //요청한 게시글의 페이지 위치
     public long crrBoardPagePosition(long id){
 
         //들어온 id가 올바른 id 인지 검증, 아닐 시 첫번째 페이지로

@@ -8,6 +8,7 @@
         <result column="writer" property="writer"/>
         <result column="title" property="title"/>
         <result column="m_date" property="modified_time"/>
+        <result column="c_date" property="created_time"/>
         <result column="content" property="content"/>
         <result column="viewcount" property="viewcount"/>
     </resultMap>
@@ -83,7 +84,7 @@
 
     <!-- 10개(페이지)단위로 게시물 목록 조회 -->
     <select id="selectPageRange" resultMap="Board">
-        SELECT b_id, title, writer, viewcount FROM board_table
+        SELECT b_id, title, writer, viewcount, c_date FROM board_table
         ORDER BY b_id DESC
         LIMIT 10 OFFSET #{offset}
     </select>
