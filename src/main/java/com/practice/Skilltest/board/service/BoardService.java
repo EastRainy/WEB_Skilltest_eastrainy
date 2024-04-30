@@ -17,7 +17,7 @@ public interface BoardService {
     BoardDto viewOne(long id) throws Exception;
 
     //새로운 게시물 생성
-    long newBoard(BoardDto req);
+    long newBoard(BoardDto req) throws Exception;
 
     //게시물 수정
     boolean modifyBoard(BoardDto req, String username, Collection<? extends GrantedAuthority> userAuthority);
@@ -29,6 +29,9 @@ public interface BoardService {
     boolean deleteBoard(long id, String username, Collection<? extends GrantedAuthority> userAuthority);
 
     //게시글 수정, 삭제시 유효 요청자인지 검증
-    boolean checkValidModify(long id, String username, Collection<? extends GrantedAuthority> userAuthority);
+    boolean checkValidRequester(long id, String username, Collection<? extends GrantedAuthority> userAuthority);
+
+    //게시글의 데이터 포함여부 및 길이 검증
+    int checkValidBoard(BoardDto boardDto);
 
 }

@@ -15,6 +15,6 @@
 
     - Backend : Spring boot 2.7.9
 
-    - Frontend : bootstrap(temporary) // React(todo)
+    - Frontend : thymeleaf with bootstrap stylesheet
 ---
  - This spec of project can be changed.

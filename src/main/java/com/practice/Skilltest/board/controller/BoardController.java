@@ -7,6 +7,8 @@ import com.practice.Skilltest.board.service.BoardService;
 import com.practice.Skilltest.board.service.PageService;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.javassist.NotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,12 +20,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 public class BoardController {
 
 
+    private static final Logger log = LoggerFactory.getLogger(BoardController.class);
     private final BoardService boardService;
     private final PageService pageService;
 
@@ -39,7 +46,21 @@ public class BoardController {
         if(!pageService.checkValid(page)){return "error/400";}
         //올바른 페이지가 아니라면 에러처리
 
-        model.addAttribute("resultList",pageService.selectedPageList(page));
+        //timestamp 형 자료 가공하여 String 형태로 전달
+        List<BoardDto> dtos = pageService.selectedPageList(page);
+        Timestamp tsmp;
+
+        for (BoardDto boardDto : dtos) {
+            tsmp = boardDto.getCreated_time();
+            if(tsmp.toLocalDateTime().toLocalDate().equals(LocalDate.now())){
+                boardDto.setCreated_time_date(tsmp.toLocalDateTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+            }else{
+                boardDto.setCreated_time_date(tsmp.toLocalDateTime().toLocalDate().toString());
+            }
+            boardDto.setCreated_time(null);
+        }
+
+        model.addAttribute("resultList", dtos);
         long[] pageRange = pageService.pageRange(page);
         model.addAttribute("startRange",pageRange[0]);
         model.addAttribute("endRange",pageRange[1]);
@@ -73,7 +94,7 @@ public class BoardController {
             model.addAttribute("result", boardService.viewOne(id));
             model.addAttribute("id", id);
             //해당 id의 게시물을 조회 시도
-            if(boardService.checkValidModify(id, user.getUsername(), user.getAuthorities())){
+            if(boardService.checkValidRequester(id, user.getUsername(), user.getAuthorities())){
                 model.addAttribute("modifiable",true);
             }//해당 게시물의 작성자 혹은 수정권한이 있는 경우 수정여부 속성 추가
         }
@@ -99,7 +120,16 @@ public class BoardController {
     @ResponseBody
     public ResponseEntity<?> newBoardPost(BoardDto req){
         HttpHeaders h = new HttpHeaders();
-        long dest = boardService.newBoard(req);
+        long dest;
+
+        try{
+            dest = boardService.newBoard(req);
+        }
+        catch (Exception e){
+            h.setLocation(URI.create("/board"));
+            return new ResponseEntity<>(h, HttpStatus.BAD_REQUEST);
+        }
+
         //req를 이용하여 새로운 게시글 생성 서비스 이용, 리턴값은 새로 생성된 게시글의 id
 
         //새로 만들어진 게시글의 id를 이용하여 URI 생성하여 게시글 내용으로 이동
@@ -113,7 +143,7 @@ public class BoardController {
     public String modifyingBoardGet(@PathVariable("id") long id, Model model, @AuthenticationPrincipal User user){
 
         try {
-            if(!boardService.checkValidModify(id, user.getUsername(), user.getAuthorities())){
+            if(!boardService.checkValidRequester(id, user.getUsername(), user.getAuthorities())){
                 throw new Exception("Not Valid to modify");
             }
             BoardDto result = boardService.viewOne(id);
