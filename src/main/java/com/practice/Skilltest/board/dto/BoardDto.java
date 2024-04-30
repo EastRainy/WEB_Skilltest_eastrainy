@@ -11,7 +11,6 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 @Component
-
 public class BoardDto {
 
     private long board_id;
@@ -23,5 +22,4 @@ public class BoardDto {
     private String content;
     private int viewcount;
 
-
-
+}
