@@ -24,10 +24,10 @@
                     <td class="id" th:text="${result.getBoard_id()}"></td>
                     <td class="title">
                     <a th:href="@{/board/view/{id}(id=${result.getBoard_id()})}" th:text="${result.getTitle()}"></a>
-                </td>
-                <td class="writer" th:text="${result.getWriter()}"></td>
-                <td class="created_time_date" th:text="${result.getCreated_time_date()}"></td>
-                <td class="viewcount" th:text="${result.getViewcount()}"></td>
+                    </td>
+                    <td class="writer" th:text="${result.getWriter()}"></td>
+                    <td class="created_time_date" th:text="${result.getCreated_time_date()}"></td>
+                    <td class="viewcount" th:text="${result.getViewcount()}"></td>
                 </tr>
             </table>
         </div>

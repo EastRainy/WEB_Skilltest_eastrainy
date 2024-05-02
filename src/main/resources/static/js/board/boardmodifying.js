@@ -14,3 +14,6 @@ function sendNewForm(){
         form.submit();
     }
 }
+
+
+//TODO 데이터 전송 선 Validation check 추가할것

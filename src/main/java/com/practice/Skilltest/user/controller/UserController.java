@@ -3,11 +3,14 @@ package com.practice.Skilltest.user.controller;
 
 
 import com.google.gson.JsonObject;
+import com.practice.Skilltest.user.dto.PasswordDto;
 import com.practice.Skilltest.user.dto.UserDetailDto;
 import com.practice.Skilltest.user.dto.UserEntity;
 import com.practice.Skilltest.user.dto.UserDto;
 import com.practice.Skilltest.user.service.Impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.flogger.Flogger;
+import lombok.extern.log4j.Log4j2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +32,11 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
-
+@Log4j2
 @Controller
 @RequiredArgsConstructor
 public class UserController {
 
-
-    private static final Logger log = LoggerFactory.getLogger(UserController.class);
     UserServiceImpl userService;
 
     @Autowired
@@ -160,7 +161,7 @@ public class UserController {
     //MyPage 수정 요청이 왔을 시
     @PostMapping("/mypage/update")
     @ResponseBody
-    public ResponseEntity<String> mypage_post(Model model, @AuthenticationPrincipal User user,
+    public ResponseEntity<String> mypage_post(@AuthenticationPrincipal User user,
                                               @RequestBody @Validated UserDetailDto userData){
 
         /*TODO MyPage를 통해 유저 데이터를 변경하는 경우 처리
@@ -192,5 +193,31 @@ public class UserController {
         }
 
     }
+    //TODO 비밀번호 변경의 경우 따로 분리, 의사코드 작성중
+    //
+    @PostMapping("/mypage/update/password")
+    @ResponseBody
+    public ResponseEntity<String> mypage_passwordChange(@AuthenticationPrincipal User user,
+                                                        @RequestBody @Validated PasswordDto passwordDto){
+
+
+        JsonObject jo = new JsonObject();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        //서비스별로 validate 한번 더 서버단에서 체크 후
+        //이상이 있을 시 json에 해당부분 전송하여 응답할 수 있도록 구성
+        //이상이 없는 경우 반영하고 성공 전송
+
+
+
+        return null;
+    }
+
+
+
+
+
+
 
 }
