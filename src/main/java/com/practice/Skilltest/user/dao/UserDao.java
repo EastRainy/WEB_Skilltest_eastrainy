@@ -12,7 +12,7 @@ public interface UserDao {
     UserDetailDto getUserData(String username);
 
     //비밀번호 변경
-    boolean updatePassword(Map<String, Object> map);
+    boolean updatePassword(Map<String, Object> inputMap);
 
     //user_private_data update
     boolean updateUserData(Map<String, Object> userDataMap);

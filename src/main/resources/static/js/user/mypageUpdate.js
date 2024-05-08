@@ -89,13 +89,13 @@ function initPasswordEventListener(){
                 password_check.classList.add('is-invalid');
             }//invalid-feedback 활성화
 
-            passwordCheckVeliErrorDisplay(password_check, equalCheck);
+            passwordCheckValidErrorDisplay(password_check, equalCheck);
             //해당하는 invalid-feedback 갱신
         }
     });
 }
 
-//class
+//class-----
 
 //비밀번호 검증 class
 class checkPasswordValidation{
@@ -124,7 +124,7 @@ class checkPasswordValidation{
 
 }
 
-//function
+//function--------
 
 //유저 데이터 업데이트 요청
 function doSubmit(){
@@ -175,9 +175,10 @@ function userDataSubmit(userData){
 function doPasswordChange(){
 
     //DOM 으로부터 element 가져오기
-    const passwordEle = document.getElementById("password");
-    const passwordCheckEle = document.getElementById("password_check");
+    const passwordEle = document.getElementById('password');
+    const passwordCheckEle = document.getElementById('password_check');
     const passwordValidation = new checkPasswordValidation(passwordEle);
+    const passwordForm = document.getElementById('password_form');
 
     //password 유효성 검사
     if(!passwordValidation.isValid()) {
@@ -193,35 +194,68 @@ function doPasswordChange(){
     }
     //password_check과 동일값인지 판별
     const pwc_valid = passwordCheckEqual(passwordEle, passwordCheckEle);
-    if(pwc_valid) {
+    if(!pwc_valid) {
         if (passwordCheckEle.classList.contains('is-valid')) {
             passwordCheckEle.classList.remove('is-valid');
         }
         if (!passwordCheckEle.classList.contains('is-invalid')) {
             passwordCheckEle.classList.add('is-invalid');
         }
-        passwordCheckVeliErrorDisplay(passwordCheckEle, pwc_valid);
+        passwordCheckValidErrorDisplay(passwordCheckEle, pwc_valid);
         return;
     }
 
-    //완료된 비밀번호를 전송함수에 전달
-    passwordChangeTransfer();
+    const pwData = {
+        password : passwordEle.value,
+        password_check : passwordCheckEle.value
+    }
+
+    //확인완료된 비밀번호를 전송함수에 전달
+    passwordChangeTransfer(pwData);
+    $('#passwordChangeModal').modal('hide');
+    passwordForm.reset();
+
 
 }
 //TODO 비밀번호 변경 기능 fetch
-function passwordChangeTransfer(){
+function passwordChangeTransfer(pwData, ){
+
+    const announce = document.getElementById('passwordAnnounce');
 
     //fetch API를 통해 서버에 전송
-
-
-
-    //서버에서 전송된 답변을 바탕으로 반응 생성
-
+    fetch('/mypage/update/password', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(pwData)
+    }).then(response=>{
+        if(response.ok || response.status===409){
+            return response.json();
+        }
+        else{
+            window.location.replace(location.protocol+'//'+location.host+'/error/'+response.status.valueOf());
+        }
+    }).then((data)=>{
+        if(data.status === 200){
+            if(announce.classList.contains('fail')){
+                announce.classList.remove('fail');
+            }
+            announce.classList.add('success');
+            announce.textContent = '변경 성공!'
+        }else{
+            if(announce.classList.contains('success')){
+                announce.classList.remove('success');
+            }
+            announce.classList.add('fail');
+            announce.textContent = data.announceMessage + ' 다시 시도해주세요.';
+        }
+        announce.focus();
+    });
 }
 
 //비밀번호와 비밀번호확인 동일 확인
 function passwordCheckEqual(password, password_check){
-
     return password.value === password_check.value;
 }
 
@@ -261,7 +295,7 @@ function passwordVeliErrorDisplay(password, passwordPatternValidity){
 
     //길이에 대한 비교
     if(password.validity.valueMissing) {
-        passwordInvalidAnnounce.textContent = '패스워드를 입력해주세요.';
+        passwordInvalidAnnounce.textContent = '비밀번호를 입력해주세요.';
         return;
     } else if(password.validity.tooShort || password.validity.tooLong){
         passwordInvalidAnnounce.textContent = '비밀번호는 10자 이상 30자 이하의 길이를 가져야 합니다.';
@@ -277,7 +311,7 @@ function passwordVeliErrorDisplay(password, passwordPatternValidity){
     }
 }
 //password_check 에러시 화면안내
-function passwordCheckVeliErrorDisplay(password_check,equalCheck){
+function passwordCheckValidErrorDisplay(password_check,equalCheck){
 
     const passwordCheckInvalidAnnounce = document.getElementById('invalidPasswordCheck');
 

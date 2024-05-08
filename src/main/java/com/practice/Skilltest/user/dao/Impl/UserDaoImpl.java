@@ -21,8 +21,8 @@ public class UserDaoImpl implements UserDao {
         return sqlSession.selectOne("getMyData", username);}
 
     @Override
-    public boolean updatePassword(Map<String, Object> map) {
-        return 0<sqlSession.update("updatePassword",map);
+    public boolean updatePassword(Map<String, Object> inputMap) {
+        return 0<sqlSession.update("updatePassword", inputMap);
     }
 
     @Override

@@ -166,7 +166,7 @@ function signupSubmit(formData){
                 let replacePage = location.protocol+'//'+location.host+'/signupSuccess';
                 window.location.replace(replacePage);
             }
-            else if (data.status === 400 || data.status === 422){
+            else if (data.status === 400 || data.status === 409){
                 bottomMessageElement.classList.remove("announce-green");
                 bottomMessageElement.classList.add("announce-red");
                 bottomMessageElement.textContent = data.responseMessage;
@@ -223,6 +223,7 @@ async function usernameServerCheck(){
     })
         .then((response)=>{
             if(!response.ok){
+                window.location.replace(location.protocol+'//'+location.host+'/error/'+response.status.valueOf());
             }
             return response.json();
         })

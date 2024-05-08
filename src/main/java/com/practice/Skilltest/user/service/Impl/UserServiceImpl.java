@@ -2,6 +2,7 @@ package com.practice.Skilltest.user.service.Impl;
 
 import com.practice.Skilltest.user.dao.UserDao;
 import com.practice.Skilltest.user.dao.UserLoginDao;
+import com.practice.Skilltest.user.dto.PasswordDto;
 import com.practice.Skilltest.user.dto.UserDetailDto;
 import com.practice.Skilltest.user.dto.UserDto;
 import com.practice.Skilltest.user.role.UserRoles;
@@ -15,6 +16,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -102,7 +105,6 @@ public class UserServiceImpl implements UserDetailsService {
 
     //사용자에게 전달하기 위해 데이터베이스에서 유저의 정보를 가져옴
     public UserDetailDto getUserDetails(User user){
-
         UserDetailDto dto = userDao.getUserData(user.getUsername());
         dto.setBirthdate_string(dto.getBirthdate().toString());
 
@@ -115,5 +117,48 @@ public class UserServiceImpl implements UserDetailsService {
         userData.setBirthdate(LocalDate.parse(userData.getBirthdate_string()));
         return userDao.updateUserData(userData.toMap());
     }
+
+    //사용자가 입력한 비밀번호로 비밀번호 변경
+    public Map<String, Object> updateUserPassword(User user, PasswordDto passwordDto, BindingResult bindingResult){
+
+        Map<String, Object> outputMap = new HashMap<>();
+        Map<String, Object> inputMap = new HashMap<>();
+        //유효성 최종 검사
+        //DTO 로 각 조건 확인 후 비어 있는지, 같은 지 여부 최종 검사
+
+        outputMap.put("updated", false);
+
+        if(bindingResult.hasErrors()){
+            List<ObjectError> errorList = bindingResult.getAllErrors();
+            outputMap.put("message", errorList.get(0).getDefaultMessage());
+            return outputMap;
+        }
+
+        if(passwordDto.getPassword().isEmpty() || passwordDto.getPassword_check().isEmpty()){
+            if(passwordDto.getPassword().isEmpty()){
+                outputMap.put("message", "비밀번호를 입력해주세요.");
+
+            }else{
+                outputMap.put("message", "비밀번호 확인을 입력해주세요.");
+            }
+            return outputMap;
+        }
+        if(!passwordDto.getPassword().equals(passwordDto.getPassword_check())){
+            outputMap.put("message","비밀번호와 비밀번호 확인이 동일하지 않습니다.");
+            return outputMap;
+        }
+
+        //DB에 전송하여 비밀번호 변경
+
+
+        inputMap.put("username",user.getUsername());
+        inputMap.put("password", bCryptPasswordEncoder.encode(passwordDto.getPassword()));
+        userDao.updatePassword(inputMap);
+        
+        //결과 컨트롤러에 전송
+        outputMap.replace("updated", true);
+        return outputMap;
+    }
+
 
 }

@@ -28,7 +28,7 @@
     <!-- 패스워드 변경 -->
     <update id="updatePassword" parameterType="map">
         UPDATE user_table SET user_password = #{password}
-        WHERE u_id = #{id};
+        WHERE user_name = #{username};
     </update>
 
     <!-- user_private_data update SQL -->
