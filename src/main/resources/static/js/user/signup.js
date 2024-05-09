@@ -1,28 +1,29 @@
 
 
-let usernameValidate = false;
-
 //이벤트리스너 초기화
 window.onload = function () {
-    document.getElementById("username").addEventListener("change", function (e) {idChangeEvent()})
-    document.getElementById('password').addEventListener('change', function (e) {passwordValidationEvent()});
-    document.getElementById('password_check').addEventListener('change', function (e) { passwordCheckValidationEvent()});
-    document.getElementById('userSelectedEmailAddress').addEventListener('change', function (e) {emailSelectEvent()});
-    document.getElementById('formSubmit').addEventListener('click', function (e) {doSignup()});
-    document.getElementById('usernameCheck').addEventListener('click', function (e) {usernameServerCheck().then(r => {})})
+    document.getElementById("username").addEventListener("input", function () {usernameChangeEvent()})
+    document.getElementById('password').addEventListener('change', function () {passwordValidationEvent()});
+    document.getElementById('password_check').addEventListener('change', function () { passwordCheckValidationEvent()});
+    document.getElementById('userSelectedEmailAddress').addEventListener('change', function () {emailSelectEvent()});
+    document.getElementById('formSubmit').addEventListener('click', function () {doSignup()});
+    document.getElementById('usernameCheck').addEventListener('click', function () {usernameServerCheck()});
 }
 
 //회원가입 메인 함수
 function doSignup(){
     //회원가입 스크립트
 
-    const usernameInput = String(document.getElementById('username').value);
-    const passwordInput = String(document.getElementById('password').value);
-    const passwordCheckInput = String(document.getElementById('password_check').value);
+    const usernameElement = document.getElementById('username');
+    const passwordElement = document.getElementById('password');
+    const passwordCheckElement = document.getElementById('password_check');
 
-    const idMessageElement = document.querySelector('.announce-id');
-    const pwMessageElement = document.querySelector('.announce-pw');
-    const pwcheckMessageElement = document.querySelector('.announce-pwcheck');
+    const usernameInput = String(usernameElement.value);
+    const passwordInput = String(passwordElement.value);
+    const passwordCheckInput = String(passwordCheckElement.value);
+
+    const usernameInvalidFeedback = document.getElementById('invalidUsername');
+    const passwordInvalidFeedback = document.getElementById('invalidPassword');
     const nameMessageElement = document.querySelector('.announce-name');
     const phoneMessageElement = document.querySelector('.announce-phone');
     const emailMessageElement = document.querySelector('.announce-email');
@@ -47,7 +48,6 @@ function doSignup(){
 
     //document 에서 입력 데이터 받아옴
 
-    idMessageElement.textContent = "";
     pwMessageElement.textContent = "";
     pwcheckMessageElement.textContent = "";
     phoneMessageElement.textContent = "";
@@ -56,39 +56,40 @@ function doSignup(){
     //announce 메세지 엘리먼트 초기
 
     //id검증
-    try{
-        checkId(usernameInput);
-    }catch(e){
-        idMessageElement.classList.remove("announce-green");
-        idMessageElement.classList.add("announce-red");
-        idMessageElement.textContent = e.message;
-        document.getElementById('username').focus();
+    const usernameValid = checkUsername(usernameInput);
+
+    if(!usernameValid.valid){
+        usernameInvalidFeedback.textContent = usernameValid.message;
+
+        if(usernameElement.classList.contains('is-valid')){
+            usernameElement.classList.remove('is-valid');
+        }
+        usernameElement.classList.add('is-invalid');
+        usernameElement.focus();
         return;
     }
     formData.username = usernameInput;
 
     //비밀번호 검증
-    try{
-        checkPw(passwordInput);
-        idMessageElement.textContent = "사용 가능합니다.";
-    }catch(e){
-        pwMessageElement.classList.remove("announce-green");
-        pwMessageElement.classList.add("announce-red");
-        pwMessageElement.textContent = e.message;
-        document.getElementById('password').focus();
+    const passwordValid = checkPw(passwordInput);
+    if(!passwordValid.valid){
+        passwordInvalidFeedback.textContent = passwordValid.message;
+        if(passwordElement.classList.contains('is-valid')){
+            passwordElement.classList.remove('is-valid');
+        }
+        passwordElement.classList.add('is-invalid');
+        passwordElement.focus();
         return;
     }
     formData.password = passwordInput;
 
     //비밀번호 확인 검증
-    try{
-        checkPwRepeat(passwordInput, passwordCheckInput);
-    }
-    catch(e){
-        pwcheckMessageElement.classList.remove("announce-green");
-        pwcheckMessageElement.classList.add("announce-red");
-        pwcheckMessageElement.textContent = e.message;
-        document.getElementById('password_check').focus();
+    if(!checkPwRepeat(passwordInput, passwordCheckInput)){
+        if(passwordCheckElement.classList.contains('is-valid')){
+            passwordCheckElement.classList.remove('is-valid');
+        }
+        passwordCheckElement.classList.add('is-invalid');
+        passwordCheckElement.focus();
         return;
     }
     formData.password_check = passwordCheckInput;
@@ -178,67 +179,82 @@ function signupSubmit(formData){
 }
 
 //ID 입력 변경 시 인증여부 초기화
-function idChangeEvent(){
-    let idElement=document.getElementById("username")
-    const idMessageElement = document.querySelector('.announce-id');
-    if(usernameValidate){
-        if(idElement.value===""){
-            idMessageElement.textContent = "";
-        }else{
-            idMessageElement.classList.remove("announce-green");
-            idMessageElement.classList.add("announce-red");
-            idMessageElement.textContent = "값이 변경되었습니다. 확인을 다시 진행해주세요."
-        }
-        usernameValidate = false;
+function usernameChangeEvent(){
+    const usernameElement=document.getElementById('username');
+    const idInvalidMessage = document.getElementById('invalidUsername');
+
+    if(usernameElement.classList.contains('is-valid')){
+        usernameElement.classList.remove('is-valid');
+        usernameElement.classList.add('is-invalid');
+
+        idInvalidMessage.textContent = '아이디가 변경되었습니다. 다시 확인해주세요.'
     }
 }
 //아이디 확인 함수
 //아이디 유효성 검사 후 서버에 조회하여 중복여부 확인
-async function usernameServerCheck(){
+function usernameServerCheck(){
 
-    const usernameInput = document.getElementById('username').value;
-    const idMessageElement = document.querySelector('.announce-id');
-    const param = {"username" : usernameInput};
+    const usernameElement = document.getElementById('username')
+    const userInvalidFeedback = document.getElementById('invalidUsername');
+    const param = {"username" : usernameElement.value};
 
-    if(usernameInput === ""){
-        idMessageElement.textContent = "";
+    //유효성 검사
+    if(usernameElement.validity.valueMissing){
+        userInvalidFeedback.textContent = '아이디를 입력해주세요.';
+
+        if(usernameElement.classList.contains('is-valid')){
+            usernameElement.classList.remove('is-valid');
+        }
+        usernameElement.classList.add('is-invalid');
+        return;
+    }
+    const usernameValid = checkUsername(usernameElement.value);
+
+    if(!usernameValid.valid){
+        userInvalidFeedback.textContent = usernameValid.message;
+
+        if(usernameElement.classList.contains('is-valid')){
+            usernameElement.classList.remove('is-valid');
+        }
+        usernameElement.classList.add('is-invalid');
         return;
     }
 
-    try{
-        checkId(usernameInput);
-    }catch (e){
-        idMessageElement.classList.remove("announce-green");
-        idMessageElement.classList.add("announce-red");
-        idMessageElement.textContent = e.message;
-        return;
-    }
+    //검사 이후 서버에 확인
 
     fetch('/signup/checkusername',{
         method : 'POST',
         headers: {
-            'Content-type' : 'application/json;',
+            'Content-type' : 'application/json;'
         },
         body : JSON.stringify(param)
     })
         .then((response)=>{
             if(!response.ok){
-                window.location.replace(location.protocol+'//'+location.host+'/error/'+response.status.valueOf());
+                userInvalidFeedback.textContent = '확인 중 오류가 발생하였습니다. 다시 시도해주세요.'
+
+                if(usernameElement.classList.contains('is-valid')){
+                    usernameElement.classList.remove('is-valid');
+                    usernameElement.classList.add('is-invalid');
+                }
             }
             return response.json();
         })
         .then((data)=>{
                 if(data.usable==='true'){
-                    idMessageElement.classList.remove("announce-red");
-                    idMessageElement.classList.add("announce-green");
-                    idMessageElement.textContent = "사용 가능한 아이디입니다.";
-                    usernameValidate = true;
+                    if(usernameElement.classList.contains('is-invalid')) {
+                        usernameElement.classList.remove('is-invalid');
+                    }
+                    usernameElement.classList.add('is-valid');
+
                 }
                 else{
-                    idMessageElement.classList.remove("announce-green");
-                    idMessageElement.classList.add("announce-red");
-                    idMessageElement.textContent = "사용 불가능한 아이디입니다.";
-                    usernameValidate = false;
+                    userInvalidFeedback.textContent = '사용 불가능한 아이디입니다. 다른 아이디를 입력해주세요.'
+
+                    if(usernameElement.classList.contains('is-valid')){
+                        usernameElement.classList.remove('is-valid');
+                    }
+                    usernameElement.classList.add('is-invalid');
                 }
             }
         )
@@ -246,90 +262,124 @@ async function usernameServerCheck(){
             console.error('Error:', error);
         })
 }
-//비밀번호 form 변경 시 유효성 검사
+//비밀번호 form 변경 시 유효성 검사 및 안내
 function passwordValidationEvent(){
-    let passwordInput = document.getElementById("password").value;
-    let pwMessageElement = document.querySelector('.announce-pw');
 
-    pwMessageElement.textContent = "";
+    const password = document.getElementById('password');
+    const passwordCheck = document.getElementById("password_check");
+    const invalidAnnounce = document.getElementById('invalidPassword');
+    const checkInvalidAnnounce = document.getElementById('invalidPasswordCheck')
 
-    try{
-        checkPw(passwordInput);
-    }catch(error){
-        pwMessageElement.classList.remove("announce-green");
-        pwMessageElement.classList.add("announce-red");
-        pwMessageElement.textContent = error.message;
+
+    if(passwordCheck.classList.contains('is-valid')){
+        passwordCheck.classList.remove('is-valid');
+
+        checkInvalidAnnounce.textContent = '비밀번호가 변경되었습니다.';
+        passwordCheck.classList.add('is-invalid');
+    }
+
+    const validCheck = checkPw(password.value);
+    if(!validCheck.valid){
+        invalidAnnounce.textContent = validCheck.message;
+
+        if(password.classList.contains('is-valid')){
+            password.classList.remove('is-valid');
+        }
+        password.classList.add('is-invalid');
         return;
     }
 
-    pwMessageElement.classList.remove("announce-red");
-    pwMessageElement.classList.add("announce-green");
-    pwMessageElement.textContent = "사용 가능한 비밀번호입니다."
+    if(password.classList.contains('is-invalid')){
+        password.classList.remove('is-invalid');
+    }
+    password.classList.add('is-valid');
 }
-//비밀번호확인 form 변경시 유효성 검사
+//비밀번호확인 form 변경시 유효성 검사 및 안내
 function passwordCheckValidationEvent(){
-    let passwordInput = document.getElementById("password").value;
-    let passwordCheckInput = document.getElementById("password_check").value;
-    let pwCheckMessageElement = document.querySelector('.announce-pwcheck');
+    const password = document.getElementById("password");
+    const passwordCheck = document.getElementById("password_check");
+    const invalidAnnounce = document.getElementById('invalidPasswordCheck')
 
-    pwCheckMessageElement.textContent="";
+    const passwordCheckValid = checkPwRepeat(password.value,passwordCheck.value);
 
-    try{
-        checkPwRepeat(passwordInput,passwordCheckInput);
-    }catch(error){
-        pwCheckMessageElement.classList.remove("announce-green");
-        pwCheckMessageElement.classList.add("announce-red");
-        pwCheckMessageElement.textContent = error.message;
+    if(!passwordCheckValid){
+        invalidAnnounce.textContent = '비밀번호와 비밀번호 확인 값이 서로 다릅니다. 다시 입력해 주세요.';
+        if(passwordCheck.classList.contains('is-valid')){
+            passwordCheck.classList.remove('is-valid');
+        }
+        passwordCheck.classList.add('is-invalid');
+
         return;
     }
+    if(passwordCheck.classList.contains('is-invalid')){
+        passwordCheck.classList.remove('is-invalid');
+    }
+    passwordCheck.classList.add('is-valid');
 
-    pwCheckMessageElement.textContent="";
 }
 
 
 //ID 유효성 체크
-function checkId(usernameInput){
+function checkUsername(usernameValue){
 
+    let outputMap = {
+        valid:false,
+        message:''
+    }
     //영문자 및 숫자만 정규식 범위 지정
     const idRegex = /^[a-zA-Z\d]+$/;
 
-    if(usernameInput.length > 20 || usernameInput.length < 4){
-        throw new Error('ID는 4자 이상 20자 이하여야 합니다.');
+    if(usernameValue.length > 20 || usernameValue.length < 4){
+        outputMap.message = 'ID는 4자 이상 20자 이하여야 합니다.';
+        return outputMap;
     }
-    const charCheck = idRegex.test(usernameInput);
+    const charCheck = idRegex.test(usernameValue);
     if(!charCheck){
-        throw new Error('ID는 영어 소문자, 대문자 및 숫자의 조합만 가능합니다.')
+        outputMap.message = 'ID는 영어 소문자, 대문자 및 숫자의 조합만 가능합니다.';
+        return outputMap;
     }
-
+    outputMap.valid = true;
+    return outputMap;
 }
 //비밀번호 유효성 체크
 function checkPw(input){
-    const checkValid = /[^a-zA-Z\d!@#$%^&*()?_=+<>.,;:~`\[\]\-]/.test(input)
+    const checkValid = /^[a-zA-Z\d!@#$%^&*()?_=+<>;:~.,`\[\]\-]*$/.test(input)
     const checkLower = /[a-z]/.test(input);
     const checkUpper = /[A-Z]/.test(input);
     const checkSpecial = /[!@#$%^&*()?_=+<>;:~.,`\[\]\-]/.test(input);
-    const checkLength = input.length<10 || input.length>30;
+    const checkLength = input.length>9 && input.length<31;
     //정규식 통하여 각각 확인해야 하는 케이스의 경우 정의
 
-    //통과하지 못한 경우 에러 생성
-    if(checkValid){
-        throw new Error('비밀번호에 허용되지 않는 문자가 포함되어 있습니다.');
+    let outputMap = {
+        valid:false,
+        message:''
     }
-    if(checkLength){
-        throw new Error('비밀번호는 10자 이상 30자 이하의 길이를 가져야 합니다.');
+
+    if(!checkValid){
+        outputMap.message = '비밀번호에 허용되지 않는 문자가 포함되어 있습니다.';
+        return outputMap;
+    }
+    if(!checkLength){
+        outputMap.message = '비밀번호는 10자 이상 30자 이하의 길이를 가져야 합니다.';
+        return outputMap;
     }
     if(!checkLower||!checkUpper||!checkSpecial){
-        throw new Error('비밀번호엔 영문 소문자, 대문자, 특수문자가 각각 한 개 이상 포함되어야 합니다.')
+        outputMap.message = '비밀번호엔 영문 소문자, 대문자, 특수문자가 각각 한 개 이상 포함되어야 합니다.';
+        return outputMap;
     }
+
+    outputMap.valid = true;
+    return outputMap;
 }
 //비밀번호 동일 체크
 function checkPwRepeat(input1, input2){
     //비밀번호와 비밀번호 확인 프로세스
-    const str1 = input1.valueOf();
-    const str2 = input2.valueOf();
-    if(str1 !== str2){
+
+    if(input2 !== input1){
+        return false;
         throw new Error('비밀번호와 비밀번호 확인 값이 서로 다릅니다. 다시 입력해 주세요.')
     }
+    return true;
 }
 //휴대폰 체크하여 전달
 function phoneCheck(){
