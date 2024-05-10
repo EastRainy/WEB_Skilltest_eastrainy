@@ -14,23 +14,30 @@ window.onload = function () {
 function doSignup(){
     //회원가입 스크립트
 
+    //사용 엘리먼트 초기화
     const usernameElement = document.getElementById('username');
     const passwordElement = document.getElementById('password');
     const passwordCheckElement = document.getElementById('password_check');
+    const personnameElement = document.getElementById('personname');
+    const phoneElements = [document.getElementById('phone'),
+        document.getElementById('phone2') ,document.getElementById('phone3')];
+    const emailElements = [document.getElementById('emailID'), document.getElementById('emailAddress')];
+
+
 
     const usernameInput = String(usernameElement.value);
     const passwordInput = String(passwordElement.value);
     const passwordCheckInput = String(passwordCheckElement.value);
 
+    //피드백 엘리먼트
     const usernameInvalidFeedback = document.getElementById('invalidUsername');
     const passwordInvalidFeedback = document.getElementById('invalidPassword');
-    const nameMessageElement = document.querySelector('.announce-name');
-    const phoneMessageElement = document.querySelector('.announce-phone');
-    const emailMessageElement = document.querySelector('.announce-email');
+    const personnameInvalidFeedback = document.getElementById('invalidPersonname');
+    const phoneInvalidFeedback = document.querySelector('.announce-phone');
+    const emailInvalidFeedback = [document.getElementById('invalidEmailId'),
+        document.getElementById('invalidEmailAddress')];
+
     const birthdateMessageElement = document.querySelector('.announce-birthdate');
-
-
-    const form = document.getElementById('signupForm');
 
 
     let formData = {
@@ -48,10 +55,7 @@ function doSignup(){
 
     //document 에서 입력 데이터 받아옴
 
-    pwMessageElement.textContent = "";
-    pwcheckMessageElement.textContent = "";
-    phoneMessageElement.textContent = "";
-    emailMessageElement.textContent="";
+
     birthdateMessageElement.textContent="";
     //announce 메세지 엘리먼트 초기
 
@@ -94,36 +98,31 @@ function doSignup(){
     }
     formData.password_check = passwordCheckInput;
 
-    //이름 입력 임시
-    if(document.getElementById('personname').value===""){
-        nameMessageElement.classList.remove("announce-green");
-        nameMessageElement.classList.add("announce-red");
-        nameMessageElement.textContent = "이름을 입력해주세요.";
-        document.getElementById('name').focus();
-    }else{
-        formData.personname = document.getElementById('personname').value
+    //이름 입력 검증
+    if(!checkPersonname(personnameElement, personnameInvalidFeedback)){
+        personnameElement.focus();
+        return;
     }
+    formData.personname = personnameElement.value;
+
 
     //핸드폰번호 검증
-    try{
-        formData.phone = phoneCheck();
-    }catch(e){
-        phoneMessageElement.classList.remove("announce-green");
-        phoneMessageElement.classList.add("announce-red");
-        phoneMessageElement.textContent = e.message;
-        document.getElementById('phone').focus();
+    const phoneData = phoneCheck(phoneElements, phoneInvalidFeedback);
+    if(phoneData===''){
+        phoneElements[0].focus()
         return;
     }
+    formData.phone = phoneData;
+
     //이메일검증
-    try{
-        formData.email = emailCheck();
-    }catch(e){
-        emailMessageElement.classList.remove("announce-green");
-        emailMessageElement.classList.add('announce-red');
-        emailMessageElement.textContent = e.message;
-        document.getElementById('email').focus();
+
+    const emailData = emailCheck(emailElements, emailInvalidFeedback);
+    if(emailData===''){
+        emailElements[0].focus();
         return;
     }
+    formData.email = emailData;
+
     //생년월일 검증
     try{
         formData.birthdate = checkbirthDate();
@@ -249,7 +248,7 @@ function usernameServerCheck(){
 
                 }
                 else{
-                    userInvalidFeedback.textContent = '사용 불가능한 아이디입니다. 다른 아이디를 입력해주세요.'
+                    userInvalidFeedback.textContent = '중복된 아이디입니다. 다른 아이디를 입력해주세요.'
 
                     if(usernameElement.classList.contains('is-valid')){
                         usernameElement.classList.remove('is-valid');
@@ -375,35 +374,73 @@ function checkPw(input){
 function checkPwRepeat(input1, input2){
     //비밀번호와 비밀번호 확인 프로세스
 
-    if(input2 !== input1){
+    return input2 === input1;
+
+}
+//이름 체크
+function checkPersonname(nameElement, nameInvalidFeedback){
+
+    if(nameElement.validity.valueMissing){
+        nameInvalidFeedback.textContent = '이름을 입력해주세요.';
+        if(nameElement.classList.contains('is-valid')){
+            nameElement.classList.remove('is-valid');
+        }
+        nameElement.classList.add('is-invalid');
         return false;
-        throw new Error('비밀번호와 비밀번호 확인 값이 서로 다릅니다. 다시 입력해 주세요.')
     }
+    if(nameElement.validity.tooLong){
+        nameInvalidFeedback.textContent = '입력된 이름의 길이가 너무 깁니다.'
+        if(nameElement.classList.contains('is-valid')){
+            nameElement.classList.remove('is-valid');
+        }
+        nameElement.classList.add('is-invalid');
+        return false;
+    }
+
+    if(nameElement.classList.contains('is-invalid')){
+        nameElement.classList.remove(('is-invalid'));
+    }
+    nameElement.classList.add('is-valid');
     return true;
 }
 //휴대폰 체크하여 전달
-function phoneCheck(){
+function phoneCheck(phoneElements, phoneInvalidFeedback){
 
-    let phoneInput = document.getElementById("phone").value;
-    let phone2Input = document.getElementById("phone2").value;
-    let phone3Input = document.getElementById("phone3").value;
+    //만약 입력되지 않은 값이 있으면 invalid 처리
+    phoneElements.forEach((element) => {
+        if(element.validity.valueMissing){
+            phoneInvalidFeedback.textContent = '전화번호를 입력해주세요.';
+            changeIsValid(element,false);
+        }
+    });
 
-    //입력 검증, 현재는 임시로 적용
-    if(phoneInput==="" || phone2Input==="" || phone3Input===""){
-        throw new Error("번호를 입력해주세요.")
-    }
-    return phoneInput +'-'+ phone2Input +'-'+ phone3Input;
+    //하나라도 invalid 처리된 부분이 있으면 빈칸리턴
+    if(phoneElements.some((element) =>{
+        return element.classList.contains('is-invalid');
+    })) {return '';}
+
+    phoneInvalidFeedback.textContent='';
+    phoneElements.forEach((element)=>{
+       changeIsValid(element, true);
+    });
+    return phoneElements[0].value +'-'+ phoneElements[1].value +'-'+ phoneElements[2].value;
 }
 //이메일 체크하여 전달
-function emailCheck(){
-    const emailID = document.getElementById("emailID").value;
-    const email2 = document.getElementById("email2").value;
+function emailCheck(emailElements, emailInvalidFeedbacks){
 
-    //들어온 이메일 검증
-    if(emailID===""||email2===""){
-        throw new Error("이메일을 입력해주세요.")
+    for(let i=0; i<emailElements.length; i++){
+        if(emailElements[i].validity.valueMissing){
+            emailInvalidFeedbacks[i].textContent='내용을 입력해주세요.';
+            emailElements[i].classList.contains('is-valid') ? emailElements.classList.remove('is-valid') : null;
+            emailElements[i].classList.add('is-invalid');
+        }
     }
-    return emailID+ "@" + email2;
+    if(emailElements.some((element)=>{
+        return element.classList.contains('is-invalid');
+    })){return '';}
+
+    return emailElements[0].value + "@" + emailElements[1].value;
+
 }
 
 //생녕월일에 대한 검사
@@ -419,9 +456,22 @@ function checkbirthDate (){
 //이메일 select 변경 시 입력 form에서 value 지정
 function emailSelectEvent(){
 
-    let email2 = document.getElementById("email2");
+    let emailAddress = document.getElementById("emailAddress");
     let selectList = document.getElementById("userSelectedEmailAddress");
 
-    email2.value = selectList.value;
-    email2.readOnly = selectList.value !== "";
+    emailAddress.value = selectList.value;
+    emailAddress.readOnly = selectList.value !== "";
+}
+
+//input 의 is-valid 여부를 교체하는 공통함수
+function changeIsValid(TargetElement, targetStatus){
+    //입력받은 타겟 엘리면트의 클래스를 타겟 스테이터스를 참고하여 변경
+    //true -> is-valid, false -> is-invalid
+    if(targetStatus){
+        TargetElement.classList.contains('is-invalid') ? TargetElement.classList.remove('is-invalid') : null ;
+        TargetElement.classList.add('is-valid');
+    } else {
+        TargetElement.classList.contains('is-valid') ? TargetElement.classList.remove('is-valid') : null;
+        TargetElement.classList.add('is-invalid');
+    }
 }

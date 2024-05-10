@@ -48,30 +48,31 @@
                     <input type="password" class="form-control w-50" id="password_check" th:field="*{password_check}"
                            placeholder="비밀번호 확인" required/>
                     <div class="invalid-feedback" id="invalidPasswordCheck">비밀번호와 비밀번호 확인 값이 서로 다릅니다. 다시 입력해 주세요.</div>
-                    <div class="announce-pwcheck announce-red"></div>
                 </div>
                 <div class="form-group">
                     <label for="personname">이름</label>
                     <input type="text" class="form-control w-50" id="personname" th:field="*{personname}"
-                           placeholder="이름" required/>
-                    <div class="announce-name"></div>
+                           placeholder="이름" max="25" required/>
+                    <div class="invalid-feedback" id="invalidPersonname"></div>
                 </div>
                 <div class="form-group">
                     <div th:text="이메일">이메일</div>
-                    <div class="form-row align-items-center">
+                    <div class="form-row align-items-start">
                         <div class="col-auto mb-2">
                             <label class="sr-only" for="emailID">이메일</label>
                             <input type="text" class="form-control" id="emailID" placeholder="이메일"
                                    required/>
+                            <div class="invalid-feedback" id="invalidEmailId"></div>
                         </div>
                         <div class="col w-75">
-                            <label class="sr-only" for="email2"></label>
+                            <label class="sr-only" for="emailAddress"></label>
                             <div class="input-group mb-2">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">@</div>
                                 </div>
-                                <input type="text" class="form-control" id="email2"
+                                <input type="text" class="form-control" id="emailAddress"
                                        placeholder="example.com" required/>
+                                <div class="invalid-feedback" id="invalidEmailAddress"></div>
                                 <div class="input-group-prepend">
                                     <label class="sr-only" for="userSelectedEmailAddress"></label>
                                     <select class="custom-select" id="userSelectedEmailAddress">
@@ -84,17 +85,14 @@
                             </div>
                         </div>
                     </div>
-            <div class="announce-email announce-red">
-            </div>
                 </div>
                 <div class="form-group">
                     <div th:text="전화번호"></div>
-                    <div class="form-row align-item-center">
+                    <div class="form-row align-item-start">
                         <div class="col-2">
                             <label class="sr-only" for="phone"></label>
                             <input type="tel" maxlength="3" class="form-control" id="phone"
                                    required/>
-                            <div class="announce-phone announce-red"></div>
                         </div>
                         <div class="col-2">
                             <label class="sr-only" for="phone2"></label>
@@ -107,6 +105,7 @@
                                    required/>
                         </div>
                     </div>
+                    <div class="announce-phone announce-red"></div>
                 </div>
                 <div class="form-group w-50">
                     <label for=birthdate>생년월일</label>
