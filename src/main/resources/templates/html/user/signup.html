@@ -58,13 +58,13 @@
                 <div class="form-group">
                     <div th:text="이메일">이메일</div>
                     <div class="form-row align-items-start">
-                        <div class="col-auto mb-2">
+                        <div class="col-25 mb-2">
                             <label class="sr-only" for="emailID">이메일</label>
                             <input type="text" class="form-control" id="emailID" placeholder="이메일"
                                    required/>
                             <div class="invalid-feedback" id="invalidEmailId"></div>
                         </div>
-                        <div class="col w-75">
+                        <div class="col w-50">
                             <label class="sr-only" for="emailAddress"></label>
                             <div class="input-group mb-2">
                                 <div class="input-group-prepend">
@@ -72,7 +72,6 @@
                                 </div>
                                 <input type="text" class="form-control" id="emailAddress"
                                        placeholder="example.com" required/>
-                                <div class="invalid-feedback" id="invalidEmailAddress"></div>
                                 <div class="input-group-prepend">
                                     <label class="sr-only" for="userSelectedEmailAddress"></label>
                                     <select class="custom-select" id="userSelectedEmailAddress">
@@ -82,6 +81,7 @@
                                         <option value="daum.net">다음</option>
                                     </select>
                                 </div>
+                                <div class="invalid-feedback" id="invalidEmailAddress"></div>
                             </div>
                         </div>
                     </div>
@@ -110,7 +110,7 @@
                 <div class="form-group w-50">
                     <label for=birthdate>생년월일</label>
                     <input type="date" class="form-control" id="birthdate" th:field="*{birthdate}" required/>
-                    <div class="announce-birthdate announce-red"></div>
+                    <div class="invalid-feedback" id="invalidBirthdate">생년월일을 입력해주세요.</div>
                 </div>
                 <div class="form-group ">
                     <label for="postnum">우편번호</label>
