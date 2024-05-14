@@ -42,27 +42,32 @@ function doSignup(){
 
 
     let formData = {
-        username: "",
-        password: "",
-        password_check: "",
-        personname: "",
-        birthdate: "",
-        email: "",
-        phone: "",
-        postnum: "",
-        address: "",
-        address_detail: ""
+        username: '',
+        password: '',
+        password_check: '',
+        personname: '',
+        birthdate: '',
+        email: '',
+        phone: '',
+        postnum: '',
+        address: '',
+        address_detail: ''
     };
 
-    //TODO ID 중복체크를 먼저 진행해서 확인해야지만 제출가능하도록 변경
-    
+    //중복체크를 먼저 진행해서 확인해야지만 제출가능하도록 변경
+    if(!usernameChecked){
+        usernameInvalidFeedback.textContent = '아이디 확인을 먼저 진행해야 합니다.';
+        changeIsValid(usernameElement, false);
+        usernameElement.focus();
+        return;
+    }
+
     //id 검증
     const usernameValid = checkUsername(usernameInput);
     if(!usernameValid.valid){
         usernameInvalidFeedback.textContent = usernameValid.message;
         changeIsValid(usernameElement, false);
-        usernameElement.focus();
-        return;
+        invalidElements.push(usernameElement);
     }
     formData.username = usernameInput;
 
@@ -71,57 +76,59 @@ function doSignup(){
     if(!passwordValid.valid){
         passwordInvalidFeedback.textContent = passwordValid.message;
         changeIsValid(passwordElement, false);
-        passwordElement.focus();
-        return;
+        invalidElements.push(passwordElement);
     }
     formData.password = passwordInput;
 
-    //비밀번호 확인 검증
+    //비밀번호확인 검증
     if(!checkPwRepeat(passwordInput, passwordCheckInput)){
-        changeIsValid(passwordElement, false);
-        passwordCheckElement.focus();
-        return;
+        changeIsValid(passwordCheckElement, false);
+        invalidElements.push(passwordCheckElement);
     }
     formData.password_check = passwordCheckInput;
 
     //이름 입력 검증
     if(!checkPersonname(personnameElement, personnameInvalidFeedback)){
-        personnameElement.focus();
-        return;
+        invalidElements.push(personnameElement);
     }
     formData.personname = personnameElement.value;
 
     //이메일검증
     const emailData = emailCheck(emailElements, emailInvalidFeedback);
     if(emailData===''){
-        emailElements[0].focus();
-        return;
+        invalidElements.push(emailElements);
     }
     formData.email = emailData;
 
     //핸드폰번호 검증
     const phoneData = phoneCheck(phoneElements, phoneInvalidFeedback);
     if(phoneData===''){
-        phoneElements[0].focus()
-        return;
+        invalidElements.push(phoneElements);
     }
     formData.phone = phoneData;
 
     //생년월일 검증
 
     if(!checkBirthdate(birthdateElement)){
-        return;
+        invalidElements.push(birthdateElement);
     }
     formData.birthdate = birthdateElement.value;
 
-    console.log('?');
+
 
     //임시로 formData에 검증없이 바로 입력
     formData.postnum = document.getElementById('postnum').value;
     formData.address = document.getElementById('address').value;
     formData.address_detail = document.getElementById('address_detail').value;
 
-    console.log(formData.toString());
+
+    //모두 체크 후 가장 먼저 실패한 곳으로 포커스
+    if (invalidElements.length > 0) {
+        invalidElements[0].focus();
+        clearFormData(formData);
+        return;
+    }
+
 
     //구성된 formData를 Fetch API 이용 함수에 전달
     signupSubmit(formData);
@@ -252,8 +259,6 @@ function passwordValidationEvent(){
     }
 
     changeIsValid(passwordElement, true);
-
-
 }
 //비밀번호확인 form 변경시 유효성 검사 및 안내
 function passwordCheckValidationEvent(){
@@ -329,6 +334,8 @@ function checkPw(input){
 //비밀번호 동일 체크
 function checkPwRepeat(input1, input2){
     //비밀번호와 비밀번호 확인 프로세스
+
+    if(!input2.length>0) return false;
 
     return input2 === input1;
 
@@ -439,4 +446,17 @@ function changeIsValid(TargetElement, targetStatus){
         TargetElement.classList.contains('is-valid') ? TargetElement.classList.remove('is-valid') : null;
         TargetElement.classList.add('is-invalid');
     }
+}
+//formData 초기화
+function clearFormData(formData){
+    formData.username = '';
+    formData.password = ''
+    formData.password_check= '';
+    formData.personname= '';
+    formData.birthdate= '';
+    formData.email= '';
+    formData.phone= '';
+    formData.postnum= '';
+    formData.address= '';
+    formData.address_detail= '';
 }
