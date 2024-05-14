@@ -9,28 +9,28 @@
 <body>
     <div th:replace="/html/common/navbar.html :: navbar-div">navbar div</div>
     <div class="container mt-5">
-    <h1 class="mb-4">It's Main board page!</h1>
-    <hr>
-    <div class="table-responsive board-table">
-    <table class="table table-bordered">
-        <tr class="table-secondary">
-            <td class="id">번호</td>
-            <td class="title" style="text-align:center;">제목</td>
-            <td class="writer">작성자</td>
-            <td class="created_time_date">작성일</td>
-            <td class="viewcount">조회수</td>
-        </tr>
-        <tr th:each="result : ${resultList}">
-            <td class="id" th:text="${result.getBoard_id()}"></td>
-            <td class="title">
-                <a th:href="@{/board/view/{id}(id=${result.getBoard_id()})}" th:text="${result.getTitle()}"></a>
-            </td>
-            <td class="writer" th:text="${result.getWriter()}"></td>
-            <td class="created_time_date" th:text="${result.getCreated_time_date()}"></td>
-            <td class="viewcount" th:text="${result.getViewcount()}"></td>
-        </tr>
-    </table>
-    </div>
+        <h1 class="mb-4">It's Main board page!</h1>
+        <hr>
+        <div class="table-responsive board-table">
+            <table class="table table-bordered">
+                <tr class="table-secondary">
+                    <td class="id">번호</td>
+                    <td class="title" style="text-align:center;">제목</td>
+                    <td class="writer">작성자</td>
+                    <td class="created_time_date">작성일</td>
+                    <td class="viewcount">조회수</td>
+                </tr>
+                <tr th:each="result : ${resultList}">
+                    <td class="id" th:text="${result.getBoard_id()}"></td>
+                    <td class="title">
+                    <a th:href="@{/board/view/{id}(id=${result.getBoard_id()})}" th:text="${result.getTitle()}"></a>
+                    </td>
+                    <td class="writer" th:text="${result.getWriter()}"></td>
+                    <td class="created_time_date" th:text="${result.getCreated_time_date()}"></td>
+                    <td class="viewcount" th:text="${result.getViewcount()}"></td>
+                </tr>
+            </table>
+        </div>
     <hr>
         <!-- 페이징 처리 -->
     <div>
