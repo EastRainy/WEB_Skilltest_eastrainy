@@ -94,14 +94,14 @@ function doSignup(){
     formData.personname = personnameElement.value;
 
     //이메일검증
-    const emailData = emailCheck(emailElements, emailInvalidFeedback);
+    const emailData = checkEmail(emailElements, emailInvalidFeedback);
     if(emailData===''){
         invalidElements.push(emailElements);
     }
     formData.email = emailData;
 
     //핸드폰번호 검증
-    const phoneData = phoneCheck(phoneElements, phoneInvalidFeedback);
+    const phoneData = checkPhone(phoneElements, phoneInvalidFeedback);
     if(phoneData===''){
         invalidElements.push(phoneElements);
     }
@@ -360,7 +360,7 @@ function checkPersonname(nameElement, nameInvalidFeedback){
     return true;
 }
 //휴대폰 체크하여 전달
-function phoneCheck(phoneElements, phoneInvalidFeedback){
+function checkPhone(phoneElements, phoneInvalidFeedback){
 
     //만약 입력되지 않은 값이 있으면 invalid 처리
     phoneElements.forEach((element) => {
@@ -385,7 +385,7 @@ function phoneCheck(phoneElements, phoneInvalidFeedback){
     return phoneElements[0].value +'-'+ phoneElements[1].value +'-'+ phoneElements[2].value;
 }
 //이메일 체크하여 전달
-function emailCheck(emailElements, emailInvalidFeedbacks){
+function checkEmail(emailElements, emailInvalidFeedbacks){
 
     for(let i=0; i<emailElements.length; i++){
         if(emailElements[i].validity.valueMissing){
@@ -431,8 +431,14 @@ function emailSelectEvent(){
 
 //휴대폰 입력창에서 숫자가 아닌 입력값은 실시간으로 지움처리
 function phoneInputControlEvent(){
-    const phoneElement = document.getElementById('phone');
-    phoneElement.value = phoneElement.value.replace(/[^0-9]/g, '');
+    const phoneElements = [document.getElementById('phone1'), document.getElementById('phone2'),
+        document.getElementById('phone3')];
+
+    for(let phoneElement of phoneElements){
+        phoneElement.addEventListener('input', (event) => {
+            phoneElement.value = phoneElement.value.replace(/[^0-9]/g, '');
+        });
+    }
 }
 
 //input 의 is-valid 여부를 교체하는 공통함수
