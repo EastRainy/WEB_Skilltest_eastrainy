@@ -29,14 +29,16 @@
 해당 테이블을 만들기 위한 postgre SQL
 
 ```postgresql
-CREATE TABLE board_table (
-	b_id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-	writer varchar(20) NOT NULL,
-	title varchar(50) NOT NULL,
-	c_date timestamp NOT NULL DEFAULT now(),
-	m_date timestamp NOT NULL DEFAULT now(),
-	content varchar(9000),
-	viewcount integer DEFAULT 0
+CREATE TABLE IF NOT EXISTS public.board_table
+(
+    b_id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+    writer character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    title character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    c_date timestamp without time zone NOT NULL DEFAULT now(),
+    m_date timestamp without time zone NOT NULL DEFAULT now(),
+    content character varying(9000) COLLATE pg_catalog."default",
+    viewcount integer DEFAULT 0,
+    CONSTRAINT board_table_pkey PRIMARY KEY (b_id)
 )
 ```
 ---
