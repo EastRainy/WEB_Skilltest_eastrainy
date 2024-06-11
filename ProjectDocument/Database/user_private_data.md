@@ -10,9 +10,9 @@
 |--------------------|---------|-------|--------------------------|
 | u_id               | Integer |       | PRIMARY_KEY, FOREIGN_KEY |
 | user_personname    | Varchar |       |                          |
-| user_birthdate     | Varchar |       |                          |
+| user_birthdate     | DATE    |       |                          |
 | user_cellphone     | Varchar |       |                          |
-| user_postnum       | Integer |       |                          |
+| user_postnum       | Varchar |       |                          |
 | user_address       | Varchar |       |                          |
 | user_addressdetail | Varchar |       |                          |
 | user_email         | Varchar |       |                          |
@@ -45,11 +45,12 @@ CREATE TABLE IF NOT EXISTS public.user_private_data
 (
     u_id integer NOT NULL,
     user_personname character varying(40) COLLATE pg_catalog."default",
-    user_birthdate character varying(10) COLLATE pg_catalog."default",
+    user_birthdate date,
     user_phone character varying(15) COLLATE pg_catalog."default",
-    user_postnum integer,
-    user_postdata character varying(70) COLLATE pg_catalog."default",
-    user_postdata_detale character varying(70) COLLATE pg_catalog."default",
+    user_postnum character varying(10) COLLATE pg_catalog."default",
+    user_address character varying(70) COLLATE pg_catalog."default",
+    user_address_detail character varying(70) COLLATE pg_catalog."default",
+    user_email character varying(70) COLLATE pg_catalog."default",
     CONSTRAINT pk_u_id PRIMARY KEY (u_id),
     CONSTRAINT "u_id_Foreign" FOREIGN KEY (u_id)
         REFERENCES public.user_table (u_id) MATCH SIMPLE

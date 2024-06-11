@@ -5,15 +5,16 @@
  - DB : postgresql
  - 테이블 명 : board_table
 
-| 필드 명      | 데이터타입         | 기본값   | 특이사항                                     |
-|-----------|---------------|-------|------------------------------------------|
-| b_id      | integer       |       | PRIMARY_KEY, GENERATE ALWAYS AS IDENTITY |
-| writer    | varchar(20)   |       | NOT NULL, (FOREIGN KEY - userid)         |
-| title     | varchar(50)   |       | NOT NULL                                 |
-| c_date    | timestamp     | now() | NOT NULL                                 |
-| m_date    | timestamp     | now() | NOT NULL                                 |
-| content   | varchar(9000) |       |                                          |
-| viewcount | integer       | 0     | NOT NULL                                 |
+| 필드 명       | 데이터타입         | 기본값   | 특이사항                                     |
+|------------|---------------|-------|------------------------------------------|
+| b_id       | integer       |       | PRIMARY_KEY, GENERATE ALWAYS AS IDENTITY |
+| writer     | varchar(20)   |       | NOT NULL, (FOREIGN KEY - userid)         |
+| title      | varchar(50)   |       | NOT NULL                                 |
+| c_date     | timestamp     | now() | NOT NULL                                 |
+| m_date     | timestamp     | now() | NOT NULL                                 |
+| content    | varchar(9000) |       |                                          |
+| viewcount  | integer       | 0     | NOT NULL                                 |
+| is_hide    | boolean       | false | NOT NULL                                 |
 
 
 
@@ -29,14 +30,17 @@
 해당 테이블을 만들기 위한 postgre SQL
 
 ```postgresql
-CREATE TABLE board_table (
-	b_id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-	writer varchar(20) NOT NULL,
-	title varchar(50) NOT NULL,
-	c_date timestamp NOT NULL DEFAULT now(),
-	m_date timestamp NOT NULL DEFAULT now(),
-	content varchar(9000),
-	viewcount integer DEFAULT 0
+CREATE TABLE IF NOT EXISTS board_table
+(
+    b_id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+    writer character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    title character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    c_date timestamp without time zone NOT NULL DEFAULT now(),
+    m_date timestamp without time zone NOT NULL DEFAULT now(),
+    content character varying(9000) COLLATE pg_catalog."default",
+    viewcount integer NOT NULL DEFAULT 0,
+    is_hide boolean NOT NULL DEFAULT false,
+    CONSTRAINT board_table_pkey PRIMARY KEY (b_id)
 )
 ```
 ---
@@ -47,7 +51,7 @@ Primary key b_id 이용
 
 - INSERT
 ```postgresql
-INSERT INTO boardtable(
+INSERT INTO board_table(
     writer, title, content
 )
 VALUES(
@@ -61,7 +65,7 @@ SET
     writer = #{writer},
     title = #{title},
     content = #{content},
-    m_data = now()
+    m_date = now()
 WHERE 
     b_id = #{id}
 ```
