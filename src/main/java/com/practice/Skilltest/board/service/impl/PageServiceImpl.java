@@ -7,6 +7,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Repository
 public class PageServiceImpl implements PageService {
@@ -52,11 +55,55 @@ public class PageServiceImpl implements PageService {
     @Override
     public List<BoardDto> selectedPageList(long crrPage) {
 
+        List<BoardDto> dtos = boardDao.selectPageRange((10 *(crrPage-1)));
 
-        return boardDao.selectPageRange((10 *(crrPage-1)));
+        //timestamp형 변환, 숨김 페이지 데이터 제거
+        Timestamp tsmp;
+        for (BoardDto boardDto : dtos) {
+            if(boardDto.is_hide()){
+                //숨김페이지 데이터 제거
+                boardDto.setBoard_id(0);
+                boardDto.setTitle("-");
+                boardDto.setWriter("-");
+                boardDto.setViewcount(0);
+                boardDto.setCreated_time_date("-");
+            }
+            else {
+                //timestamp형 변환
+                tsmp = boardDto.getCreated_time();
+                if (tsmp.toLocalDateTime().toLocalDate().equals(LocalDate.now())) {
+                    boardDto.setCreated_time_date(tsmp.toLocalDateTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+                } else {
+                    boardDto.setCreated_time_date(tsmp.toLocalDateTime().toLocalDate().toString());
+                }
+                boardDto.setCreated_time(null);
+            }
+        }
+
+        return dtos;
     }
 
-    
+    //어드민일때, 현재 페이지에 해당하는 boardDto (숨김페이지 정상확인)
+    @Override
+    public List<BoardDto> selectedPageListAdmin(long crrPage) {
+
+        List<BoardDto> dtos = boardDao.selectPageRange((10 *(crrPage-1)));
+
+        Timestamp tsmp;
+        for (BoardDto boardDto : dtos) {
+            //timestamp형 변환
+            tsmp = boardDto.getCreated_time();
+            if (tsmp.toLocalDateTime().toLocalDate().equals(LocalDate.now())) {
+                boardDto.setCreated_time_date(tsmp.toLocalDateTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+            } else {
+                boardDto.setCreated_time_date(tsmp.toLocalDateTime().toLocalDate().toString());
+            }
+            boardDto.setCreated_time(null);
+        }
+
+        return dtos;
+    }
+
     //요청한 게시글의 페이지 위치
     public long crrBoardPagePosition(long id){
 

@@ -39,3 +39,38 @@ function redirectToBoard(){
     });
 }
 
+function modifyHide(mode) {
+
+    const id = document.getElementById("id").value;
+    let hideStatusTo;
+
+    if (mode === 'hide') {
+        hideStatusTo = true;
+    }
+    if (mode === 'display') {
+        hideStatusTo = false;
+    }
+
+    const modifyJSON = {
+        'id': id,
+        'hideStatusTo': hideStatusTo
+    }
+
+    fetch('/board/modifyHide', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(modifyJSON)
+    })
+        .then(response => {
+            if (response.ok) {
+                alert("처리 되었습니다.");
+                redirectToBoard();
+            } else {
+                alert("처리가 실패하였습니다.");
+                redirectToBoard();
+            }
+        })
+
+}

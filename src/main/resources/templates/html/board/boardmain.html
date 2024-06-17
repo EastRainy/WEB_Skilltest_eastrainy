@@ -21,13 +21,35 @@
                     <td class="viewcount">조회수</td>
                 </tr>
                 <tr th:each="result : ${resultList}">
-                    <td class="id" th:text="${result.getBoard_id()}"></td>
-                    <td class="title">
-                    <a th:href="@{/board/view/{id}(id=${result.getBoard_id()})}" th:text="${result.getTitle()}"></a>
-                    </td>
-                    <td class="writer" th:text="${result.getWriter()}"></td>
-                    <td class="created_time_date" th:text="${result.getCreated_time_date()}"></td>
-                    <td class="viewcount" th:text="${result.getViewcount()}"></td>
+                    <th:block th:if="!${result.is_hide()}">
+                        <td class="id" th:text="${result.getBoard_id()}"></td>
+                        <td class="title">
+                        <a th:href="@{/board/view/{id}(id=${result.getBoard_id()})}" th:text="${result.getTitle()}"></a>
+                        </td>
+                        <td class="writer" th:text="${result.getWriter()}"></td>
+                        <td class="created_time_date" th:text="${result.getCreated_time_date()}"></td>
+                        <td class="viewcount" th:text="${result.getViewcount()}"></td>
+                    </th:block>
+                    <th:block th:if="${result.is_hide()}">
+                        <th:block th:if="${isAdmin}">
+                            <td class="id" th:text="${result.getBoard_id()}"></td>
+                            <td class="title">
+                                <a style="font-style: italic" th:href="@{/board/view/{id}(id=${result.getBoard_id()})}" th:text="'(숨김글)'+${result.getTitle()}"></a>
+                            </td>
+                            <td class="writer" th:text="${result.getWriter()}"></td>
+                            <td class="created_time_date" th:text="${result.getCreated_time_date()}"></td>
+                            <td class="viewcount" th:text="${result.getViewcount()}"></td>
+                        </th:block>
+                        <th:block th:if="!${isAdmin}">
+                            <td class="id"></td>
+                            <td class="title">
+                                <div style="font-style: italic">숨김 처리된 글입니다.</div>
+                            </td>
+                            <td class="writer"></td>
+                            <td class="created_time_date"></td>
+                            <td class="viewcount"></td>
+                        </th:block>
+                    </th:block>
                 </tr>
             </table>
         </div>
@@ -47,7 +69,9 @@
             </li>
         </ul>
         <br>
-        <button class="new-post-button" th:onclick="|location.href='@{/board/new}'|">새 글</button>
+        <div>
+            <button class="new-post-button" th:onclick="|location.href='@{/board/new}'|">새 글</button>
+        </div>
     </div>
     <br>
     </div>

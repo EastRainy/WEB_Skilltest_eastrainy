@@ -30,6 +30,10 @@
             <button class="btn btn-secondary bottom-button-l" th:onclick="redirectToBoard()">목록</button>
             <button th:if="${modifiable}" class="btn btn-secondary bottom-button-r" th:onclick="|location.href='@{/board/modifying/{id}(id=${id})}'|">수정</button>
             <button th:if="${modifiable}" class="btn btn-danger bottom-button-r" data-toggle="modal" data-target="#remindModal">삭제</button>
+            <div th:if="${isAdmin}">
+                <button class="btn btn-secondary bottom-button-r" th:if="!${result.is_hide()}" data-toggle="modal" data-target="#adminHidingModal">숨김처리</button>
+                <button class="btn btn-secondary bottom-button-r" th:if="${result.is_hide()}" data-toggle="modal" data-target="#adminHidingModal">숨김해제</button>
+            </div>
         </div>
     </div>
 
@@ -55,8 +59,42 @@
             </div>
         </div>
     </div>
-    
 
+
+    <div class="modal fade" id="adminHidingModal" tabindex="-1" role="dialog" aria-labelledby="adminHidingModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content" th:if="!${result.is_hide()}">
+                <div class="modal-header">
+                    <h5 class="modal-title">게시글 숨기기</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>정말 해당 게시글을 숨김 처리 하시겠습니까?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" th:onclick="modifyHide('hide')">숨김</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                </div>
+            </div>
+            <div class="modal-content" th:if="${result.is_hide()}">
+                <div class="modal-header">
+                    <h5 class="modal-title">게시글 숨김해제</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>정말 해당 게시글을 숨김해제 처리 하시겠습니까?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" th:onclick="modifyHide('display')">해제</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

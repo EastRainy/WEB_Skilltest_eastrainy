@@ -1,6 +1,7 @@
 package com.practice.Skilltest.board.dao;
 
 import com.practice.Skilltest.board.dto.BoardDto;
+import com.practice.Skilltest.board.dto.HideRequestDto;
 import org.apache.ibatis.annotations.Mapper;
 
 
@@ -19,6 +20,7 @@ public interface BoardDao {
     boolean updateBoard(Map<String, Object> map);
     void updateViewcount(long id);
     boolean deleteBoard(long id);
+    boolean updateHide(HideRequestDto hideRequestDto);
 
 
     // --- page ---

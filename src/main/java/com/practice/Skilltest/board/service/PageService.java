@@ -13,6 +13,7 @@ public interface PageService {
     long[] pageRange(long crrPage);
     boolean haveNext(long crrPage);
     List<BoardDto> selectedPageList(long crrPage);
+    List<BoardDto> selectedPageListAdmin(long crrPage);
 
     long crrBoardPagePosition(long id);
 
