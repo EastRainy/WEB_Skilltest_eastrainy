@@ -147,6 +147,8 @@ function doSubmit(){
     const invalidPersonnameFeedbackElement = document.getElementById('invalidPersonname');
     const invalidBirthdateFeedbackElement = document.getElementById('invalidBirthdate');
     const invalidPhoneFeedbackElement = document.getElementById('invalidPhone');
+    const invalidAddressFeedbackElement = document.getElementById('invalidAddress');
+    const invalidAddressDetailFeedbackElement = document.getElementById('invalidAddressDetail');
 
     const invalidElements = [];
 
@@ -168,7 +170,10 @@ function doSubmit(){
     if(!checkPhone(phoneElements,invalidPhoneFeedbackElement)){
         invalidElements.push(phoneElements[0]);
     }
-
+    //주소 확인
+    if(!checkAddress(postnumElement, addressElement, addressDetailElement, invalidAddressFeedbackElement, invalidAddressDetailFeedbackElement)){
+        invalidElements.push(addressDetailElement);
+    }
 
     //통과하지 못한 요소가 있을 경우 가장 첫번째 포커스하고 리턴
     if(invalidElements.length>0){
@@ -378,11 +383,7 @@ function checkEmail(emailElements, invalidEmails, formEmailElement){
     if(invalidElement.length>0){
         return false;
     }
-
-
     formEmailElement.value = emailElements[0].value +'@'+ emailElements[1].value;
-    console.log(formEmailElement.value);
-    console.log(formEmailElement.validity.typeMismatch);
     if(!formEmailElement.validity.typeMismatch){
         changeIsValid(emailElements[0], false);
         changeIsValid(emailElements[1], false);
@@ -395,9 +396,7 @@ function checkEmail(emailElements, invalidEmails, formEmailElement){
     for(let element of emailElements){
         changeIsValid(element, true);
     }
-
     return true;
-
 }
 // 이름 유효성 검사
 function checkPersonname(personnameElement, invalidPersonname){
@@ -461,6 +460,32 @@ function checkPhone(phoneElements, invalidPhone){
     }
     return true;
 }
+// 주소 유효성 검사
+function checkAddress(postnumElement ,addressElement, addressDetailElement,
+                      invalidAddress, invalidAddressDetail){
+
+    if(postnumElement.value.length === 0 || addressElement.value.length === 0){
+        invalidAddress.textContent = '주소를 입력해주세요.'
+
+        changeIsValid(postnumElement, false);
+        changeIsValid(addressElement, false);
+
+        return false;
+    }
+    changeIsValid(postnumElement, true);
+    changeIsValid(addressElement, true);
+
+    if(addressDetailElement.validity.valueMissing){
+        invalidAddressDetail.textContent = '상세주소를 입력해주세요.';
+
+        changeIsValid(addressDetailElement, false);
+        return false;
+    }
+    changeIsValid(addressDetailElement, true);
+
+    return true;
+}
+
 
 
 
