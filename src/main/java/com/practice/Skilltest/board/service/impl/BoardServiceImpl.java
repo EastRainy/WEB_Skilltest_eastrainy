@@ -2,8 +2,10 @@ package com.practice.Skilltest.board.service.impl;
 
 import com.practice.Skilltest.board.dao.BoardDao;
 import com.practice.Skilltest.board.dto.BoardDto;
+import com.practice.Skilltest.board.dto.HideRequestDto;
 import com.practice.Skilltest.board.service.BoardService;
 import com.practice.Skilltest.user.role.UserRoles;
+import lombok.extern.log4j.Log4j2;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +17,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+@Log4j2
 @Repository
 public class BoardServiceImpl implements BoardService {
 
@@ -131,5 +134,16 @@ public class BoardServiceImpl implements BoardService {
         return 1;
     }
 
+    @Override
+    public boolean updateHide(HideRequestDto hideRequestDto, Collection<? extends GrantedAuthority> userAuthority) {
+
+        log.info("updateHide: " + hideRequestDto.toString());
+
+        if (!userAuthority.contains(new SimpleGrantedAuthority(UserRoles.ADMIN.getValue()))) {
+            return false;
+        }
+
+        return boardDao.updateHide(hideRequestDto);
+    }
 }
 

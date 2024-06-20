@@ -3,15 +3,29 @@
 //이벤트리스너 초기화
 window.onload = function () {
     document.getElementById("username").addEventListener("input", function () {usernameChangeEvent()})
-    document.getElementById('password').addEventListener('change', function () {passwordValidationEvent()});
-    document.getElementById('password_check').addEventListener('change', function () { passwordCheckValidationEvent()});
     document.getElementById('userSelectedEmailAddress').addEventListener('change', function () {emailSelectEvent()});
     document.getElementById('formSubmit').addEventListener('click', function () {doSignup()});
     document.getElementById('usernameCheck').addEventListener('click', function () {usernameServerCheck()});
-    document.getElementById('phone').addEventListener('input', function(){phoneInputControlEvent()});
+
+    initPasswordValidation();
+    phoneInputControlEvent();
 }
 
 let usernameChecked = false;
+
+//formData 초기화
+function clearFormData(formData){
+    formData.username = '';
+    formData.password = ''
+    formData.password_check= '';
+    formData.personname= '';
+    formData.birthdate= '';
+    formData.email= '';
+    formData.phone= '';
+    formData.postnum= '';
+    formData.address= '';
+    formData.address_detail= '';
+}
 
 //회원가입 메인 함수
 function doSignup(){
@@ -22,10 +36,13 @@ function doSignup(){
     const passwordElement = document.getElementById('password');
     const passwordCheckElement = document.getElementById('password_check');
     const personnameElement = document.getElementById('personname');
-    const phoneElements = [document.getElementById('phone'),
+    const phoneElements = [document.getElementById('phone1'),
         document.getElementById('phone2') ,document.getElementById('phone3')];
     const emailElements = [document.getElementById('emailID'), document.getElementById('emailAddress')];
     const birthdateElement = document.getElementById('birthdate');
+    const postnumElement = document.getElementById('postnum');
+    const addressElement = document.getElementById('address');
+    const addressDetailElement = document.getElementById('address_detail');
     let invalidElements = [];
 
     const usernameInput = String(usernameElement.value);
@@ -39,6 +56,8 @@ function doSignup(){
     const phoneInvalidFeedback = document.querySelector('.announce-phone');
     const emailInvalidFeedback = [document.getElementById('invalidEmailId'),
         document.getElementById('invalidEmailAddress')];
+    const invalidAddressFeedback = document.getElementById('invalidAddress');
+    const invalidAddressDetailFeedback = document.getElementById('invalidAddressDetail');
 
 
     let formData = {
@@ -94,29 +113,29 @@ function doSignup(){
     formData.personname = personnameElement.value;
 
     //이메일검증
-    const emailData = emailCheck(emailElements, emailInvalidFeedback);
+    const emailData = checkEmail(emailElements, emailInvalidFeedback);
     if(emailData===''){
         invalidElements.push(emailElements);
     }
     formData.email = emailData;
 
     //핸드폰번호 검증
-    const phoneData = phoneCheck(phoneElements, phoneInvalidFeedback);
+    const phoneData = checkPhone(phoneElements, phoneInvalidFeedback);
     if(phoneData===''){
         invalidElements.push(phoneElements);
     }
     formData.phone = phoneData;
 
     //생년월일 검증
-
     if(!checkBirthdate(birthdateElement)){
         invalidElements.push(birthdateElement);
     }
     formData.birthdate = birthdateElement.value;
 
-
-
-    //임시로 formData에 검증없이 바로 입력
+    //주소 검증
+    if(!checkAddress(postnumElement, addressElement, addressDetailElement, invalidAddressFeedback, invalidAddressDetailFeedback)){
+        invalidElements.push(addressDetailElement);
+    }
     formData.postnum = document.getElementById('postnum').value;
     formData.address = document.getElementById('address').value;
     formData.address_detail = document.getElementById('address_detail').value;
@@ -235,48 +254,6 @@ function usernameServerCheck(){
             console.error('Error:', error);
         })
 }
-//비밀번호 form 변경 시 유효성 검사 및 안내
-function passwordValidationEvent(){
-
-    const passwordElement = document.getElementById('password');
-    const passwordCheck = document.getElementById("password_check");
-    const invalidAnnounce = document.getElementById('invalidPassword');
-    const checkInvalidAnnounce = document.getElementById('invalidPasswordCheck')
-
-
-    if(passwordCheck.classList.contains('is-valid')){
-        checkInvalidAnnounce.textContent = '비밀번호가 변경되었습니다.';
-        changeIsValid(passwordElement, false);
-        return;
-    }
-
-    const validCheck = checkPw(passwordElement.value);
-    if(!validCheck.valid){
-        invalidAnnounce.textContent = validCheck.message;
-
-        changeIsValid(passwordElement, false);
-        return;
-    }
-
-    changeIsValid(passwordElement, true);
-}
-//비밀번호확인 form 변경시 유효성 검사 및 안내
-function passwordCheckValidationEvent(){
-    const passwordElement = document.getElementById("password");
-    const passwordCheckElement = document.getElementById("password_check");
-    const invalidAnnounce = document.getElementById('invalidPasswordCheck')
-
-    const passwordCheckValid = checkPwRepeat(passwordElement.value, passwordCheckElement.value);
-
-    if(!passwordCheckValid){
-        invalidAnnounce.textContent = '비밀번호와 비밀번호 확인 값이 서로 다릅니다. 다시 입력해 주세요.';
-        changeIsValid(passwordCheckElement, false);
-
-        return;
-    }
-
-    changeIsValid(passwordCheckElement, true);
-}
 
 
 //ID 유효성 체크
@@ -301,7 +278,43 @@ function checkUsername(usernameValue){
     outputMap.valid = true;
     return outputMap;
 }
-//비밀번호 유효성 체크
+
+//비밀번호, 비밀번호 확인 form 유효성 검사 및 안내 초기화
+function initPasswordValidation(){
+
+    const passwordElement = document.getElementById('password');
+    const passwordCheckElement = document.getElementById('password_check');
+    const invalidAnnounce = document.getElementById('invalidPassword');
+    const checkInvalidAnnounce = document.getElementById('invalidPasswordCheck');
+
+    //비밀번호 입력 검증
+    passwordElement.addEventListener('change', function(){
+
+        if(passwordCheckElement.classList.contains('is-valid')){
+            checkInvalidAnnounce.textContent = '비밀번호가 변경되었습니다.';
+            changeIsValid(passwordCheckElement, false);
+        }
+        const validCheck = checkPw(passwordElement.value);
+        if(!validCheck.valid){
+            invalidAnnounce.textContent = validCheck.message;
+            changeIsValid(passwordElement, false);
+            return;
+        }
+        changeIsValid(passwordElement, true);
+    })
+    //비밀번호확인 입력 검증
+    passwordCheckElement.addEventListener('change', function(){
+
+        let passwordCheckValid = checkPwRepeat(passwordElement.value, passwordCheckElement.value);
+        if(!passwordCheckValid){
+            checkInvalidAnnounce.textContent = '비밀번호와 비밀번호 확인 값이 서로 다릅니다. 다시 입력해 주세요.';
+            changeIsValid(passwordCheckElement, false);
+            return;
+        }
+        changeIsValid(passwordCheckElement, true);
+    })
+}
+//비밀번호 유효성 체크 함수
 function checkPw(input){
     const checkValid = /^[a-zA-Z\d!@#$%^&*()?_=+<>;:~.,`\[\]\-]*$/.test(input)
     const checkLower = /[a-z]/.test(input);
@@ -360,7 +373,7 @@ function checkPersonname(nameElement, nameInvalidFeedback){
     return true;
 }
 //휴대폰 체크하여 전달
-function phoneCheck(phoneElements, phoneInvalidFeedback){
+function checkPhone(phoneElements, phoneInvalidFeedback){
 
     //만약 입력되지 않은 값이 있으면 invalid 처리
     phoneElements.forEach((element) => {
@@ -385,7 +398,7 @@ function phoneCheck(phoneElements, phoneInvalidFeedback){
     return phoneElements[0].value +'-'+ phoneElements[1].value +'-'+ phoneElements[2].value;
 }
 //이메일 체크하여 전달
-function emailCheck(emailElements, emailInvalidFeedbacks){
+function checkEmail(emailElements, emailInvalidFeedbacks){
 
     for(let i=0; i<emailElements.length; i++){
         if(emailElements[i].validity.valueMissing){
@@ -410,10 +423,19 @@ function emailCheck(emailElements, emailInvalidFeedbacks){
 //생년월일에 대한 검사
 function checkBirthdate (birthdateElement){
 
+    const birthdateAnnouncement = document.getElementById('invalidBirthdate');
+
     if(birthdateElement.validity.valueMissing){
         changeIsValid(birthdateElement, false);
+        birthdateAnnouncement.textContent = '생년월일을 입력해주세요.';
         birthdateElement.focus();
-        return false
+        return false;
+    }
+    if(birthdateElement.validity.rangeOverflow || birthdateElement.validity.rangeUnderflow){
+        changeIsValid(birthdateElement, false);
+        birthdateAnnouncement.textContent = '유효한 범위의 날자를 입력해주세요.';
+        birthdateElement.focus();
+        return false;
     }
     changeIsValid(birthdateElement, true);
     return true;
@@ -429,10 +451,41 @@ function emailSelectEvent(){
     emailAddress.readOnly = selectList.value !== "";
 }
 
+function checkAddress(postnumElement ,addressElement, addressDetailElement,
+                      invalidAddress, invalidAddressDetail){
+
+    //validity.valueMissing이 안되서 length로 처리
+    if(postnumElement.value.length === 0 || addressElement.value.length === 0){
+        invalidAddress.textContent = '주소를 입력해주세요.'
+
+        changeIsValid(postnumElement, false);
+        changeIsValid(addressElement, false);
+
+        return false;
+    }
+    changeIsValid(postnumElement, true);
+    changeIsValid(addressElement, true);
+    if(addressDetailElement.validity.valueMissing){
+        invalidAddressDetail.textContent = '상세주소를 입력해주세요.';
+
+        changeIsValid(addressDetailElement, false);
+        return false;
+    }
+    changeIsValid(addressDetailElement, true);
+
+    return true;
+}
+
 //휴대폰 입력창에서 숫자가 아닌 입력값은 실시간으로 지움처리
 function phoneInputControlEvent(){
-    const phoneElement = document.getElementById('phone');
-    phoneElement.value = phoneElement.value.replace(/[^0-9]/g, '');
+    const phoneElements = [document.getElementById('phone1'), document.getElementById('phone2'),
+        document.getElementById('phone3')];
+
+    for(let phoneElement of phoneElements){
+        phoneElement.addEventListener('input', (event) => {
+            phoneElement.value = phoneElement.value.replace(/[^0-9]/g, '');
+        });
+    }
 }
 
 //input 의 is-valid 여부를 교체하는 공통함수
@@ -446,17 +499,4 @@ function changeIsValid(TargetElement, targetStatus){
         TargetElement.classList.contains('is-valid') ? TargetElement.classList.remove('is-valid') : null;
         TargetElement.classList.add('is-invalid');
     }
-}
-//formData 초기화
-function clearFormData(formData){
-    formData.username = '';
-    formData.password = ''
-    formData.password_check= '';
-    formData.personname= '';
-    formData.birthdate= '';
-    formData.email= '';
-    formData.phone= '';
-    formData.postnum= '';
-    formData.address= '';
-    formData.address_detail= '';
 }

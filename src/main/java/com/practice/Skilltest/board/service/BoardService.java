@@ -1,6 +1,7 @@
 package com.practice.Skilltest.board.service;
 
 import com.practice.Skilltest.board.dto.BoardDto;
+import com.practice.Skilltest.board.dto.HideRequestDto;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
@@ -33,5 +34,7 @@ public interface BoardService {
 
     //게시글의 데이터 포함여부 및 길이 검증
     int checkValidBoard(BoardDto boardDto);
+
+    boolean updateHide(HideRequestDto hideRequestDto, Collection<? extends GrantedAuthority> userAuthority);
 
 }

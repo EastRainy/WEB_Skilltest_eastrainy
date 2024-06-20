@@ -56,7 +56,6 @@
         b_id = #{id}
     </update>
 
-
     <!-- 조회시 게시물 조회수 증가 -->
     <update id="updateViewcount" parameterType="long">
         UPDATE board_table
@@ -71,6 +70,14 @@
         WHERE b_id = #{id}
     </delete>
 
+    <update id="updateHide" parameterType="com.practice.Skilltest.board.dto.HideRequestDto">
+        UPDATE board_table
+        SET is_hide = #{hideStatusTo}
+        WHERE b_id = #{id}
+    </update>
+
+
+
     <!-- 페이징 처리를 위한 총 게시물 갯수 조회 -->
     <select id="selectCount" resultType="long">
         SELECT COUNT(*) FROM board_table
@@ -84,7 +91,7 @@
 
     <!-- 10개(페이지)단위로 게시물 목록 조회 -->
     <select id="selectPageRange" resultMap="Board">
-        SELECT b_id, title, writer, viewcount, c_date FROM board_table
+        SELECT b_id, title, writer, viewcount, c_date, is_hide FROM board_table
         ORDER BY b_id DESC
         LIMIT 10 OFFSET #{offset}
     </select>

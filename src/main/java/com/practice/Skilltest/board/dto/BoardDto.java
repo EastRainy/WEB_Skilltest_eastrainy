@@ -21,6 +21,7 @@ public class BoardDto {
     private String created_time_date;
     private String content;
     private int viewcount;
+    private boolean is_hide;
 
 }
 

@@ -3,8 +3,10 @@ package com.practice.Skilltest.board.controller;
 import com.google.gson.JsonObject;
 import com.practice.Skilltest.board.dto.BoardDto;
 import com.practice.Skilltest.board.dto.BoardIdCarrier;
+import com.practice.Skilltest.board.dto.HideRequestDto;
 import com.practice.Skilltest.board.service.BoardService;
 import com.practice.Skilltest.board.service.PageService;
+import com.practice.Skilltest.user.role.UserRoles;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.slf4j.Logger;
@@ -14,15 +16,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+
 import java.util.List;
 
 @Controller
@@ -41,23 +42,17 @@ public class BoardController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/board/{page}")
-    public String viewPage(@PathVariable("page") long page, Model model){
+    public String viewPage(@PathVariable("page") long page, Model model, @AuthenticationPrincipal User user){
 
+        List<BoardDto> dtos;
         if(!pageService.checkValid(page)){return "error/400";}
         //올바른 페이지가 아니라면 에러처리
 
-        //timestamp 형 자료 가공하여 String 형태로 전달
-        List<BoardDto> dtos = pageService.selectedPageList(page);
-        Timestamp tsmp;
-
-        for (BoardDto boardDto : dtos) {
-            tsmp = boardDto.getCreated_time();
-            if(tsmp.toLocalDateTime().toLocalDate().equals(LocalDate.now())){
-                boardDto.setCreated_time_date(tsmp.toLocalDateTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
-            }else{
-                boardDto.setCreated_time_date(tsmp.toLocalDateTime().toLocalDate().toString());
-            }
-            boardDto.setCreated_time(null);
+        if(user.getAuthorities().contains(new SimpleGrantedAuthority(UserRoles.ADMIN.getValue()))){
+            dtos = pageService.selectedPageListAdmin(page);
+        }//어드민이면 숨긴글 데이터 제공
+        else {
+            dtos = pageService.selectedPageList(page);
         }
 
         model.addAttribute("resultList", dtos);
@@ -67,7 +62,9 @@ public class BoardController {
         model.addAttribute("crrPage", page);
         model.addAttribute("haveNext", pageService.haveNext(page));
         //페이징 처리에 필요한 속성 추가
-
+        if(user.getAuthorities().contains(new SimpleGrantedAuthority(UserRoles.ADMIN.getValue()))){
+            model.addAttribute("isAdmin", true);
+        }
         return "html/board/boardmain";
     }
 
@@ -90,13 +87,24 @@ public class BoardController {
     @RequestMapping(method = RequestMethod.GET, path = "/board/view/{id}")
     public String viewBoard(@PathVariable("id") long id, Model model, @AuthenticationPrincipal User user){
 
+        boolean isAdmin = user.getAuthorities().contains(new SimpleGrantedAuthority(UserRoles.ADMIN.getValue()));
+
         try {
-            model.addAttribute("result", boardService.viewOne(id));
+            BoardDto result = boardService.viewOne(id);
+            //숨김 처리 글에 비정상 접근 시 잘못된 접근 처리
+            if(result.is_hide() && !isAdmin){
+                return "error/500";
+            }
+
+            model.addAttribute("result", result);
             model.addAttribute("id", id);
             //해당 id의 게시물을 조회 시도
             if(boardService.checkValidRequester(id, user.getUsername(), user.getAuthorities())){
                 model.addAttribute("modifiable",true);
             }//해당 게시물의 작성자 혹은 수정권한이 있는 경우 수정여부 속성 추가
+            if(isAdmin){
+                model.addAttribute("isAdmin", true);
+            }//어드민이면 hide작업 가능
         }
         catch (Exception e){
             return "error/404";
@@ -192,5 +200,22 @@ public class BoardController {
 
         h.setLocation(URI.create("/board"));
         return new ResponseEntity<>(h, HttpStatus.MOVED_PERMANENTLY);
+    }
+    
+    //게시글 숨김, 숨김해제
+    @PostMapping(path="/board/modifyHide")
+    @ResponseBody
+    public ResponseEntity<?> adminHideModify(@RequestBody HideRequestDto modifyJSON, @AuthenticationPrincipal User user){
+
+        boolean serviceResponse = boardService.updateHide(modifyJSON, user.getAuthorities());
+
+        log.info("Hide response: " + serviceResponse);
+
+        if (serviceResponse) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
     }
 }

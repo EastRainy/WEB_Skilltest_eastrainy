@@ -2,6 +2,7 @@ package com.practice.Skilltest.board.dao.impl;
 
 import com.practice.Skilltest.board.dao.BoardDao;
 import com.practice.Skilltest.board.dto.BoardDto;
+import com.practice.Skilltest.board.dto.HideRequestDto;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -50,6 +51,12 @@ public class BoardDaoImpl implements BoardDao {
     }
 
     @Override
+    public boolean updateHide(HideRequestDto hideRequestDto) {
+        return 1==sqlSession.update("modifyHide", hideRequestDto);
+    }
+
+
+    @Override
     public long selectCount() {
         return sqlSession.selectOne("selectCount");
     }
@@ -59,8 +66,6 @@ public class BoardDaoImpl implements BoardDao {
     public List<BoardDto> selectPageRange(long offset) {
         return sqlSession.selectList("selectPageRange", offset);
     }
-
-
 
 
 }
