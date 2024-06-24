@@ -40,7 +40,7 @@ public class BoardController {
     public String board(){
         return "redirect:/board/1";
     }
-
+    //게시글 페이지 목록확인
     @RequestMapping(method = RequestMethod.GET, path = "/board/{page}")
     public String viewPage(@PathVariable("page") long page, Model model, @AuthenticationPrincipal User user){
 
@@ -90,15 +90,16 @@ public class BoardController {
         boolean isAdmin = user.getAuthorities().contains(new SimpleGrantedAuthority(UserRoles.ADMIN.getValue()));
 
         try {
+            //해당 id의 게시물을 조회 시도
             BoardDto result = boardService.viewOne(id);
             //숨김 처리 글에 비정상 접근 시 잘못된 접근 처리
             if(result.is_hide() && !isAdmin){
                 return "error/500";
             }
-
+            //결과물 모델에 적재
             model.addAttribute("result", result);
             model.addAttribute("id", id);
-            //해당 id의 게시물을 조회 시도
+
             if(boardService.checkValidRequester(id, user.getUsername(), user.getAuthorities())){
                 model.addAttribute("modifiable",true);
             }//해당 게시물의 작성자 혹은 수정권한이 있는 경우 수정여부 속성 추가

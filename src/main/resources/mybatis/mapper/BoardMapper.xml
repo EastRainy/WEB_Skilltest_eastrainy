@@ -21,7 +21,7 @@
 
     <!-- 게시글 상세 조회 -->
     <select id="viewOne" resultMap="Board">
-        SELECT * FROM board_table
+        SELECT b_id, writer, title, c_date, content, viewcount, is_hide FROM board_table
         WHERE b_id = #{id}
     </select>
     
