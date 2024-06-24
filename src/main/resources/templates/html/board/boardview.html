@@ -15,7 +15,10 @@
             <h2 class="mb-5" th:text="${result.getTitle()}"></h2>
             <div class="row justify-content-between">
                 <p class="col-4">게시자 : <span th:text="${result.getWriter()}"></span></p>
-                <p class="col-4 left">조회수 : <span th:text="${result.getViewcount()}"></span></p>
+                <p class="col-4 right">조회수 : <span th:text="${result.getViewcount()}"></span></p>
+            </div>
+            <div class="row">
+                <p class="col right">작성시간 : <span th:text="${result.getCreated_time_date()}"></span></p>
             </div>
         </div>
         <hr>

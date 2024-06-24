@@ -13,6 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Repository;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,11 +40,16 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public BoardDto viewOne(long id) throws Exception {
 
-        if(!checkById(id)){throw new NotFoundException("존재하지 않는 게시물 id 접근");}
+        BoardDto result = boardDao.viewOne(id);
 
+        if(!checkById(id)){throw new NotFoundException("존재하지 않는 게시물 id 접근");}
         else{
             upView(id);
-            return boardDao.viewOne(id);
+
+            //timestamp형 string 변환
+            result.setCreated_time_date(result.getCreated_time().toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+
+            return result;
         }
     }
 
@@ -133,7 +139,7 @@ public class BoardServiceImpl implements BoardService {
 
         return 1;
     }
-
+    //게시글 숨김/숨김해제 처리
     @Override
     public boolean updateHide(HideRequestDto hideRequestDto, Collection<? extends GrantedAuthority> userAuthority) {
 
