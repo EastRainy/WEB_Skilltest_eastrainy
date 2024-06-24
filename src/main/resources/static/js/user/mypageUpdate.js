@@ -11,7 +11,7 @@ function initEventListener(){
 
     initPasswordEventListener();
     initPhoneInputControlEvent();
-
+    document.getElementById('userSelectedEmailAddress').addEventListener('change', function () {emailSelectEvent()});
 }
 
 
@@ -125,6 +125,16 @@ function initPhoneInputControlEvent(){
             phoneElement.value = phoneElement.value.replace(/[^0-9]/g, '');
         });
     }
+}
+
+//이메일 선택 목록 이벤트처리
+function emailSelectEvent(){
+
+    let emailAddress = document.getElementById("emailAddress");
+    let selectList = document.getElementById("userSelectedEmailAddress");
+
+    emailAddress.value = selectList.value;
+    emailAddress.readOnly = selectList.value !== "";
 }
 
 //유저 데이터 업데이트 요청
@@ -384,7 +394,7 @@ function checkEmail(emailElements, invalidEmails, formEmailElement){
         return false;
     }
     formEmailElement.value = emailElements[0].value +'@'+ emailElements[1].value;
-    if(!formEmailElement.validity.typeMismatch){
+    if(formEmailElement.validity.typeMismatch){
         changeIsValid(emailElements[0], false);
         changeIsValid(emailElements[1], false);
         invalidEmails[0].textContent = '올바른 이메일 형식이 아닙니다.';
@@ -423,10 +433,10 @@ function checkPersonname(personnameElement, invalidPersonname){
     return true;
 }
 //생년월일 유효성 검사
-function checkBirthdate(birthdateElement, invalidBirthdate){
+function checkBirthdate(birthdateElement, invalidBirthdate) {
 
-    if(!birthdateElement.validity.valid){
-        if(birthdateElement.validity.valueMissing){
+    if (!birthdateElement.validity.valid) {
+        if (birthdateElement.validity.valueMissing) {
             invalidBirthdate.textContent = '값을 선택해주세요.';
             changeIsValid(birthdateElement, false);
             return false;
