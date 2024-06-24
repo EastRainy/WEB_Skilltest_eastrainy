@@ -26,20 +26,33 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="email">이메일</label>
-                    <input hidden type="email" class="form-control" id="email" th:field="*{email}" readonly/>
-                    <div class="form-row align-item-center">
-                        <div class="col-4">
-                            <input type="text" class="form-control" id="emailID" aria-label="emailID" max="25" required>
+                    <div th:text="이메일">이메일</div>
+                    <input hidden type="email" class="form-control" id="email" aria-label="email" th:field="*{email}" required readonly/>
+                    <div class="form-row align-items-start">
+                        <div class="col-25 mb-2">
+                            <label class="sr-only" for="emailID">이메일</label>
+                            <input type="text" class="form-control" id="emailID" placeholder="이메일"
+                                   required/>
                             <div class="invalid-feedback" id="invalidEmailId"></div>
                         </div>
                         <div class="col-auto">
-                            <div class="input-group">
+                            <label class="sr-only" for="emailAddress"></label>
+                            <div class="input-group mb-2">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">@</div>
                                 </div>
-                                <input type="text" class="form-control" id="emailAddress" aria-label="emailAddress" max="65" required>
-                                <div class=invalid-feedback id="invalidEmailAddress"></div>
+                                <input type="text" class="form-control" id="emailAddress"
+                                       placeholder="example.com" required/>
+                                <div class="input-group-prepend">
+                                    <label class="sr-only" for="userSelectedEmailAddress"></label>
+                                    <select class="custom-select" id="userSelectedEmailAddress">
+                                        <option selected value="">직접입력</option>
+                                        <option value="naver.com">네이버</option>
+                                        <option value="gmail.com">지메일</option>
+                                        <option value="daum.net">다음</option>
+                                    </select>
+                                </div>
+                                <div class="invalid-feedback" id="invalidEmailAddress"></div>
                             </div>
                         </div>
                     </div>

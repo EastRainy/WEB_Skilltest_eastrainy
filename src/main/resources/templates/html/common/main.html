@@ -12,14 +12,22 @@
 
 <body>
     <div th:replace="/html/common/navbar.html :: navbar-div">navbar div</div>
-    <div class="container-fluid">
-        <h1>This is main page for testing.</h1>
 
-        <h3>로그인한 인원 : <span th:text="${CurrUsername}"></span></h3>
-        <br>
-        <a th:href="@{/board}">게시판으로 가기</a>
+    <div class="container-xxl">
+        <div class="jumbotron">
+            <h1 class="display-4">Welcome! <span th:text="${CurrUsername}"></span>!</h1>
+            <p class="lead">이 페이지는 메인 페이지입니다!</p>
+            <hr class="my-4">
+            <p>아직 열심히 개발중인 사이트입니다!</p>
+            <p class="lead">
+                <a class="btn btn-primary btn-lg" th:href="@{/board}" role="button">게시판으로 가기</a>
+            </p>
+        </div>
     </div>
 
 </body>
+
+
+
 
 </html>
