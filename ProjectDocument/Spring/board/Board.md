@@ -57,7 +57,7 @@ PageService는 게시판 페이징 서비스를 위한 서비스로 따로 분�
   - 기존 게시글 수정 페이지 접근/응답
   - 기존 페이지 삭제 응답
 
-컨트롤러 - 추가 기능 필요시 Service에 구현 후 연결, 컨트롤러에서는 서버 작업 하지 않고 페이지
+컨트롤러 - 연결 외 기능 구현 필요시 Service에 구현 후 연결, 컨트롤러에서는 서버 작업 하지 않고 페이지
 연결
 
 ---
@@ -68,7 +68,7 @@ DAO와 연결하여 데이터를 주고받고 가공하여 Controller에 제공
 
 
 ### boardService
- - 게시판 게시글 CURD 작업 서비스
+ - 게시판 게시글 주요 CRUD 작업 및 상세 서비스
 
 ### pageService
  - 게시판 메인페이지의 페이징 처리 서비스 
@@ -84,6 +84,8 @@ DAO와 연결하여 데이터를 주고받고 가공하여 Controller에 제공
  - 게시글 id board_id
  - 글쓴이 writer
  - 제목 title
+ - 생성된 시간 created_time
+ - 생성된 시간의 String 형태 created_time_date
  - 수정된 시간 modified_time
  - 내용 content
  - 조회수 viewcount
