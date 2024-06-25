@@ -7,6 +7,7 @@ window.onload = function () {
     document.getElementById('formSubmit').addEventListener('click', function () {doSignup()});
     document.getElementById('usernameCheck').addEventListener('click', function () {usernameServerCheck()});
 
+    initPhoneChoice();
     initPasswordValidation();
     phoneInputControlEvent();
 }
@@ -450,7 +451,7 @@ function emailSelectEvent(){
     emailAddress.value = selectList.value;
     emailAddress.readOnly = selectList.value !== "";
 }
-
+//주소 입력 검증
 function checkAddress(postnumElement ,addressElement, addressDetailElement,
                       invalidAddress, invalidAddressDetail){
 
@@ -478,13 +479,27 @@ function checkAddress(postnumElement ,addressElement, addressDetailElement,
 
 //휴대폰 입력창에서 숫자가 아닌 입력값은 실시간으로 지움처리
 function phoneInputControlEvent(){
-    const phoneElements = [document.getElementById('phone1'), document.getElementById('phone2'),
+    const phoneElements = [document.getElementById('phone2'),
         document.getElementById('phone3')];
 
     for(let phoneElement of phoneElements){
         phoneElement.addEventListener('input', (event) => {
             phoneElement.value = phoneElement.value.replace(/[^0-9]/g, '');
         });
+    }
+}
+//번호 선택지 초기화
+function initPhoneChoice(){
+    const element = document.getElementById('phone1');
+    let exchangeNums = ['02', '031', '032', '033', '041', '042', '043', '044', '051', '052',
+        '053', '054', '055', '061', '062', '063', '064', '010', '011', '016', '017', '018', '019'];
+    console.log(0);
+    for(let num of exchangeNums){
+        console.log(1);
+        let option = document.createElement('option');
+        option.textContent = num;
+        option.value = num;
+        element.append(option);
     }
 }
 
