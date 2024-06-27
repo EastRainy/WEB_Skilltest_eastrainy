@@ -81,12 +81,15 @@ function initPasswordEventListener(){
     //엘리먼트 받아오기
     const passwordEle = document.getElementById('password');
     const passwordCheckEle = document.getElementById('password_check');
+    const passwordModalAnnounce = document.getElementById('password-modal-announce')
 
     //유저가 입력한 이후 확인되는 password 이벤트 리스너
     passwordEle.addEventListener('change', (event) =>{
 
         // 비밀번호 validate 체크
         const passwordValidation = new checkPasswordValidation(password);
+
+        passwordModalAnnounce.textContent = '';
 
         if(passwordValidation.isValid()) {
             changeIsValid(passwordEle, true);
@@ -105,7 +108,6 @@ function initPasswordEventListener(){
         const equalCheck = passwordCheckEqual(passwordEle, passwordCheckEle);
 
         if(passwordCheckEle.validity.valid && equalCheck) {
-
             changeIsValid(passwordCheckEle, true);
             //invalid-feedback 비활성화
         }
@@ -133,9 +135,7 @@ function initPhoneChoice(){
     const element = document.getElementById('phone1');
     let exchangeNums = ['02', '031', '032', '033', '041', '042', '043', '044', '051', '052',
         '053', '054', '055', '061', '062', '063', '064', '010', '011', '016', '017', '018', '019'];
-    console.log(0);
     for(let num of exchangeNums){
-        console.log(1);
         let option = document.createElement('option');
         option.textContent = num;
         option.value = num;
@@ -275,16 +275,15 @@ function doPasswordChange(){
     }
 
     //확인완료된 비밀번호를 전송함수에 전달
-    passwordChangeTransfer(pwData);
-    //비밀번호 모달 초기화
-    $('#passwordChangeModal').modal('hide');
-    passwordForm.reset();
-
+    passwordChangeTransfer(pwData, passwordForm);
+    passwordEle.classList.remove('is-valid')
+    passwordCheckEle.classList.remove('is-valid')
 }
 //비밀번호 변경 기능 fetch
-function passwordChangeTransfer(pwData){
+function passwordChangeTransfer(pwData, passwordForm){
 
-    const announce = document.getElementById('passwordAnnounce');
+    const passwordModalAnnounce = document.getElementById('password-modal-announce');
+    const modalAnnounce = document.getElementById('modal-common-announce')
 
     //fetch API를 통해 서버에 전송
     fetch('/mypage/update/password', {
@@ -294,7 +293,7 @@ function passwordChangeTransfer(pwData){
         },
         body: JSON.stringify(pwData)
     }).then(response=>{
-        if(response.ok || response.status===409){
+        if(response.ok || response.status === 422){
             return response.json();
         }
         else{
@@ -302,19 +301,26 @@ function passwordChangeTransfer(pwData){
         }
     }).then((data)=>{
         if(data.status === 200){
-            if(announce.classList.contains('fail')){
-                announce.classList.remove('fail');
-            }
-            announce.classList.add('success');
-            announce.textContent = '변경 성공!'
+            $('#passwordChangeModal').modal('hide');
+
+            passwordForm.reset();
+
+            modalAnnounce.textContent = '비밀번호 변경에 성공하였습니다!'
+            $('#commonAnnounceModal').modal('show');
+
         }else{
-            if(announce.classList.contains('success')){
-                announce.classList.remove('success');
+            if(data.equality === 'true'){
+                passwordModalAnnounce.textContent = data.responseMessage;
+
+                return;
             }
-            announce.classList.add('fail');
-            announce.textContent = data.announceMessage + ' 다시 시도해주세요.';
+
+            $('#passwordChangeModal').modal('hide');
+            passwordForm.reset();
+
+            modalAnnounce.textContent = data.responseMessage +'\n' + '다시 시도해주세요.'
+            $('#commonAnnounceModal').modal('show');
         }
-        announce.focus();
     });
 }
 

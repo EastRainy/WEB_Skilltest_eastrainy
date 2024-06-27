@@ -22,7 +22,6 @@
                     <p>비밀번호</p>
                     <div class="form-row align-item-center">
                         <button type="button" class="btn btn-info" data-toggle="modal" data-target="#passwordChangeModal">비밀번호 변경</button>
-                        <div class="password-change-announce" id="passwordAnnounce"></div>
                     </div>
                 </div>
                 <div class="form-group">
@@ -111,12 +110,11 @@
                            placeholder="상세 주소" required>
                     <div class="invalid-feedback" id="invalidAddressDetail"></div>
                 </div>
-
             </form>
             <br>
             <div class="form-row">
                 <div class="form-group col-md-6">
-                <a th:href="@{/mypage}" class="btn btn-secondary btn-block">이전으로</a>
+                    <a th:href="@{/mypage}" class="btn btn-secondary btn-block">이전으로</a>
                 </div>
                 <div class="form-group col-md-6">
                     <button type="button" class="btn btn-success btn-block" onclick="doSubmit()">수정</button>
@@ -149,11 +147,11 @@
                         <div>
                             <label class="modal-label" for="password_check">비밀번호 확인</label>
                             <input type="password" class="form-control" id="password_check" required>
-                            <div class="valid-feedback"></div>
+                            <div class="valid-feedback" id="validPasswordCheck"></div>
                             <div class="invalid-feedback" id="invalidPasswordCheck"></div>
                         </div>
                     </form>
-                    <div class="modal-announce"></div>
+                    <div class="password-modal-announce" id="password-modal-announce"></div>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-warning" onclick="doPasswordChange()">비밀번호 변경</button>
@@ -162,8 +160,8 @@
             </div>
         </div>
     </div>
-
 </div>
+<div th:replace="/html/common/commonAnnounceModal.html :: commonAnnounceModal"></div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
