@@ -118,6 +118,14 @@ public class UserServiceImpl implements UserDetailsService {
         return userDao.updateUserData(userData.toMap());
     }
 
+    //사용자가 변경 요청한 입력 비밀번호 검증
+    public boolean equalCheckPassword(User user, PasswordDto passwordDto){
+
+        //현재 비밀번호와 동일한 비밀번호 입력시 true 리턴
+        return bCryptPasswordEncoder.matches(passwordDto.getPassword(), userLoginDao.refer_pw(user.getUsername()));
+
+    }
+
     //사용자가 입력한 비밀번호로 비밀번호 변경
     public Map<String, Object> updateUserPassword(User user, PasswordDto passwordDto, BindingResult bindingResult){
 

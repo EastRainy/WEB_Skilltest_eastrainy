@@ -201,15 +201,22 @@ public class UserController {
                                                         @RequestBody @Validated PasswordDto passwordDto,
                                                         BindingResult bindingResult){
 
-
         JsonObject jo = new JsonObject();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
 
-        //서비스별로 validate 한번 더 서버단에서 체크 후
-        //이상이 있을 시 json에 해당부분 전송하여 응답할 수 있도록 구성
-        //이상이 없는 경우 반영하고 성공 전송
+        //현재 비밀번호와 같은지 확인
+        if(userService.equalCheckPassword(user, passwordDto)){
+            jo.addProperty("status", HttpStatus.UNPROCESSABLE_ENTITY.value());
+            jo.addProperty("equality","true");
+            jo.addProperty("responseMessage", "변경하려는 비밀번호가 현재 비밀번호와 동일합니다.");
+
+            log.info("equality checked not passed");
+
+            return new ResponseEntity<>(jo.toString(), headers, HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
 
         try {
             Map<String, Object> output = userService.updateUserPassword(user, passwordDto, bindingResult);
@@ -220,10 +227,11 @@ public class UserController {
 
                 return new ResponseEntity<>(jo.toString(), headers, HttpStatus.OK);
             } else {
-                jo.addProperty("status", HttpStatus.CONFLICT.value());
+                jo.addProperty("status", HttpStatus.UNPROCESSABLE_ENTITY.value());
+                jo.addProperty("equality","false");
                 jo.addProperty("responseMessage", (String) output.get("message"));
 
-                return new ResponseEntity<>(jo.toString(), headers, HttpStatus.CONFLICT);
+                return new ResponseEntity<>(jo.toString(), headers, HttpStatus.UNPROCESSABLE_ENTITY);
             }
 
         }catch (Exception e){
