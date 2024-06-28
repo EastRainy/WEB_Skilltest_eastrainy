@@ -25,13 +25,18 @@ button.bottom-button-l{
     min-width: 100%;
 }
 
-.words-counter-box{
-    text-align: right;
-}
-
 p.editor-words-counter{
     color: black;
 }
 p.editor-words-counter.limitexceed{
     color: red;
+}
+
+.limit-exceeded-announce{
+    color: red;
+    font-family: sans-serif;
+    visibility: hidden;
+}
+.right-text{
+    text-align: right;
 }
