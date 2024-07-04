@@ -9,12 +9,12 @@
 </head>
 <body>
 
-<div th:replace="/html/common/navbar.html :: navbar-headder"></div>
-<div th:replace="/html/common/navbar.html :: navbar-div">navbar div</div>
+<div th:replace="/html/adminManage/common/navbar.html :: navbar-headder"></div>
+<div th:replace="/html/adminManage/common/navbar.html :: navbar-div">navbar div</div>
 
 <div class="container-xl mt-5">
     <!-- 작성 form -->
-    <form th:action="@{/board/modifying/{id}(id=${id})}" th:object="${req}" id="modifyingForm" name="modifyingBoard" method="post">
+    <form th:action="@{/adminManage/board/modifying/{id}(id=${id})}" th:object="${req}" id="modifyingForm" name="modifyingBoard" method="post">
         <fieldset>
             <legend>게시물 수정</legend>
             <hr>
@@ -40,7 +40,7 @@
     <hr>
     <div>
         <button type="button" class="btn btn-success bottom-button-r" id="send-button" data-toggle="modal" data-target="#remindModal">수정</button>
-        <button type="button" class="btn btn-secondary bottom-button-r" th:onclick="|location.href='@{/board/view/{id}(id=${id})}'|">취소</button>
+        <button type="button" class="btn btn-secondary bottom-button-r" th:onclick="|location.href='@{/adminManage/board/view/{id}(id=${id})}'|">취소</button>
     </div>
 
 
@@ -70,7 +70,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="/js/board/boardmodifying.js"></script>
+<script src="/js/adminManage/board/boardmodifying.js"></script>
 <script src="/ckeditor/ckeditor5-config.js"></script>
 
 </body>

@@ -1,16 +1,18 @@
-package com.practice.Skilltest.board.controller;
+package com.practice.Skilltest.adminManage.controller;
 
 import com.google.gson.JsonObject;
+import com.practice.Skilltest.adminManage.service.Impi.AdminBoardServiceImpl;
+import com.practice.Skilltest.adminManage.service.Impi.AdminPageServiceImpl;
+import com.practice.Skilltest.board.controller.BoardController;
 import com.practice.Skilltest.board.dto.BoardDto;
 import com.practice.Skilltest.board.dto.BoardIdCarrier;
 import com.practice.Skilltest.board.dto.HideRequestDto;
 import com.practice.Skilltest.board.service.BoardService;
 import com.practice.Skilltest.board.service.PageService;
 import com.practice.Skilltest.user.role.UserRoles;
-import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.apache.ibatis.javassist.NotFoundException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,27 +25,30 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-
 import java.util.List;
 
+@Log4j2
 @Controller
-@RequiredArgsConstructor
-@RequestMapping("/board")
-public class BoardController {
+@RequestMapping("/adminManage/board")
+public class AdminBoardController {
 
+    final PageService pageService;
+    final BoardService boardService;
 
-    private static final Logger log = LoggerFactory.getLogger(BoardController.class);
-    private final BoardService boardService;
-    private final PageService pageService;
-
-    //메인 보드, 루트 접근시 첫번째 페이지로 리다이렉트
-    @RequestMapping(method = RequestMethod.GET, path = {"/", ""})
-    public String board_root(){
-        return "redirect:/board/1";
+    public AdminBoardController(@Qualifier("AdminPageService") AdminPageServiceImpl pageService,
+                                @Qualifier("AdminBoardService") AdminBoardServiceImpl boardService) {
+        this.pageService = pageService;
+        this.boardService = boardService;
     }
-    //게시글 페이지 목록확인
-    @RequestMapping(method = RequestMethod.GET, path = "/{page}")
-    public String viewPage(@PathVariable("page") long page, Model model, @AuthenticationPrincipal User user){
+
+    @GetMapping({"", "/"})
+    public String getBoardRoot(){
+        return "redirect:/adminManage/board/1";
+    }
+
+    @GetMapping("/{page}")
+    public String getBoardMain(@PathVariable("page") long page, Model model, @AuthenticationPrincipal User user){
+
 
         List<BoardDto> dtos;
         if(!pageService.checkValid(page)){return "error/400";}
@@ -53,7 +58,7 @@ public class BoardController {
             dtos = pageService.selectedPageListAdmin(page);
         }//어드민이면 숨긴글 데이터 제공
         else {
-            dtos = pageService.selectedPageList(page);
+                dtos = pageService.selectedPageList(page);
         }
 
         model.addAttribute("resultList", dtos);
@@ -64,25 +69,9 @@ public class BoardController {
         model.addAttribute("haveNext", pageService.haveNext(page));
         //페이징 처리에 필요한 속성 추가
 
-        return "html/board/boardmain";
+        return "html/adminManage/board/manageBoardMain";
     }
 
-    //메뉴 복귀 시 해당 게시물이 위치한 페이지를 확인 API
-    @ResponseBody
-    @PostMapping("/pagerequest/")
-    public ResponseEntity<String> returnPageById(@RequestBody BoardIdCarrier idCarrier){
-
-        JsonObject jo = new JsonObject();
-        HttpHeaders header = new HttpHeaders();
-        header.setContentType(MediaType.APPLICATION_JSON);
-
-        jo.addProperty("destination", pageService.crrBoardPagePosition(idCarrier.getId()));
-
-        return new ResponseEntity<>(jo.toString(), header, HttpStatus.OK);
-    }
-
-
-    //게시물 조회 GET
     @RequestMapping(method = RequestMethod.GET, path = "/view/{id}")
     public String viewBoard(@PathVariable("id") long id, Model model, @AuthenticationPrincipal User user){
 
@@ -104,21 +93,34 @@ public class BoardController {
             }//해당 게시물의 작성자 혹은 수정권한이 있는 경우 수정여부 속성 추가
         }
         catch (Exception e){
+            log.info(e.toString());
             return "error/404";
             //없을 시 404에러
         }
 
-        return "html/board/boardview";
+        return "html/adminManage/board/manageBoardView";
     }
 
+    //메뉴 복귀 시 해당 게시물이 위치한 페이지를 확인 API
+    @ResponseBody
+    @PostMapping("/pagerequest/")
+    public ResponseEntity<String> returnPageById(@RequestBody BoardIdCarrier idCarrier){
 
+        JsonObject jo = new JsonObject();
+        HttpHeaders header = new HttpHeaders();
+        header.setContentType(MediaType.APPLICATION_JSON);
+
+        jo.addProperty("destination", pageService.crrBoardPagePosition(idCarrier.getId()));
+
+        return new ResponseEntity<>(jo.toString(), header, HttpStatus.OK);
+    }
     //단순 신규 게시물 생성 GET
     @GetMapping(path = "/new")
     public String newBoardGet(Model model, @AuthenticationPrincipal User user){
 
         model.addAttribute("CurrUsername", user.getUsername());
 
-        return "html/board/boardnew";
+        return "html/adminManage/board/manageBoardNew";
     }
     //단순 신규 게시물 생성 POST
     @PostMapping(path = "/new")
@@ -131,14 +133,14 @@ public class BoardController {
             dest = boardService.newBoard(req);
         }
         catch (Exception e){
-            h.setLocation(URI.create("/board"));
+            h.setLocation(URI.create("/adminManage/board"));
             return new ResponseEntity<>(h, HttpStatus.BAD_REQUEST);
         }
 
         //req를 이용하여 새로운 게시글 생성 서비스 이용, 리턴값은 새로 생성된 게시글의 id
 
         //새로 만들어진 게시글의 id를 이용하여 URI 생성하여 게시글 내용으로 이동
-        h.setLocation(URI.create("/board/view/"+dest));
+        h.setLocation(URI.create("/adminManage/board/view/"+dest));
         return new ResponseEntity<>(h, HttpStatus.MOVED_PERMANENTLY);
     }
 
@@ -164,7 +166,7 @@ public class BoardController {
         }
 
         //변경을 위해 데이터를 받아와 모델에 넣고 전송
-        return "html/board/boardmodifying";
+        return "html/adminManage/board/manageBoardModifying";
     }
     //기존 수정 페이지 POST
     @PostMapping(path ="/modifying/{id}")
@@ -178,7 +180,7 @@ public class BoardController {
             return new ResponseEntity<>(h, HttpStatus.MOVED_PERMANENTLY);
         }
 
-        h.setLocation(URI.create("/board/view/"+id));
+        h.setLocation(URI.create("/adminManage/board/view/"+id));
         return new ResponseEntity<>(h, HttpStatus.MOVED_PERMANENTLY);
         //변경된 게시물의 게시글로 자동 이동
     }
@@ -195,10 +197,10 @@ public class BoardController {
             return new ResponseEntity<>(h, HttpStatus.MOVED_PERMANENTLY);
         }
 
-        h.setLocation(URI.create("/board"));
+        h.setLocation(URI.create("/adminManage/board/1"));
         return new ResponseEntity<>(h, HttpStatus.MOVED_PERMANENTLY);
     }
-    
+
     //게시글 숨김, 숨김해제
     @PostMapping(path="/modifyHide")
     @ResponseBody
@@ -206,7 +208,6 @@ public class BoardController {
 
         boolean serviceResponse = boardService.updateHide(modifyJSON, user.getAuthorities());
 
-        log.info("Hide response: " + serviceResponse);
 
         if (serviceResponse) {
             return new ResponseEntity<>(HttpStatus.OK);
@@ -215,4 +216,5 @@ public class BoardController {
         }
 
     }
+
 }

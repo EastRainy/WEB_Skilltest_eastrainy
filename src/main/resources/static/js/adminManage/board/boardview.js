@@ -16,7 +16,7 @@ function contentConvert(content){
 function redirectToBoard(){
 
     const id = document.getElementById("id").value;
-    fetch('/board/pagerequest/',{
+    fetch('/adminManage/board/pagerequest/',{
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -27,14 +27,15 @@ function redirectToBoard(){
     .then(data=>{
         const destination = data.destination;
         if(destination){
-            window.location.href = '/board/' + destination;
+            window.location.href = '/adminManage/board/' + destination;
         }
         else{
-            window.location.href = '/board/1';
+            window.location.href = '/adminManage/board/1';
         }
+
     })
     .catch(error =>{
-            window.location.href = '/board/1';
+            window.location.href = '/adminManage/board/1';
     });
 }
 
@@ -55,7 +56,7 @@ function modifyHide(mode) {
         'hideStatusTo': hideStatusTo
     }
 
-    fetch('/board/modifyHide', {
+    fetch('/adminManage/board/modifyHide', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

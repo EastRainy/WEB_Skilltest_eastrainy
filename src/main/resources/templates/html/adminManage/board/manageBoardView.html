@@ -8,9 +8,9 @@
 
 </head>
 <body>
-    <script src="/js/board/boardview.js"></script>
-    <div th:replace="/html/common/navbar.html :: navbar-headder"></div>
-    <div th:replace="/html/common/navbar.html :: navbar-div">navbar div</div>
+    <script src="/js/adminManage/board/boardview.js"></script>
+    <div th:replace="/html/adminManage/common/navbar.html :: navbar-headder"></div>
+    <div th:replace="/html/adminManage/common/navbar.html :: navbar-div">navbar div</div>
     <div class="container-xl mt-5">
         <div>
             <h2 class="mb-5" th:text="${result.getTitle()}"></h2>
@@ -32,7 +32,7 @@
         <div>
             <input type="hidden" name="id" th:value="${id}" id="id"/>
             <button class="btn btn-secondary bottom-button-l" th:onclick="redirectToBoard()">목록</button>
-            <button th:if="${modifiable}" class="btn btn-secondary bottom-button-r" th:onclick="|location.href='@{/board/modifying/{id}(id=${id})}'|">수정</button>
+            <button th:if="${modifiable}" class="btn btn-secondary bottom-button-r" th:onclick="|location.href='@{/adminManage/board/modifying/{id}(id=${id})}'|">수정</button>
             <button th:if="${modifiable}" class="btn btn-danger bottom-button-r" data-toggle="modal" data-target="#remindModal">삭제</button>
             <div sec:authorize="hasRole('ADMIN')">
                 <button class="btn btn-secondary bottom-button-r" th:if="!${result.is_hide()}" data-toggle="modal" data-target="#adminHidingModal">숨김처리</button>
@@ -57,7 +57,7 @@
                     <p>정말 삭제하시겠습니까?</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" th:onclick="|location.href='@{/board/delete/{id}(id=${id})}'|">삭제</button>
+                    <button type="button" class="btn btn-danger" th:onclick="|location.href='@{/adminManage/board/delete/{id}(id=${id})}'|">삭제</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
                 </div>
             </div>
@@ -78,7 +78,7 @@
                     <p>정말 해당 게시글을 숨김 처리 하시겠습니까?</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-info" th:onclick="modifyHide('hide')">숨김</button>
+                    <button type="button" class="btn btn-info" th:onclick="|modifyHide('hide')|">숨김</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
                 </div>
             </div>
@@ -93,7 +93,7 @@
                     <p>정말 해당 게시글을 숨김해제 처리 하시겠습니까?</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" th:onclick="modifyHide('display')">해제</button>
+                    <button type="button" class="btn btn-primary" th:onclick="|modifyHide('display')|">해제</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
                 </div>
             </div>

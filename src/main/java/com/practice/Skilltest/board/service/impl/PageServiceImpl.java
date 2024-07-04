@@ -3,6 +3,8 @@ package com.practice.Skilltest.board.service.impl;
 import com.practice.Skilltest.board.dao.BoardDao;
 import com.practice.Skilltest.board.dto.BoardDto;
 import com.practice.Skilltest.board.service.PageService;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -12,6 +14,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @Repository
+@Primary
+@Log4j2
 public class PageServiceImpl implements PageService {
 
     long totalPage = 0;
@@ -105,6 +109,7 @@ public class PageServiceImpl implements PageService {
     }
 
     //요청한 게시글의 페이지 위치
+    @Override
     public long crrBoardPagePosition(long id){
 
         //들어온 id가 올바른 id 인지 검증, 아닐 시 첫번째 페이지로
@@ -114,7 +119,6 @@ public class PageServiceImpl implements PageService {
         //나보다 id가 큰 게시물이 9개 있으면 => 10번째 게시물 9/10 + 1 = 1페이지
         //나보다 id가 큰 게시물이 10개 있으면 => 11번째 게시물 10/10 +1 = 2페이지
         long idPosition = (boardDao.selectNewer(id))/10 + 1;
-
 
         //이동할 페이지 번호 리턴, 만약의 경우를 위한 검증로직
         if(checkValid(idPosition)){ return idPosition; }

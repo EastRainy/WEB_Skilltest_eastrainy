@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head th:fragment="navbar-headder">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/common/navbar.css}">
+    <title></title>
+</head>
+<body>
+<div th:fragment="navbar-div">
+    <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-danger">
+        <a class="navbar-brand mb-0 h1" th:href="@{/adminManage/main}">EastRainy</a>
+        <div class="container-fluid" id="topNavbarMenu">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">Board</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" th:href="@{/adminManage/board/}">Manage Board Main</a>
+                        <a class="dropdown-item" href="#">Board Configuration</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">User</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">User Manage</a>
+                        <a class="dropdown-item" href="#">User Configuration</a>
+                    </div>
+                </li>
+            </ul>
+            <div class="d-flex justify-content-end">
+                <div class="navbar-button-div" sec:authorize="hasRole('ADMIN')">
+                    <button class="btn btn-sm btn-info" type="button" th:onclick="|location.href='@{/main}'|">메인페이지</button>
+                </div>
+                <div class="navbar-button-div" sec:authorize="isAuthenticated()">
+                    <button class="btn btn-sm btn-secondary" type="button" th:onclick="|location.href='@{/logout}'|">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>
+
+</body>
+<footer th:fragment="navbar-footer">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</footer>
+</html>

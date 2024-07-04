@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Board Main</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/board/boardmain.css}">
+</head>
+<body>
+<div th:replace="/html/adminManage/common/navbar.html :: navbar-headder"></div>
+<div th:replace="/html/adminManage/common/navbar.html :: navbar-div">navbar div</div>
+<div class="container mt-5">
+    <h1 class="mb-4">Admin Board Page</h1>
+    <hr>
+    <div class="table-responsive board-table">
+        <table class="table table-bordered">
+            <tr class="table-secondary">
+                <td class="id">번호</td>
+                <td class="title" style="text-align:center;">제목</td>
+                <td class="writer">작성자</td>
+                <td class="created_time_date">작성일</td>
+                <td class="viewcount">조회수</td>
+            </tr>
+            <tr th:each="result : ${resultList}">
+                <th:block th:if="!${result.is_hide()}">
+                    <td class="id" th:text="${result.getBoard_id()}"></td>
+                    <td class="title">
+                        <a th:href="@{/adminManage/board/view/{id}(id=${result.getBoard_id()})}" th:text="${result.getTitle()}"></a>
+                    </td>
+                    <td class="writer" th:text="${result.getWriter()}"></td>
+                    <td class="created_time_date" th:text="${result.getCreated_time_date()}"></td>
+                    <td class="viewcount" th:text="${result.getViewcount()}"></td>
+                </th:block>
+                <th:block th:if="${result.is_hide()}">
+                    <td class="id" th:text="${result.getBoard_id()}"></td>
+                    <td class="title">
+                        <a style="font-style: italic" th:href="@{/adminManage/board/view/{id}(id=${result.getBoard_id()})}" th:text="'(숨김글)'+${result.getTitle()}"></a>
+                    </td>
+                    <td class="writer" th:text="${result.getWriter()}"></td>
+                    <td class="created_time_date" th:text="${result.getCreated_time_date()}"></td>
+                    <td class="viewcount" th:text="${result.getViewcount()}"></td>
+                </th:block>
+            </tr>
+        </table>
+    </div>
+    <hr>
+    <!-- 페이징 처리 -->
+    <div>
+        <ul class="pagination">
+            <li th:if="${startRange}>10" class="pagination-list-item">
+                <a th:href="@{/adminManage/board/{page}(page=(${startRange}-1))}" th:text="prev"></a>
+            </li>
+            <li th:each="num : ${#numbers.sequence(startRange,endRange)}" class="pagination-list-item">
+                <a class="thick" th:if="${crrPage}==${num}" th:text="${num}"></a>
+                <a th:unless="${crrPage}==${num}" th:text="${num}" th:href="@{/adminManage/board/{page}(page=${num})}"></a>
+            </li>
+            <li th:if="${haveNext}==true" class="pagination-list-item">
+                <a th:href="@{/adminManage/board/{page}(page=(${endRange}+1))}" th:text="next"></a>
+            </li>
+        </ul>
+        <br>
+        <div>
+            <button class="new-post-button" th:onclick="|location.href='@{/adminManage/board/new}'|">새 글</button>
+        </div>
+    </div>
+    <br>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

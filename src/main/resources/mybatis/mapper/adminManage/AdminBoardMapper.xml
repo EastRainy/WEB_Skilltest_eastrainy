@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.practice.Skilltest.board.dao.BoardDao">
+<mapper namespace="com.practice.Skilltest.adminManage.dao.AdminManageBoardDao">
     <resultMap id="Board" type="com.practice.Skilltest.board.dto.BoardDto">
         <result column="b_id" property="board_id"/>
         <result column="writer" property="writer"/>
@@ -14,26 +14,26 @@
     </resultMap>
 
     <!-- 게시글 존재 조회  -->
-    <select id="checkById" parameterType="long" resultType="int">
+    <select id="checkByIdAdmin" parameterType="long" resultType="int">
         SELECT COUNT(*) FROM board_table
         WHERE b_id = #{id}
     </select>
 
     <!-- 게시글 상세 조회 -->
-    <select id="viewOne" resultMap="Board">
+    <select id="viewOneAdmin" resultMap="Board">
         SELECT b_id, writer, title, c_date, content, viewcount, is_hide FROM board_table
         WHERE b_id = #{id}
     </select>
-    
+
     <!-- 게시물 게시자 조회 -->
-    <select id="getWriter" resultType="String">
+    <select id="gerWriterAdmin" resultType="String">
         SELECT writer FROM board_table
         WHERE b_id = #{id}
     </select>
-    
+
 
     <!-- 신규 게시물 생성 -->
-    <insert id="newBoard" parameterType="com.practice.Skilltest.board.dto.BoardDto">
+    <insert id="newBoardAdmin" parameterType="com.practice.Skilltest.board.dto.BoardDto">
         INSERT INTO board_table(
         writer, title, content
         )
@@ -41,23 +41,23 @@
         #{writer}, #{title}, #{content}
         )
         <selectKey keyProperty="board_id" resultType="long" order="AFTER">
-        SELECT currval(pg_get_serial_sequence('board_table','b_id'))
+            SELECT currval(pg_get_serial_sequence('board_table','b_id'))
         </selectKey>
     </insert>
 
     <!-- 게시물 수정 -->
-    <update id="updateBoard" parameterType="Map">
+    <update id="updateBoardAdmin" parameterType="Map">
         UPDATE board_table
         SET
-        title = #{title},
-        content = #{content},
-        m_date = now()
+            title = #{title},
+            content = #{content},
+            m_date = now()
         WHERE
-        b_id = #{id}
+            b_id = #{id}
     </update>
 
     <!-- 조회시 게시물 조회수 증가 -->
-    <update id="updateViewcount" parameterType="long">
+    <update id="updateViewcountAdmin" parameterType="long">
         UPDATE board_table
         SET
             viewcount = viewcount +1
@@ -66,36 +66,32 @@
     </update>
 
     <!-- 게시글 삭제 -->
-    <delete id="deleteBoard">
+    <delete id="deleteBoardAdmin">
         DELETE FROM board_table
         WHERE b_id = #{id}
     </delete>
 
     <!-- 숨김, 숨김 해제처리 -->
-    <update id="updateHide" parameterType="com.practice.Skilltest.board.dto.HideRequestDto">
+    <update id="updateHideAdmin" parameterType="com.practice.Skilltest.board.dto.HideRequestDto">
         UPDATE board_table
         SET is_hide = #{hideStatusTo}
         WHERE b_id = #{id}
     </update>
 
-
-
     <!-- 페이징 처리를 위한 총 게시물 갯수 조회 -->
-    <select id="selectCount" resultType="long">
+    <select id="selectCountAdmin" resultType="long">
         SELECT COUNT(*) FROM board_table
-        WHERE is_hide = false;
     </select>
 
     <!-- 기존 보던 페이지 복귀 기능을 위한 게시글 id 보다 최신인 게시물 갯수 조회 -->
-    <select id="selectNewer" parameterType="long" resultType="long">
+    <select id="selectNewerAdmin" parameterType="long" resultType="long">
         SELECT COUNT(*) FROM board_table
-        WHERE b_id > #{id} AND is_hide = false;
+        WHERE b_id > #{id}
     </select>
 
     <!-- 10개(페이지)단위로 게시물 목록 조회 -->
-    <select id="selectPageRange" resultMap="Board">
+    <select id="selectPageRangeAdmin" resultMap="Board">
         SELECT b_id, title, writer, viewcount, c_date, is_hide FROM board_table
-        WHERE is_hide = false
         ORDER BY b_id DESC
         LIMIT 10 OFFSET #{offset}
     </select>

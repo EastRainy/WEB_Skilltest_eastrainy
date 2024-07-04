@@ -1,5 +1,7 @@
-package com.practice.Skilltest.board.service.impl;
+package com.practice.Skilltest.adminManage.service.Impi;
 
+import com.practice.Skilltest.adminManage.dao.AdminManageBoardDao;
+import com.practice.Skilltest.adminManage.service.AdminBoardService;
 import com.practice.Skilltest.board.dao.BoardDao;
 import com.practice.Skilltest.board.dto.BoardDto;
 import com.practice.Skilltest.board.dto.HideRequestDto;
@@ -7,12 +9,10 @@ import com.practice.Skilltest.board.service.BoardService;
 import com.practice.Skilltest.user.role.UserRoles;
 import lombok.extern.log4j.Log4j2;
 import org.apache.ibatis.javassist.NotFoundException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Primary;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
@@ -20,17 +20,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Log4j2
-@Repository
-@Primary
-public class BoardServiceImpl implements BoardService {
+@Service
+@Qualifier("AdminBoardService")
+public class AdminBoardServiceImpl implements AdminBoardService {
+
 
     //private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private final BoardDao boardDao;
+    private final AdminManageBoardDao boardDao;
 
-    public BoardServiceImpl(BoardDao boardDao) {
-        this.boardDao = boardDao;
+    public AdminBoardServiceImpl(AdminManageBoardDao adminManageBoardDao) {
+        this.boardDao = adminManageBoardDao;
     }
-
 
     //2024.02.26 게시글 접근 시 해당하는 id의 게시글이 있는지 조회
     @Override
@@ -44,6 +44,7 @@ public class BoardServiceImpl implements BoardService {
 
         BoardDto result = boardDao.viewOne(id);
 
+        //log.info(result.toString());
         if(!checkById(id)){throw new NotFoundException("존재하지 않는 게시물 id 접근");}
         else{
             upView(id);
@@ -105,6 +106,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public boolean checkValidRequester(long id, String username, Collection<? extends GrantedAuthority> userAuthority) {
 
+
         //요청이 해당 게시글의 게시자와 동일한 유저가 요청하였는지 확인
         if(boardDao.getWriter(id).equals(username)){ return true; }
 
@@ -145,13 +147,9 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public boolean updateHide(HideRequestDto hideRequestDto, Collection<? extends GrantedAuthority> userAuthority) {
 
-        log.info("updateHide: " + hideRequestDto.toString());
-
         if (!userAuthority.contains(new SimpleGrantedAuthority(UserRoles.ADMIN.getValue()))) {
             return false;
         }
-
         return boardDao.updateHide(hideRequestDto);
     }
 }
-

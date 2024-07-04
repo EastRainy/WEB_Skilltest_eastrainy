@@ -23,6 +23,7 @@ public class BoardDaoImpl implements BoardDao {
     @Override
     public int checkById(long id) {return sqlSession.selectOne("checkById", id); }
 
+    @Override
     public String getWriter(long id) {return sqlSession.selectOne("gerWriter", id);}
 
     @Override
@@ -52,7 +53,7 @@ public class BoardDaoImpl implements BoardDao {
 
     @Override
     public boolean updateHide(HideRequestDto hideRequestDto) {
-        return 1==sqlSession.update("modifyHide", hideRequestDto);
+        return 1==sqlSession.update("updateHide", hideRequestDto);
     }
 
 
@@ -61,7 +62,7 @@ public class BoardDaoImpl implements BoardDao {
         return sqlSession.selectOne("selectCount");
     }
 
-    public long selectNewer(long id){ return sqlSession.selectOne("selectNewer"); }
+    public long selectNewer(long id){ return sqlSession.selectOne("selectNewer", id); }
     @Override
     public List<BoardDto> selectPageRange(long offset) {
         return sqlSession.selectList("selectPageRange", offset);

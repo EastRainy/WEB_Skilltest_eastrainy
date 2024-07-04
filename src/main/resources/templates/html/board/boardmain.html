@@ -7,7 +7,8 @@
     <link rel="stylesheet" th:href="@{/css/board/boardmain.css}">
 </head>
 <body>
-    <div th:replace="/html/common/navbar.html :: navbar-div">navbar div</div>
+<div th:replace="/html/common/navbar.html :: navbar-headder"></div>
+<div th:replace="/html/common/navbar.html :: navbar-div">navbar div</div>
     <div class="container mt-5">
         <h1 class="mb-4">It's Main board page!</h1>
         <hr>
@@ -29,26 +30,6 @@
                         <td class="writer" th:text="${result.getWriter()}"></td>
                         <td class="created_time_date" th:text="${result.getCreated_time_date()}"></td>
                         <td class="viewcount" th:text="${result.getViewcount()}"></td>
-                    </th:block>
-                    <th:block th:if="${result.is_hide()}">
-                        <th:block th:if="${isAdmin}">
-                            <td class="id" th:text="${result.getBoard_id()}"></td>
-                            <td class="title">
-                                <a style="font-style: italic" th:href="@{/board/view/{id}(id=${result.getBoard_id()})}" th:text="'(숨김글)'+${result.getTitle()}"></a>
-                            </td>
-                            <td class="writer" th:text="${result.getWriter()}"></td>
-                            <td class="created_time_date" th:text="${result.getCreated_time_date()}"></td>
-                            <td class="viewcount" th:text="${result.getViewcount()}"></td>
-                        </th:block>
-                        <th:block th:if="!${isAdmin}">
-                            <td class="id"></td>
-                            <td class="title">
-                                <div style="font-style: italic">숨김 처리된 글입니다.</div>
-                            </td>
-                            <td class="writer"></td>
-                            <td class="created_time_date"></td>
-                            <td class="viewcount"></td>
-                        </th:block>
                     </th:block>
                 </tr>
             </table>
